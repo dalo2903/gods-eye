@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "813488161964",
+    "firebase_url": "https://centering-dock-194606.firebaseio.com",
+    "project_id": "centering-dock-194606",
+    "storage_bucket": "centering-dock-194606.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813488161964:android:a4596004821d7eec",
+        "android_client_info": {
+          "package_name": "com.example.android.tutsplusupload"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813488161964-kik8ipk1mfiie8bnotu5mcf171ujvk6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmklD8PFXt29vBvcyrNg02uXtO2CCh5F8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
