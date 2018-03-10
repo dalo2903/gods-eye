@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,13 +23,12 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,20 +66,54 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void analyzeImage(String fileName){
+        try {
+            PostTask postTask = new PostTask();
+            String data = "{\n" +
+                    "  \"requests\":[\n" +
+                    "    {\n" +
+                    "     \"image\":{\n" +
+                    "        \"source\":{\n" +
+                    "          \"imageUri\":\n" +
+                    "            \"gs://centering-dock-194606.appspot.com/images/"+fileName+"\"\n" +
+                    "        }\n" +
+                    "      },\n" +
+                    "      \"features\":[\n" +
+                    "        {\n" +
+                    "          \"type\":\"LABEL_DETECTION\",\n" +
+                    "          \"maxResults\":100\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}";
+            String url = "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC7ZsHWEpjUK45YuZYQP431EHrmhhnhNno";
+            String body = data;
+
+
+            postTask.execute(url, body);
+
+
+        } catch (Exception ex) {
+            content.setText(" url exeption! ");
+        }
+    }
+
     private void uploadImage() {
 
         if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            final String name = UUID.randomUUID().toString();
+            StorageReference ref = storageReference.child("images/" + name);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Toast.makeText(MainActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            analyzeImage(name);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -130,91 +165,61 @@ public class MainActivity extends AppCompatActivity {
 
         content = (TextView) findViewById(R.id.content);
 
-
-        Button saveme = (Button) findViewById(R.id.save);
-
-        saveme.setOnClickListener(new Button.OnClickListener() {
-
-            public void onClick(View v) {
-                try {
-                    // CALL GetText method to make post method call
-                    GetText();
-                } catch (Exception ex) {
-                    content.setText(" url exeption! ");
-                }
-            }
-        });
     }
 
-    // Create GetText Metod
-    public void GetText() throws UnsupportedEncodingException {
-        // Get user defined values
+    class PostTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
 
-
-        // Create data variable for sent values to server
-
-
-        String text = "";
-        BufferedReader reader = null;
-        String data = "{\n" +
-                "  \"requests\":[\n" +
-                "    {\n" +
-                "     \"image\":{\n" +
-                "        \"source\":{\n" +
-                "          \"imageUri\":\n" +
-                "            \"gs://centering-dock-194606.appspot.com/images/1\"\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"features\":[\n" +
-                "        {\n" +
-                "          \"type\":\"LABEL_DETECTION\",\n" +
-                "          \"maxResults\":100\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-        // Send data
-        try {
-
-            // Defined URL  where to send data
-            URL url = new URL("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyC7ZsHWEpjUK45YuZYQP431EHrmhhnhNno");
-
-            // Send POST data request
-
-            URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(data);
-            wr.flush();
-
-            // Get the server response
-
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            // Read Server Response
-            while ((line = reader.readLine()) != null) {
-                // Append server response in string
-                sb.append(line + "\n");
-            }
-
-
-            text = sb.toString();
-        } catch (Exception ex) {
-
-        } finally {
             try {
+                URL url = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-                reader.close();
-            } catch (Exception ex) {
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                connection.setRequestProperty("Accept", "*/*");
+
+                connection.setDoOutput(true);
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+                writer.write(params[1]);
+                writer.close();
+
+                connection.connect();
+
+                // Response: 400
+
+                InputStream is = connection.getInputStream();
+                final int PKG_SIZE = 1024;
+                byte[] data = new byte [PKG_SIZE];
+                StringBuilder buffer = new StringBuilder(PKG_SIZE * 10);
+                int size;
+                size = is.read(data, 0, data.length);
+                while (size > 0)
+                {
+                    String str = new String(data, 0, size);
+                    buffer.append(str);
+                    size = is.read(data, 0, data.length);
+                }
+                String test = buffer.toString();
+
+                Log.e("Response", test + "");
+                return test;
+
+            } catch (Exception e) {
+                Log.e(e.toString(), "Something with request");
             }
+
+            return null;
         }
+        protected void onPostExecute(String result) {
+            // NO NEED to use activity.runOnUiThread(), code execute here under UI thread.
 
-        // Show response on activity
-        content.setText("Result "+text);
-
+            // Updating parsed JSON data into ListView
+           // final List data = new Gson().fromJson(result);
+            // updating listview
+            //((ListActivity) activity).updateUI(data);
+            content.setText(result);
+        }
     }
 
 }
