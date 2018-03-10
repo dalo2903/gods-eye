@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnChoose, btnUpload;
     private ImageView imageView;
-
     private Uri filePath;
-    TextView content;
+    private Bitmap imageBitmap;
+
     private final int PICK_IMAGE_REQUEST = 71;
 
     //Firebase
@@ -59,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imageBitmap = bitmap;
                 imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         } catch (Exception ex) {
-            content.setText(" url exeption! ");
+            //content.setText(" url exeption! ");
         }
     }
 
@@ -148,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,19 +157,16 @@ public class MainActivity extends AppCompatActivity {
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                //Upload image to Firebase
                 uploadImage();
             }
         });
-
-        content = (TextView) findViewById(R.id.content);
-
     }
 
     class PostTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-
             try {
                 URL url = new URL(params[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -218,7 +214,18 @@ public class MainActivity extends AppCompatActivity {
            // final List data = new Gson().fromJson(result);
             // updating listview
             //((ListActivity) activity).updateUI(data);
-            content.setText(result);
+            //content.setText(result);
+
+
+            // Create a new intent to open the {@link NumbersActivity}
+            Intent analyzeIntent = new Intent(MainActivity.this, AnalyzeActivity.class);
+            //analyzeIntent.putExtra("IMAGE", intentImage);
+            //analyzeIntent.putParceleableExtra("uri", filePath);
+            analyzeIntent.putExtra("RESULT", result);
+            //  analyzeIntent.putExtra("BitmapImage", imageBitmap);
+
+            // Start the new activity
+            startActivity(analyzeIntent);
         }
     }
 
