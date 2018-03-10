@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageReference;
 
-    private void chooseImage() {
+    public void chooseImage(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         btnChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage();
+                chooseImage(v);
             }
         });
 

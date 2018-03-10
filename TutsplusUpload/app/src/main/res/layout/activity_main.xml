@@ -7,6 +7,15 @@
     android:padding="16dp"
     tools:context="com.example.android.tutsplusupload.MainActivity">
 
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:src="@drawable/eye"
+        android:onClick="chooseImage"
+
+        />
     <LinearLayout
         android:id="@+id/layout_button"
         android:layout_width="match_parent"
@@ -32,15 +41,14 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <!--<ImageView
+        android:id="@+id/imgView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />-->
 
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/imgView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="wrap_content"
