@@ -22,6 +22,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -221,6 +224,19 @@ public class MainActivity extends AppCompatActivity {
             Intent analyzeIntent = new Intent(MainActivity.this, AnalyzeActivity.class);
             //analyzeIntent.putExtra("IMAGE", intentImage);
             //analyzeIntent.putParceleableExtra("uri", filePath);
+            JSONArray minifiedLabels = new JSONArray();
+
+            try {
+                JSONObject jsonObj = new JSONObject(result);
+                JSONArray labels = jsonObj.getJSONArray("responses").getJSONObject(0).getJSONArray("labelAnnotations");
+                for (int i =0; i < 3; i++){
+                    minifiedLabels.put(labels.getJSONObject(i));
+                }
+            } catch (Exception e) {
+                // doesn't throw another exception
+                // return new JSONObject(new HashMap());
+            }
+            result = minifiedLabels.toString();
             analyzeIntent.putExtra("RESULT", result);
             //  analyzeIntent.putExtra("BitmapImage", imageBitmap);
 
