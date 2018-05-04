@@ -6,7 +6,15 @@
       method='post' 
       encType="multipart/form-data">
         <input type="file" name="sampleFile" />
+        <input type="text" name="name" />
         <input type='submit' value='Upload!' />
-    </form>     
+    </form>   
+    <form ref='uploadForm' 
+      id='uploadForm' 
+      action='/train' 
+      method='post' 
+      encType="multipart/form-data">
+        <input type='submit' value='Train data' />
+    </form>       
   </body>
 </html>
