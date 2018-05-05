@@ -209,8 +209,8 @@ router.get('/person-groups/:personGroupId', (req, res) => {
 function listAllPersonsInPersonGroup (personGroupId, start, top) {
   return new Promise((resolve, reject) => {
     var url = faceApiUrl + '/persongroups/' + personGroupId + '/persons/' +
-     (start ? '?start=' + start : '') +
-     (top ? '?top=' + top : '')
+      (start ? '?start=' + start : '') +
+      (top ? '?top=' + top : '')
     var options = {
       url: url,
       method: 'GET',
@@ -232,5 +232,41 @@ function listAllPersonsInPersonGroup (personGroupId, start, top) {
     })
   })
 }
+
+function initPersonInPersonGroup (personGroupId) {
+  const array = [
+    {
+      name: 'Dinh Duy Kha',
+      userData: '1411675'
+    },
+    {
+      name: 'Nguyen Khanh Nam',
+      userData: '1412374'
+    },
+    {
+      name: 'Vu Minh Tri',
+      userData: '1414241'
+    },
+    {
+      name: 'Dao Duy Phat',
+      userData: '1412817'
+    }
+  ]
+  array.forEach(person => {
+    createPersonInPersonGroup(personGroupId, person)
+      .then(resolve => {
+        console.log(person.name + ' import successfully, personId: ' + resolve.personId)
+      })
+      .catch(reject => {
+        console.log('err')
+      })
+  })
+}
+
+router.get('/person-groups/:personGroupId/init', (req, res) => {
+  console.log(req.params.personGroupId)
+  initPersonInPersonGroup(req.params.personGroupId)
+  return res.status(200)
+})
 
 module.exports = router
