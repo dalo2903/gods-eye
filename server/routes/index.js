@@ -71,7 +71,7 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
     })
 })
 
-function submitFace (personId, imageBinary) {
+function addFaceForPerson (personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
     var url = faceApiUrl + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
     var options = {
@@ -81,22 +81,20 @@ function submitFace (personId, imageBinary) {
         'Ocp-Apim-Subscription-Key': key1
       },
       body: {
-        url: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&h=350'
+        url: faceURL
       },
       json: true
     }
     request(options, (err, res) => {
       if (err) {
         console.log(err)
-        return reject(err)
+        return reject({ status: 500, error: err })
       }
       if (res.statusCode === 200) {
-        var faceUrl = ''
-        var message = 'SUCCESS - Submit image' + faceUrl + 'for person id' + personId + '. PersistedFaceId:: ' + res.body.persistedFaceId
-        return resolve({ message: message })
+        var message = 'Add face (url: ' + faceURL + ') for Person with id' + personId + ' successfully. PersistedFaceId:: ' + res.body.persistedFaceId
+        return resolve({ status: res.statusCode, message: message })
       } else {
-        console.log(res.body.error)
-        return reject(res.body.error)
+        return reject({ status: res.statusCode, error: res.body.error })
       }
     })
   })
@@ -110,35 +108,29 @@ router.get('/upload', function (req, res, next) {
   res.render('upload', { title: 'Express' })
 })
 
-router.get('/submitFace', (req, res) => {
-  submitFace(khaPersonID)
+router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
+  addFaceForPerson(req.params.personGroupId, req.params.personId, req.body.url)
     .then(resolve => {
-      return res.status(200).send(resolve.messagae)
+      return res.status(resolve.status).send(resolve)
     }).catch(reject => {
-      return res.status(500)
+      return res.status(reject.status).send(reject)
     })
 })
 
 router.post('/upload', function (req, res) {
   if (!req.files) { return res.status(400).send('No files were uploaded.') }
-
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   let sampleFile = req.files.sampleFile
-  // Use the mv() method to place the file somewhere on your server
   const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
   var timestamp = Date.now()
   var newName = req.body.name + timestamp + path.extname(sampleFile.name)
-
-  var buf = Buffer.from(sampleFile.data)
-  submitFace(khaPersonID, buf)
-
   sampleFile.mv(pathFile, function (err) {
     if (err) { return res.status(500).send(err) }
-    uploadFile(pathFile, newName)
-    //
-    var uploadedImage = imageApi + newName
-    console.log(uploadedImage)
-    res.send('File uploaded! Name = ' + newName)
+    uploadFile(pathFile, newName).then(resolve => {
+      // addFaceForPerson()
+      return res.status(200).send({message: 'File uploaded!'})
+    }).catch(reject => {
+      return res.status(500).send({message: 'Google cloud error'})
+    })
   })
 })
 
@@ -178,23 +170,19 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
 })
 
 function uploadFile (pathFile, fileName) {
-  /**
-   * TODO(developer): Uncomment the following lines before running the sample.
-   */
-  // const bucketName = 'Name of a bucket, e.g. my-bucket';
-  // const filename = 'Local file to upload, e.g. ./local/path/to/file.txt';
-
-  // Uploads a local file to the bucket
-  storage
-    .bucket(bucketName)
-    .upload(pathFile, { destination: 'images/' + fileName })
-    .then(() => {
-      console.log(`${fileName} uploaded to ${bucketName}.`)
-    })
-    .catch(err => {
-      console.error('ERROR:', err)
-    })
-  // [END storage_upload_file]
+  return new Promise((resolve, reject) => {
+    storage
+      .bucket(bucketName)
+      .upload(pathFile, { destination: 'images/' + fileName })
+      .then(() => {
+        console.log(`${fileName} uploaded to ${bucketName}.`)
+        return resolve({fileName: fileName})
+      })
+      .catch(err => {
+        console.error('ERROR:', err)
+        return reject(err)
+      })
+  })
 }
 
 router.get('/person-groups/:personGroupId', (req, res) => {
