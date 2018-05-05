@@ -142,18 +142,39 @@ router.post('/upload', function (req, res) {
   })
 })
 
-router.post('/train', function (req, res) {
-  const trainUrl = faceApiUrl + '/persongroups/' + personGroupId + '/train'
-  var result = syncRequest('POST', personUrl, {
-    headers: {
-      'Ocp-Apim-Subscription-Key': key1,
-      'Content-Type': 'application/json'
-    },
-    data: '{}'
+function trainPersonGroup (personGroupId) {
+  console.log(personGroupId)
+  return new Promise((resolve, reject) => {
+    const url = faceApiUrl + '/persongroups/' + personGroupId + '/train'
+    var options = {
+      url: url,
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': key1
+      },
+      json: true
+    }
+    request(options, (err, res) => {
+      if (err) {
+        console.log(err)
+        return reject({ status: 500, error: err })
+      }
+      if (res.statusCode === 202) {
+        return resolve({ status: res.statusCode })
+      } else {
+        return reject({ status: res.statusCode, error: res.body.error })
+      }
+    })
   })
-  if (result.statusCode === 200) {
-    console.log('SUCCESS - training data' + '. Response: ' + result.body)
-  } else { console.log('FAIL ' + result.body) }
+}
+
+router.get('/person-groups/:personGroupId/train', function (req, res) {
+  trainPersonGroup(req.params.personGroupId)
+    .then(resolve => {
+      return res.status(resolve.status).send(resolve)
+    }).catch(reject => {
+      return res.status(reject.status).send(reject)
+    })
 })
 
 function uploadFile (pathFile, fileName) {
