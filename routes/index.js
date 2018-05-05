@@ -1,42 +1,26 @@
 var express = require('express')
 var router = express.Router()
-var fs = require('fs')
-
-// Imports the Google Cloud client library
+var config = require('../config')
 const Storage = require('@google-cloud/storage')
 var path = require('path')
-var syncRequest = require('sync-request')
 var request = require('request')
 
-// Your Google Cloud Platform project ID
-const projectId = 'centering-dock-194606'
-
-// Creates a client
 const storage = new Storage({
-  projectId: projectId
+  projectId: config.google.projectId
 })
 
 // The name for the new bucket
-const bucketName = 'centering-dock-194606.appspot.com'
-const personGroupId = 'test-faces'
-const key1 = '21eafac8fbba45c1915edb692bed7f59'
-const key2 = '57b4ea63c4b84b66899493eb2cc53ea2'
-const khaPersonID = '67ad5f3f-131a-42da-b889-c7fda0c9da70'
-
-const msCognitive = 'https://southeastasia.api.cognitive.microsoft.com'
-const faceApiUrl = msCognitive + '/face/v1.0'
-const personUrl = faceApiUrl + '/persongroups/' + personGroupId + '/persons'
-
-const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
+const bucketName = config.google.cloudStorage.bucketName
+// const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
 
 function createPersonInPersonGroup (personGroupId, person) {
   return new Promise((resolve, reject) => {
-    var url = faceApiUrl + '/persongroups/' + personGroupId + '/persons/'
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
     var options = {
       url: url,
       method: 'POST',
       headers: {
-        'Ocp-Apim-Subscription-Key': key1
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
       },
       body: {
         name: person.name,
@@ -73,12 +57,12 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
 
 function addFaceForPerson (personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
-    var url = faceApiUrl + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
     var options = {
       url: url,
       method: 'POST',
       headers: {
-        'Ocp-Apim-Subscription-Key': key1
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
       },
       body: {
         url: faceURL
@@ -136,12 +120,12 @@ router.post('/upload', function (req, res) {
 
 function trainPersonGroup (personGroupId) {
   return new Promise((resolve, reject) => {
-    const url = faceApiUrl + '/persongroups/' + personGroupId + '/train'
+    const url = config.microsoft.cognitive.face + '/persongroups/' + personGroupId + '/train'
     var options = {
       url: url,
       method: 'POST',
       headers: {
-        'Ocp-Apim-Subscription-Key': key1
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
       },
       json: true
     }
@@ -195,14 +179,14 @@ router.get('/person-groups/:personGroupId', (req, res) => {
 
 function listAllPersonsInPersonGroup (personGroupId, start, top) {
   return new Promise((resolve, reject) => {
-    var url = faceApiUrl + '/persongroups/' + personGroupId + '/persons/' +
+    var url = config.microsoft.cognitive.face + '/persongroups/' + personGroupId + '/persons/' +
       (start ? '?start=' + start : '') +
       (top ? '?top=' + top : '')
     var options = {
       url: url,
       method: 'GET',
       headers: {
-        'Ocp-Apim-Subscription-Key': key1
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
       },
       json: true
     }
