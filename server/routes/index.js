@@ -58,7 +58,7 @@ function createPersonInPersonGroup (personGroupId, person) {
   })
 }
 
-router.post('/person-groups/:personGroupId/persons/create', (req, res) => {
+router.post('/person-groups/:personGroupId/persons/', (req, res) => {
   const person = {
     name: req.body.name,
     userData: req.body.userData
