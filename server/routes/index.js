@@ -135,7 +135,6 @@ router.post('/upload', function (req, res) {
 })
 
 function trainPersonGroup (personGroupId) {
-  console.log(personGroupId)
   return new Promise((resolve, reject) => {
     const url = faceApiUrl + '/persongroups/' + personGroupId + '/train'
     var options = {
@@ -252,7 +251,6 @@ function initPersonInPersonGroup (personGroupId) {
 }
 
 router.get('/person-groups/:personGroupId/init', (req, res) => {
-  console.log(req.params.personGroupId)
   initPersonInPersonGroup(req.params.personGroupId)
   return res.status(200)
 })
