@@ -4,14 +4,22 @@ var config = require('../config')
 const Storage = require('@google-cloud/storage')
 var path = require('path')
 var request = require('request')
-
+var admin = require('firebase-admin')
+var serviceAccount = require('../centering-dock-194606-firebase-adminsdk-5evpf-eaa7a9e811.json')
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://centering-dock-194606.firebaseio.com/'
+})
+var db = admin.database()
+var imageRef = db.ref('image')
+var userRef = db.ref('user')
 const storage = new Storage({
   projectId: config.google.projectId
 })
 
 // The name for the new bucket
 const bucketName = config.google.cloudStorage.bucketName
-// const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
+const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
 
 function createPersonInPersonGroup (personGroupId, person) {
   return new Promise((resolve, reject) => {
@@ -34,7 +42,8 @@ function createPersonInPersonGroup (personGroupId, person) {
         return reject({ status: 500, error: err })
       }
       if (res.statusCode === 200) {
-        return resolve({ status: res.statusCode, personId: res.body.personId })
+        person.personId = res.body.personId
+        return resolve({ status: res.statusCode, person: person })
       } else {
         return reject({ status: res.statusCode, error: res.body.error })
       }
@@ -105,22 +114,51 @@ router.post('/upload', function (req, res) {
   if (!req.files) { return res.status(400).send('No files were uploaded.') }
   let sampleFile = req.files.sampleFile
   const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
-  var timestamp = Date.now()
-  var newName = req.body.name + timestamp + path.extname(sampleFile.name)
+  // path.extname(sampleFile.name)
+  var newName = req.body.id + Date.now() + path.basename(pathFile, path.extname(pathFile))
   sampleFile.mv(pathFile, function (err) {
     if (err) { return res.status(500).send(err) }
+    res.status(200).send({ message: 'File uploaded!' })
     uploadFile(pathFile, newName).then(resolve => {
-      // addFaceForPerson()
-      return res.status(200).send({message: 'File uploaded!'})
+      var image = {
+        name: newName,
+        location: {
+          latitude: 0,
+          longitude: 0
+        },
+        userId: req.body.id
+      }
+      saveImageToDatabase(image)
+      getPersonId(image.userId)
+        .then(resolveGetPerson => {
+          addFaceForPerson('test-faces', resolveGetPerson.personId, imageApi + image.name)
+            .then(resolveAddFace => {
+              console.log(resolveAddFace.message)
+            }).catch(rejectAddFace => {
+              console.log(rejectAddFace.error)
+            })
+        })
+        .catch(rejectGetPerson => {
+          console.log(rejectGetPerson)
+        })
     }).catch(reject => {
-      return res.status(500).send({message: 'Google cloud error'})
+      console.log(reject)
+      return res.status(500).send({ message: 'Google cloud error' })
     })
   })
 })
 
+function getPersonId (mssv) {
+  return new Promise((resolve, reject) => {
+    userRef.child(mssv).once('value', function (data) {
+      return resolve({ personId: data.val().MSPersonId })
+    })
+  })
+}
+
 function trainPersonGroup (personGroupId) {
   return new Promise((resolve, reject) => {
-    const url = config.microsoft.cognitive.face + '/persongroups/' + personGroupId + '/train'
+    const url = config.microsoft.face + '/persongroups/' + personGroupId + '/train'
     var options = {
       url: url,
       method: 'POST',
@@ -159,7 +197,7 @@ function uploadFile (pathFile, fileName) {
       .upload(pathFile, { destination: 'images/' + fileName })
       .then(() => {
         console.log(`${fileName} uploaded to ${bucketName}.`)
-        return resolve({fileName: fileName})
+        return resolve({ fileName: fileName })
       })
       .catch(err => {
         console.error('ERROR:', err)
@@ -179,7 +217,7 @@ router.get('/person-groups/:personGroupId', (req, res) => {
 
 function listAllPersonsInPersonGroup (personGroupId, start, top) {
   return new Promise((resolve, reject) => {
-    var url = config.microsoft.cognitive.face + '/persongroups/' + personGroupId + '/persons/' +
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' +
       (start ? '?start=' + start : '') +
       (top ? '?top=' + top : '')
     var options = {
@@ -226,10 +264,11 @@ function initPersonInPersonGroup (personGroupId) {
   array.forEach(person => {
     createPersonInPersonGroup(personGroupId, person)
       .then(resolve => {
-        console.log(person.name + ' import successfully, personId: ' + resolve.personId)
+        saveUserToDatabase(person.userData, resolve.person)
+        console.log(person.name + ' import successfully, personId: ' + resolve.person.personId)
       })
       .catch(reject => {
-        console.log('err')
+        console.log(reject)
       })
   })
 }
@@ -239,4 +278,18 @@ router.get('/person-groups/:personGroupId/init', (req, res) => {
   return res.status(200)
 })
 
+function saveImageToDatabase (imgObj) {
+  imageRef.child(imgObj.name).set({
+    location: imgObj.location,
+    time: Date.now(),
+    userId: imgObj.userId
+  })
+}
+
+function saveUserToDatabase (userId, person) {
+  userRef.child(userId).set({
+    MSPersonId: person.personId,
+    name: person.name
+  })
+}
 module.exports = router

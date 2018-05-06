@@ -4,7 +4,8 @@
 
   <body>
     <form action='/upload' method='post' encType="multipart/form-data">
-      <input type="file" name="sampleFile" id="image"/>
+      <input type="file" name="sampleFile" id="image" required/>
+      <input type="text" name="id" required/>
       <input type='submit' value='Upload!' />
     </form>
     <input type="button" onclick="train()" value="Train">
