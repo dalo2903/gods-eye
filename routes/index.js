@@ -59,6 +59,7 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
   }
   createPersonInPersonGroup(req.params.personGroupId, person)
     .then(resolve => {
+      saveUserToDatabase(person.userData, resolve.person)
       return res.status(resolve.status).send(resolve)
     }).catch(reject => {
       return res.status(reject.status).send(reject)
@@ -160,7 +161,6 @@ router.post('/identify', function (req, res) {
   if (!req.files) { return res.status(400).send({message: 'No files were uploaded.'}) }
   let sampleFile = req.files.sampleFile
   const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
-  // path.extname(sampleFile.name)
   var newName = Date.now() + path.basename(pathFile, path.extname(pathFile))
   sampleFile.mv(pathFile, function (err) {
     if (err) { return res.status(500).send(err) }
