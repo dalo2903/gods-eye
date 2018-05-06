@@ -111,7 +111,10 @@ router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
 })
 
 router.post('/upload', function (req, res) {
-  if (!req.files) { return res.status(400).send('No files were uploaded.') }
+  if (!req.files) { return res.status(400).send({message: 'No files were uploaded.'}) }
+  if (!req.body.id) {
+    return res.status(400).send({message: 'Student ID is empty'})
+  }
   let sampleFile = req.files.sampleFile
   const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
   // path.extname(sampleFile.name)
@@ -151,7 +154,9 @@ router.post('/upload', function (req, res) {
 function getPersonId (mssv) {
   return new Promise((resolve, reject) => {
     userRef.child(mssv).once('value', function (data) {
-      return resolve({ personId: data.val().MSPersonId })
+      const user = data.val()
+      if (user) { return resolve({ personId: user.MSPersonId }) }
+      return reject({ message: 'MSSV not found' })
     })
   })
 }
