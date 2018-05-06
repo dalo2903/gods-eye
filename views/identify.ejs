@@ -1,0 +1,29 @@
+<html>
+
+<%- include ./share/head.ejs %>
+
+  <body>
+    <form action='/identify' method='post' encType="multipart/form-data">
+      <input type="file" name="sampleFile" id="image" required/>
+      <input type='submit' value='Upload!' />
+    </form>
+    <img id="preview" alt="preview" src="/favicon.ico" />
+  </body>
+
+</html>
+
+<script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader()
+      reader.onload = function (e) {
+        $('#preview').attr('src', e.target.result)
+      }
+      reader.readAsDataURL(input.files[0])
+    }
+  }
+
+  $("#image").change(function () {
+    readURL(this)
+  })
+</script>

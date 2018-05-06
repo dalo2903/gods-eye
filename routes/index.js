@@ -4,6 +4,7 @@ var config = require('../config')
 const Storage = require('@google-cloud/storage')
 var path = require('path')
 var request = require('request')
+var faceController = require('../api/controllers/faceController')
 var admin = require('firebase-admin')
 var serviceAccount = require('../centering-dock-194606-firebase-adminsdk-5evpf-eaa7a9e811.json')
 admin.initializeApp({
@@ -101,6 +102,10 @@ router.get('/upload', function (req, res, next) {
   res.render('upload', { title: 'Express' })
 })
 
+router.get('/identify', function (req, res, next) {
+  res.render('identify', { title: 'Express' })
+})
+
 router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
   addFaceForPerson(req.params.personGroupId, req.params.personId, req.body.url)
     .then(resolve => {
@@ -143,6 +148,29 @@ router.post('/upload', function (req, res) {
         })
         .catch(rejectGetPerson => {
           console.log(rejectGetPerson)
+        })
+    }).catch(reject => {
+      console.log(reject)
+      return res.status(500).send({ message: 'Google cloud error' })
+    })
+  })
+})
+
+router.post('/identify', function (req, res) {
+  if (!req.files) { return res.status(400).send({message: 'No files were uploaded.'}) }
+  let sampleFile = req.files.sampleFile
+  const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
+  // path.extname(sampleFile.name)
+  var newName = Date.now() + path.basename(pathFile, path.extname(pathFile))
+  sampleFile.mv(pathFile, function (err) {
+    if (err) { return res.status(500).send(err) }
+    uploadFile(pathFile, newName).then(resolve => {
+      faceController.detectAndIdentify(imageApi + newName, 'test-faces')
+        .then(resolve => {
+          return res.status(resolve.status).send(resolve)
+        })
+        .catch(reject => {
+          return res.status(reject.status).send(reject)
         })
     }).catch(reject => {
       console.log(reject)
