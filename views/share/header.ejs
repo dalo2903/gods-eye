@@ -1,0 +1,32 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Gods Eye</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="/upload">UPLOAD</a>
+      </li>
+      <li>
+        <a href="/identify">IDENTIFY</a>
+      </li>
+      <li>
+        <a onclick="train()" href="#">TRAIN</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  function train() {
+    $.ajax({
+      url: '/person-groups/test-faces/train',
+      success: function (res) {
+        alert('Train successfully')
+      },
+      error: function (res) {
+        alert(res.responseJSON.error.message)
+      }
+    })
+  }
+</script>
