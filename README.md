@@ -9,7 +9,7 @@
   <li>npm install express --save</li> 
   <li>npm install express-generator -g</li> 
   <li>npm install</li>
-  <li>Tải 2 file key trên group bỏ vào thư mục project https://www.facebook.com/groups/221556508404465/</li> 
+  <li>Tải 2 file key trên group bỏ vào thư mục project https://www.facebook.com/groups/221556508404465/ </li> 
   <li>npm start</li> 
 
  </ol>
