@@ -2,7 +2,7 @@
 <img class='header-img' src='https://i.ytimg.com/vi/ic0fO0OAiwI/hqdefault.jpg' />
 <h1>Các bước cài local</h1>
 <ol>
-  <li>Cài NodeJS [Download here](https://nodejs.org/en/download/)</li> 
+  <li>Cài NodeJS <a href="https://nodejs.org/en/download/">Download here</a></li> 
   <li>Mở Command Prompt</li> 
   <li>cd đén thư mục cài</li> 
   <li>npm install</li> 
