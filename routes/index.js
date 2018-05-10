@@ -96,7 +96,7 @@ function addFaceForPerson (personGroupId, personId, faceURL) {
 }
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Gods Eye' })
+  res.render('index', { title: 'Gods Eye', photo: '/favicon.ico' })
 })
 
 router.get('/upload', function (req, res, next) {
@@ -104,7 +104,7 @@ router.get('/upload', function (req, res, next) {
 })
 
 router.get('/identify', function (req, res, next) {
-  res.render('identify', { title: 'Express' })
+  res.render('identify', { title: 'Identify' })
 })
 
 router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
