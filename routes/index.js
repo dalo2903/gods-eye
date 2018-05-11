@@ -167,7 +167,16 @@ router.post('/identify', function (req, res) {
     uploadFile(pathFile, newName).then(resolve => {
       faceController.detectAndIdentify(imageApi + newName, 'test-faces')
         .then(resolve => {
-          return res.status(resolve.status).send(resolve)
+          //return res.status(resolve.status).send(resolve)
+          for (var faceId in resolve.faceIds ){
+            faceController.getPersonInfo('test-faces',resolve.faceIds[faceId].candidates[0].personId)
+              .then(resolve => {
+                return res.status(resolve.status).send(resolve)
+              })
+              .catch(reject => {
+                return res.status(reject.status).send(reject)
+              })
+          }
         })
         .catch(reject => {
           return res.status(reject.status).send(reject)
