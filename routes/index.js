@@ -1,4 +1,5 @@
 var express = require('express')
+var async = require('async')
 var router = express.Router()
 var config = require('../config')
 const Storage = require('@google-cloud/storage')
@@ -22,7 +23,7 @@ const storage = new Storage({
 const bucketName = config.google.cloudStorage.bucketName
 const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
 
-function createPersonInPersonGroup (personGroupId, person) {
+function createPersonInPersonGroup(personGroupId, person) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
     var options = {
@@ -66,7 +67,7 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
     })
 })
 
-function addFaceForPerson (personGroupId, personId, faceURL) {
+function addFaceForPerson(personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
     var options = {
@@ -117,9 +118,9 @@ router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
 })
 
 router.post('/upload', function (req, res) {
-  if (!req.files) { return res.status(400).send({message: 'No files were uploaded.'}) }
+  if (!req.files) { return res.status(400).send({ message: 'No files were uploaded.' }) }
   if (!req.body.id) {
-    return res.status(400).send({message: 'Student ID is empty'})
+    return res.status(400).send({ message: 'Student ID is empty' })
   }
   let sampleFile = req.files.sampleFile
   const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
@@ -158,7 +159,7 @@ router.post('/upload', function (req, res) {
 })
 
 router.post('/identify', function (req, res) {
-  if (!req.files) { return res.status(400).send({message: 'No files were uploaded.'}) }
+  if (!req.files) { return res.status(400).send({ message: 'No files were uploaded.' }) }
   let sampleFile = req.files.sampleFile
   const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
   var newName = Date.now() + path.basename(pathFile, path.extname(pathFile))
@@ -167,18 +168,52 @@ router.post('/identify', function (req, res) {
     uploadFile(pathFile, newName).then(resolve => {
       faceController.detectAndIdentify(imageApi + newName, 'test-faces')
         .then(resolve => {
+          console.log('detectAndIdentify resolve')
+
+          console.log(resolve)
+          var personData = [];
           //return res.status(resolve.status).send(resolve)
-          for (var faceId in resolve.faceIds ){
-            faceController.getPersonInfo('test-faces',resolve.faceIds[faceId].candidates[0].personId)
-              .then(resolve => {
-                return res.status(resolve.status).send(resolve)
-              })
-              .catch(reject => {
-                return res.status(reject.status).send(reject)
-              })
-          }
+          const faceIds = resolve.faceIds
+          async.each(faceIds, (faceId, callback) => {
+            if (faceId.candidates.length !== 0) {
+              faceController.getPersonInfo('test-faces', faceId.candidates[0].personId)
+                .then(resolvePersonInfo => {
+                  console.log(resolvePersonInfo.person)
+                  var data = resolvePersonInfo.person
+                  data.faceId = faceId.faceId;
+                  console.log(data)
+                  personData.push(data);
+                  console.log(personData)
+                  callback()
+
+                  //return res.status(resolve.status).send(resolve)
+                })
+                .catch(reject => {
+                  console.log(reject)
+                  callback()
+                  //return res.status(reject.status).send(reject)
+                })
+            }
+            else {
+              var data = {}
+              data.faceId = faceId.faceId
+              console.log(data);
+              personData.push(data)
+              callback()
+            }
+          }, err => {
+            console.log('final' + personData)
+
+            return res.status(200).send(personData)
+          })
+
+
         })
         .catch(reject => {
+          console.log('detectAndIdentify')
+
+          console.log(reject)
+
           return res.status(reject.status).send(reject)
         })
     }).catch(reject => {
@@ -188,7 +223,7 @@ router.post('/identify', function (req, res) {
   })
 })
 
-function getPersonId (mssv) {
+function getPersonId(mssv) {
   return new Promise((resolve, reject) => {
     userRef.child(mssv).once('value', function (data) {
       const user = data.val()
@@ -198,7 +233,7 @@ function getPersonId (mssv) {
   })
 }
 
-function trainPersonGroup (personGroupId) {
+function trainPersonGroup(personGroupId) {
   return new Promise((resolve, reject) => {
     const url = config.microsoft.face + '/persongroups/' + personGroupId + '/train'
     var options = {
@@ -232,7 +267,7 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
     })
 })
 
-function uploadFile (pathFile, fileName) {
+function uploadFile(pathFile, fileName) {
   return new Promise((resolve, reject) => {
     storage
       .bucket(bucketName)
@@ -257,7 +292,7 @@ router.get('/person-groups/:personGroupId', (req, res) => {
     })
 })
 
-function listAllPersonsInPersonGroup (personGroupId, start, top) {
+function listAllPersonsInPersonGroup(personGroupId, start, top) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' +
       (start ? '?start=' + start : '') +
@@ -284,7 +319,7 @@ function listAllPersonsInPersonGroup (personGroupId, start, top) {
   })
 }
 
-function initPersonInPersonGroup (personGroupId) {
+function initPersonInPersonGroup(personGroupId) {
   const array = [
     {
       name: 'Dinh Duy Kha',
@@ -320,7 +355,7 @@ router.get('/person-groups/:personGroupId/init', (req, res) => {
   return res.status(200)
 })
 
-function saveImageToDatabase (imgObj) {
+function saveImageToDatabase(imgObj) {
   imageRef.child(imgObj.name).set({
     location: imgObj.location,
     time: Date.now(),
@@ -328,7 +363,7 @@ function saveImageToDatabase (imgObj) {
   })
 }
 
-function saveUserToDatabase (userId, person) {
+function saveUserToDatabase(userId, person) {
   userRef.child(userId).set({
     MSPersonId: person.personId,
     name: person.name

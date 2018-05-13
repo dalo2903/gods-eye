@@ -64,6 +64,7 @@ function detectAndIdentify (url, personGroupId) {
     detect(url).then(resolveDetect => {
       var detectFaceIds = resolveDetect.faceIds
       var identifyFaceIds = []
+      console.log(detectFaceIds)
       detectFaceIds.forEach(element => {
         identifyFaceIds.push(element.faceId)
       })
@@ -79,9 +80,9 @@ function detectAndIdentify (url, personGroupId) {
   })
 }
 
-function getPersonInfo (personGroupId, personId){
-  return new Promise((resolve, reject)=>{
-    var url = config.microsoft.face + '/persongroups/'+personGroupId+'/persons/'+personId;
+function getPersonInfo (personGroupId, personId) {
+  return new Promise((resolve, reject) => {
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId
     var options = {
       url: url,
       method: 'GET',
@@ -96,13 +97,11 @@ function getPersonInfo (personGroupId, personId){
         return reject(responseStatus.Code500(err))
       }
       if (res.statusCode === 200) {
-        
         var result = {
           name: res.body.name,
           MSSV: res.body.userData
-
         }
-        return resolve({ status: res.statusCode, persons:result  })
+        return resolve({ status: res.statusCode, person: result })
       } else {
         return reject({ status: res.statusCode, error: res.body.error })
       }
