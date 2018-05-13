@@ -260,6 +260,9 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
       return res.status(reject.status).send(reject)
     })
 })
+router.get('/login',(req,res) => {
+  res.render('login')
+})
 
 function uploadFile (pathFile, fileName) {
   return new Promise((resolve, reject) => {

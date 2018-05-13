@@ -1,0 +1,43 @@
+<% layout('./share/layout.ejs') -%>
+
+  <title>
+
+  </title>
+
+  <meta name="google-signin-client_id" content="813488161964-1ha3v90fvr0jc1r2h5mihg7mankh26pi.apps.googleusercontent.com">
+  <meta name="google-signin-cookiepolicy" content="single_host_origin">
+  <meta name="google-signin-scope" content="profile email">
+
+  <div class="container">
+    <div class="row">
+      <div class="text-center">
+
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+      </div>
+    </div>
+    <script>
+
+
+
+      function onSignIn(googleUser) {
+        console.log(googleUser)
+        // $.post('/api/auth',{
+        //   data:googleUser
+        // })
+        var id_token = googleUser.getAuthResponse().id_token
+        
+        $.post("/api/auth",
+          {
+            data: id_token
+          },
+          function (data, status) {
+            alert("Data: " + data + "\nStatus: " + status);
+          })
+
+      }
+    </script>
+    <div class="row text-center">
+      <img src="/favicon.ico">
+    </div>
+  </div>
