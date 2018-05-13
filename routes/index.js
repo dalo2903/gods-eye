@@ -2,6 +2,7 @@ var express = require('express')
 var async = require('async')
 var router = express.Router()
 var config = require('../config')
+var constants = require('../configs/constants')
 const Storage = require('@google-cloud/storage')
 var path = require('path')
 var request = require('request')
@@ -138,18 +139,15 @@ function addFaceForPerson (personGroupId, personId, faceURL) {
 }
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'Gods Eye',
-    photo: '/favicon.ico',
-    description: 'Dat may cau hoi, cai app nay giai quyet duoc van de gi, giong nhu la, ban co dang gap van de mat do hay khong?' })
+  res.render('index', constants.index)
 })
 
 router.get('/upload', function (req, res, next) {
-  res.render('upload', { title: 'Express' })
+  res.render('upload', constants.index)
 })
 
 router.get('/identify', function (req, res, next) {
-  res.render('identify', { title: 'Identify' })
+  res.render('identify', constants.index)
 })
 
 router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
@@ -306,7 +304,7 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
     })
 })
 router.get('/login', (req, res) => {
-  res.render('login')
+  res.render('login', constants.index)
 })
 
 function uploadFile (pathFile, fileName) {
