@@ -18,5 +18,6 @@ module.exports = {
     projectId: 'centering-dock-194606',
     storageBucket: 'centering-dock-194606.appspot.com',
     messagingSenderId: '813488161964'
-  }
+  },
+  address: 'http://20.184.8.69:3000'
 }

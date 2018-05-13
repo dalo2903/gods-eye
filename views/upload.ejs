@@ -1,10 +1,10 @@
 <% layout('./share/layout.ejs') -%>
 
-  <form class="text-center" action='/upload' method='post' encType="multipart/form-data">
+  <form action='/upload' method='post' encType="multipart/form-data">
     <div class="form-group">
       <input class="hide" type="file" name="sampleFile" id="image" accept="image/*" required/>
       <a href="#">
-        <img class="img-responsive" style="margin:auto" id="preview" alt="preview" src="favicon.ico" />
+        <img class="img-responsive" style="margin:auto;cursor: pointer;" id="preview" alt="preview" src="favicon.ico" />
       </a>
     </div>
     <div class="form-group">
