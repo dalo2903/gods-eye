@@ -23,6 +23,48 @@ const storage = new Storage({
 const bucketName = config.google.cloudStorage.bucketName
 const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
 
+function createPersonGroup (personGroupId, group) {
+  return new Promise((resolve, reject) => {
+    var url = config.microsoft.face + '/persongroups/' + personGroupId
+    var options = {
+      url: url,
+      method: 'PUT',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      body: {
+        name: group.name,
+        userData: group.userData
+      },
+      json: true
+    }
+    request(options, (err, res) => {
+      if (err) {
+        console.log(err)
+        return reject({ status: 500, error: err })
+      }
+      if (res.statusCode === 200) {
+        return resolve({status: res.statusCode})
+      } else {
+        return reject({ status: res.statusCode, error: res.body.error })
+      }
+    })
+  })
+}
+router.put('/person-groups/:personGroupId/', (req, res) => {
+  const group = {
+    name: req.body.name,
+    userData: req.body.userData
+  }
+  createPersonGroup(req.params.personGroupId , group)
+    .then(resolve => {
+      console.log(resolve)
+      return res.status(resolve.status).send(resolve)
+    }).catch(reject => {
+      console.log(reject)
+      return res.status(reject.status).send(reject)
+    })
+})
 function createPersonInPersonGroup (personGroupId, person) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
