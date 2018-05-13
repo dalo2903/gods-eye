@@ -4,9 +4,6 @@
 
   </title>
 
-  <meta name="google-signin-client_id" content="813488161964-k5qfdk00du27d7dlas57f2n2htrfmb8l.apps.googleusercontent.com">
-  <meta name="google-signin-cookiepolicy" content="single_host_origin">
-  <meta name="google-signin-scope" content="profile email">
 
   <div class="container">
     <div class="row">
@@ -32,7 +29,7 @@
             data: id_token
           },
           function (data, status) {
-            alert("Data: " + data + "\nStatus: " + status);
+            console.log("Data: " + data + "\nStatus: " + status);
           })
 
       }
