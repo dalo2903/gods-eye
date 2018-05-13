@@ -1,4 +1,5 @@
 var express = require('express')
+var async = require('async')
 var router = express.Router()
 var config = require('../config')
 const Storage = require('@google-cloud/storage')
@@ -65,7 +66,6 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
       return res.status(reject.status).send(reject)
     })
 })
-
 function addFaceForPerson (personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
@@ -117,9 +117,9 @@ router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
 })
 
 router.post('/upload', function (req, res) {
-  if (!req.files) { return res.status(400).send({message: 'No files were uploaded.'}) }
+  if (!req.files) { return res.status(400).send({ message: 'No files were uploaded.' }) }
   if (!req.body.id) {
-    return res.status(400).send({message: 'Student ID is empty'})
+    return res.status(400).send({ message: 'Student ID is empty' })
   }
   let sampleFile = req.files.sampleFile
   const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
@@ -158,7 +158,7 @@ router.post('/upload', function (req, res) {
 })
 
 router.post('/identify', function (req, res) {
-  if (!req.files) { return res.status(400).send({message: 'No files were uploaded.'}) }
+  if (!req.files) { return res.status(400).send({ message: 'No files were uploaded.' }) }
   let sampleFile = req.files.sampleFile
   const pathFile = path.join(__dirname, '/../public/images/', sampleFile.name)
   var newName = Date.now() + path.basename(pathFile, path.extname(pathFile))
@@ -167,18 +167,47 @@ router.post('/identify', function (req, res) {
     uploadFile(pathFile, newName).then(resolve => {
       faceController.detectAndIdentify(imageApi + newName, 'test-faces')
         .then(resolve => {
-          //return res.status(resolve.status).send(resolve)
-          for (var faceId in resolve.faceIds ){
-            faceController.getPersonInfo('test-faces',resolve.faceIds[faceId].candidates[0].personId)
-              .then(resolve => {
-                return res.status(resolve.status).send(resolve)
-              })
-              .catch(reject => {
-                return res.status(reject.status).send(reject)
-              })
-          }
+          var personData = []
+          // return res.status(resolve.status).send(resolve)
+          const faceIds = resolve.faceIds
+          async.each(faceIds, (faceId, callback) => {
+            if (faceId.candidates.length !== 0) {
+              faceController.getPersonInfo('test-faces', faceId.candidates[0].personId)
+                .then(resolvePersonInfo => {
+                  console.log(resolvePersonInfo.person)
+                  var data = resolvePersonInfo.person
+                  data.faceId = faceId.faceId
+                  console.log(data)
+                  personData.push(data)
+                  console.log(personData)
+                  callback()
+
+                  // return res.status(resolve.status).send(resolve)
+                })
+                .catch(reject => {
+                  console.log(reject)
+                  callback()
+                  // return res.status(reject.status).send(reject)
+                })
+            } else {
+              var data = {}
+              data.faceId = faceId.faceId
+              console.log(data)
+              personData.push(data)
+              callback()
+            }
+          }, err => {
+            if (err) {
+              console.log(err)
+            }
+            return res.status(200).send(personData)
+          })
         })
         .catch(reject => {
+          console.log('detectAndIdentify')
+
+          console.log(reject)
+
           return res.status(reject.status).send(reject)
         })
     }).catch(reject => {
