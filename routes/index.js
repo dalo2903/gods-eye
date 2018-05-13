@@ -96,7 +96,7 @@ function addFaceForPerson (personGroupId, personId, faceURL) {
 }
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Gods Eye', photo: '/favicon.ico' })
+  res.render('index', { title: 'Gods Eye', photo: '/favicon.ico', description: 'Dat may cau hoi, cai app nay giai quyet duoc van de gi, giong nhu la, ban co dang gap van de mat do hay khong?' })
 })
 
 router.get('/upload', function (req, res, next) {
