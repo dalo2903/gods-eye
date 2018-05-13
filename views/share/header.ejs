@@ -1,22 +1,36 @@
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/">Gods Eye</a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Gods Eye</a>
     </div>
-    <ul class="nav navbar-nav">
-      <li>
-        <a href="/upload">UPLOAD</a>
-      </li>
-      <li>
-        <a href="/identify">IDENTIFY</a>
-      </li>
-      <li>
-        <a onclick="train()" href="#">TRAIN</a>
-      </li>
-    </ul>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="/upload">UPLOAD</a>
+        </li>
+        <li>
+          <a href="/identify">IDENTIFY</a>
+        </li>
+        <li>
+          <a onclick="train()">TRAIN</a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="glyphicon glyphicon-user"></span> Sign Up</a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="glyphicon glyphicon-log-in"></span> Login</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
-
 <script>
   function train() {
     $.ajax({

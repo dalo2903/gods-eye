@@ -6,21 +6,17 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        
-        <div class="main-panel">
-            
+    <div>
+        <div class="header">
             <% include ./header.ejs %>
-
-            <div class="content">
-                
-                <%- body %>
-
-            </div>
-
+        </div>
+        <div class="content" style="margin-top:100px">
+            <%- body %>
+        </div>
+        <div class="footer" style="margin-top:20px">
             <% include ./footer.ejs %>
-
         </div>
     </div>
 </body>
+
 </html>
