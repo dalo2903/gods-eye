@@ -56,7 +56,7 @@ router.put('/person-groups/:personGroupId/', (req, res) => {
     name: req.body.name,
     userData: req.body.userData
   }
-  createPersonGroup(req.params.personGroupId , group)
+  createPersonGroup(req.params.personGroupId, group)
     .then(resolve => {
       console.log(resolve)
       return res.status(resolve.status).send(resolve)
@@ -138,7 +138,10 @@ function addFaceForPerson (personGroupId, personId, faceURL) {
 }
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Gods Eye', photo: '/favicon.ico', description: 'Dat may cau hoi, cai app nay giai quyet duoc van de gi, giong nhu la, ban co dang gap van de mat do hay khong?' })
+  res.render('index', {
+    title: 'Gods Eye',
+    photo: '/favicon.ico',
+    description: 'Dat may cau hoi, cai app nay giai quyet duoc van de gi, giong nhu la, ban co dang gap van de mat do hay khong?' })
 })
 
 router.get('/upload', function (req, res, next) {
@@ -302,7 +305,7 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
       return res.status(reject.status).send(reject)
     })
 })
-router.get('/login',(req,res) => {
+router.get('/login', (req, res) => {
   res.render('login')
 })
 
