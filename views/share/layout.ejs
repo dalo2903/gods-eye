@@ -3,6 +3,16 @@
 
 <head>
     <% include ./head.ejs -%>
+    <title>
+        <%= title %>
+    </title>
+    <meta name="description" content="<%= description %>">
+   
+    <!--meta tag for Facebook OpenGraph -->
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="<%= title %>" />
+	<meta property="og:image" content="<%= photo %>" />
+	<meta property="og:description" content="<%= description %>" />
 </head>
 
 <body>
