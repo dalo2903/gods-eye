@@ -23,7 +23,7 @@ const storage = new Storage({
 const bucketName = config.google.cloudStorage.bucketName
 const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
 
-function createPersonInPersonGroup(personGroupId, person) {
+function createPersonInPersonGroup (personGroupId, person) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
     var options = {
@@ -67,7 +67,7 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
     })
 })
 
-function addFaceForPerson(personGroupId, personId, faceURL) {
+function addFaceForPerson (personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
     var options = {
@@ -168,11 +168,8 @@ router.post('/identify', function (req, res) {
     uploadFile(pathFile, newName).then(resolve => {
       faceController.detectAndIdentify(imageApi + newName, 'test-faces')
         .then(resolve => {
-          console.log('detectAndIdentify resolve')
-
-          console.log(resolve)
-          var personData = [];
-          //return res.status(resolve.status).send(resolve)
+          var personData = []
+          // return res.status(resolve.status).send(resolve)
           const faceIds = resolve.faceIds
           async.each(faceIds, (faceId, callback) => {
             if (faceId.candidates.length !== 0) {
@@ -180,34 +177,32 @@ router.post('/identify', function (req, res) {
                 .then(resolvePersonInfo => {
                   console.log(resolvePersonInfo.person)
                   var data = resolvePersonInfo.person
-                  data.faceId = faceId.faceId;
+                  data.faceId = faceId.faceId
                   console.log(data)
-                  personData.push(data);
+                  personData.push(data)
                   console.log(personData)
                   callback()
 
-                  //return res.status(resolve.status).send(resolve)
+                  // return res.status(resolve.status).send(resolve)
                 })
                 .catch(reject => {
                   console.log(reject)
                   callback()
-                  //return res.status(reject.status).send(reject)
+                  // return res.status(reject.status).send(reject)
                 })
-            }
-            else {
+            } else {
               var data = {}
               data.faceId = faceId.faceId
-              console.log(data);
+              console.log(data)
               personData.push(data)
               callback()
             }
           }, err => {
-            console.log('final' + personData)
-
+            if (err) {
+              console.log(err)
+            }
             return res.status(200).send(personData)
           })
-
-
         })
         .catch(reject => {
           console.log('detectAndIdentify')
@@ -223,7 +218,7 @@ router.post('/identify', function (req, res) {
   })
 })
 
-function getPersonId(mssv) {
+function getPersonId (mssv) {
   return new Promise((resolve, reject) => {
     userRef.child(mssv).once('value', function (data) {
       const user = data.val()
@@ -233,7 +228,7 @@ function getPersonId(mssv) {
   })
 }
 
-function trainPersonGroup(personGroupId) {
+function trainPersonGroup (personGroupId) {
   return new Promise((resolve, reject) => {
     const url = config.microsoft.face + '/persongroups/' + personGroupId + '/train'
     var options = {
@@ -267,7 +262,7 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
     })
 })
 
-function uploadFile(pathFile, fileName) {
+function uploadFile (pathFile, fileName) {
   return new Promise((resolve, reject) => {
     storage
       .bucket(bucketName)
@@ -292,7 +287,7 @@ router.get('/person-groups/:personGroupId', (req, res) => {
     })
 })
 
-function listAllPersonsInPersonGroup(personGroupId, start, top) {
+function listAllPersonsInPersonGroup (personGroupId, start, top) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' +
       (start ? '?start=' + start : '') +
@@ -319,7 +314,7 @@ function listAllPersonsInPersonGroup(personGroupId, start, top) {
   })
 }
 
-function initPersonInPersonGroup(personGroupId) {
+function initPersonInPersonGroup (personGroupId) {
   const array = [
     {
       name: 'Dinh Duy Kha',
@@ -355,7 +350,7 @@ router.get('/person-groups/:personGroupId/init', (req, res) => {
   return res.status(200)
 })
 
-function saveImageToDatabase(imgObj) {
+function saveImageToDatabase (imgObj) {
   imageRef.child(imgObj.name).set({
     location: imgObj.location,
     time: Date.now(),
@@ -363,7 +358,7 @@ function saveImageToDatabase(imgObj) {
   })
 }
 
-function saveUserToDatabase(userId, person) {
+function saveUserToDatabase (userId, person) {
   userRef.child(userId).set({
     MSPersonId: person.personId,
     name: person.name
