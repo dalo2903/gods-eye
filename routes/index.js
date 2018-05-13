@@ -66,7 +66,6 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
       return res.status(reject.status).send(reject)
     })
 })
-
 function addFaceForPerson (personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
