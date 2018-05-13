@@ -11,6 +11,7 @@ var routeAuthAPI = require('./api/routes/auth')
 var routeFaceAPI = require('./api/routes/face')
 var index = require('./routes/index')
 var users = require('./routes/users')
+var prerender = require('prerender-node')
 
 var app = express()
 
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use(prerender.set('prerenderToken', 'ALv7A8Qthcao8qOMBaew'))
 app.use(fileUpload())
 app.use('/', index)
 app.use('/api/face/', routeFaceAPI)
