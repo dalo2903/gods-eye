@@ -19,12 +19,13 @@ function detect (urlImage) {
     request(options, (err, res) => {
       if (err) {
         console.log(err)
-        return reject(responseStatus.Code500(err))
+        return reject(responseStatus.Response(500, err))
       }
-      if (res.statusCode === 200) {
-        return resolve({ status: res.statusCode, faceIds: res.body })
+      const status = res.statusCode
+      if (status === 200) {
+        return resolve(responseStatus.Response(200, { faceIds: res.body }))
       } else {
-        return reject({ status: res.statusCode, error: res.body.error })
+        return reject(responseStatus.Response(status, { error: res.body.error }))
       }
     })
   })
@@ -48,12 +49,13 @@ function identify (faceIds, personGroupId) {
     request(options, (err, res) => {
       if (err) {
         console.log(err)
-        return reject(responseStatus.Code500(err))
+        return reject(responseStatus.Response(500, err))
       }
-      if (res.statusCode === 200) {
-        return resolve({ status: res.statusCode, faceIds: res.body })
+      const status = res.statusCode
+      if (status === 200) {
+        return resolve(responseStatus.Response(status, { faceIds: res.body }))
       } else {
-        return reject({ status: res.statusCode, error: res.body.error })
+        return reject(responseStatus.Response(status, { error: res.body.error }))
       }
     })
   })
@@ -94,16 +96,17 @@ function getPersonInfo (personGroupId, personId) {
     request(options, (err, res) => {
       if (err) {
         console.log(err)
-        return reject(responseStatus.Code500(err))
+        return reject(responseStatus.Response(500, err))
       }
-      if (res.statusCode === 200) {
+      const statusCode = res.statusCode
+      if (statusCode === 200) {
         var result = {
           name: res.body.name,
           MSSV: res.body.userData
         }
-        return resolve({ status: res.statusCode, person: result })
+        return resolve(responseStatus.Response(statusCode, { person: result }))
       } else {
-        return reject({ status: res.statusCode, error: res.body.error })
+        return reject(responseStatus.Response(statusCode, { error: res.body.error }))
       }
     })
   })

@@ -47,11 +47,11 @@ function generateSessionCookie (idToken) {
       .then((sessionCookie) => {
         // Set cookie policy for session cookie.
         const options = { maxAge: expiresIn, httpOnly: true } // Bo secure: true vi khong co HTTPS
-        return resolve(responseStatus.Code200({sessionCookie: sessionCookie, options: options}))
+        return resolve(responseStatus.Response(200, {sessionCookie: sessionCookie, options: options}))
       }, err => {
         if (err) {
           console.log(err)
-          return reject(responseStatus.Code401({ errorMessage: 'UNAUTHORIZED REQUEST!' }))
+          return reject(responseStatus.Response(401, { errorMessage: 'UNAUTHORIZED REQUEST!' }))
         }
       })
   })
@@ -63,12 +63,12 @@ function verifySessionCookie (sessionCookie) {
     // if the user's Firebase session was revoked, user deleted/disabled, etc.
     admin.auth().verifySessionCookie(
       sessionCookie, true /** checkRevoked */).then((decodedClaims) => {
-      return resolve(responseStatus.Code200(decodedClaims))
+      return resolve(responseStatus.Response(200, decodedClaims))
     }).catch(err => {
       // Session cookie is unavailable or invalid. Force user to login.
       if (err) {
         console.log(err)
-        return reject(responseStatus.Code401())
+        return reject(responseStatus.Response(401))
       }
     })
   })
