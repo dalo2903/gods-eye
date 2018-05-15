@@ -26,7 +26,7 @@ router.get('/test', (req, res) => {
     })
 })
 
-router.get('/signOut', (req, res) => {
+router.get('/sign-out', (req, res) => {
   res.clearCookie('session')
   return res.redirect('/sign-in')
 })

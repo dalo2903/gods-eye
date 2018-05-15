@@ -307,9 +307,9 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
     })
 })
 
-router.get('/login', (req, res) => {
-  res.render('login', constants.index)
-})
+// router.get('/login', (req, res) => {
+//   res.render('login', constants.index)
+// })
 
 function uploadFile (pathFile, fileName) {
   return new Promise((resolve, reject) => {
