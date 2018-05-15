@@ -6,13 +6,9 @@ var constants = require('../configs/constants')
 const Storage = require('@google-cloud/storage')
 var path = require('path')
 var request = require('request')
+var firebase = require('../api/controllers/firebaseController')
 var faceController = require('../api/controllers/faceController')
-var admin = require('firebase-admin')
-var serviceAccount = require('../centering-dock-194606-firebase-adminsdk-5evpf-eaa7a9e811.json')
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://centering-dock-194606.firebaseio.com/'
-})
+var admin = require('../api/controllers/firebaseAdminController')
 var db = admin.database()
 var imageRef = db.ref('image')
 var userRef = db.ref('user')
@@ -24,6 +20,9 @@ const storage = new Storage({
 const bucketName = config.google.cloudStorage.bucketName
 const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
 
+router.get('/sign-in', (req, res) => {
+  return res.render('sign-in', constants.index)
+})
 function createPersonGroup (personGroupId, group) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId
@@ -52,6 +51,7 @@ function createPersonGroup (personGroupId, group) {
     })
   })
 }
+
 router.put('/person-groups/:personGroupId/', (req, res) => {
   const group = {
     name: req.body.name,
@@ -66,6 +66,7 @@ router.put('/person-groups/:personGroupId/', (req, res) => {
       return res.status(reject.status).send(reject)
     })
 })
+
 function createPersonInPersonGroup (personGroupId, person) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
@@ -109,6 +110,7 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
       return res.status(reject.status).send(reject)
     })
 })
+
 function addFaceForPerson (personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
@@ -137,6 +139,7 @@ function addFaceForPerson (personGroupId, personId, faceURL) {
     })
   })
 }
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', constants.index)
@@ -303,6 +306,7 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
       return res.status(reject.status).send(reject)
     })
 })
+
 router.get('/login', (req, res) => {
   res.render('login', constants.index)
 })
