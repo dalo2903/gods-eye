@@ -6,9 +6,10 @@ var constants = require('../configs/constants')
 const Storage = require('@google-cloud/storage')
 var path = require('path')
 var request = require('request')
-var firebase = require('../api/controllers/firebaseController')
 var faceController = require('../api/controllers/faceController')
 var admin = require('../api/controllers/firebaseAdminController')
+var authController = require('../api/controllers/authController')
+var responseStatus = require('../configs/responseStatus')
 var db = admin.database()
 var imageRef = db.ref('image')
 var userRef = db.ref('user')
@@ -20,9 +21,25 @@ const storage = new Storage({
 const bucketName = config.google.cloudStorage.bucketName
 const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.com/images/'
 
+/* GET home page. */
+router.get('/', function (req, res, next) {
+  return res.render('index', constants.index)
+})
+
 router.get('/sign-in', (req, res) => {
   return res.render('sign-in', constants.index)
 })
+
+router.get('/*', (req, res, next) => {
+  const sessionCookie = req.cookies.session || ''
+  authController.verifySessionCookie(sessionCookie)
+    .then(resolve => {
+      return next()
+    }).catch(reject => {
+      return res.redirect('/')
+    })
+})
+
 function createPersonGroup (personGroupId, group) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId
@@ -140,11 +157,6 @@ function addFaceForPerson (personGroupId, personId, faceURL) {
   })
 }
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', constants.index)
-})
-
 router.get('/upload', function (req, res, next) {
   res.render('upload', constants.index)
 })
@@ -214,7 +226,6 @@ router.post('/identify', function (req, res) {
       faceController.detectAndIdentify(imageApi + newName, 'test-faces')
         .then(resolve => {
           var personData = []
-          // return res.status(resolve.status).send(resolve)
           const faceIds = resolve.faceIds
           async.each(faceIds, (faceId, callback) => {
             if (faceId.candidates.length !== 0) {
@@ -227,13 +238,10 @@ router.post('/identify', function (req, res) {
                   personData.push(data)
                   console.log(personData)
                   callback()
-
-                  // return res.status(resolve.status).send(resolve)
                 })
                 .catch(reject => {
                   console.log(reject)
                   callback()
-                  // return res.status(reject.status).send(reject)
                 })
             } else {
               var data = {}
@@ -250,10 +258,7 @@ router.post('/identify', function (req, res) {
           })
         })
         .catch(reject => {
-          console.log('detectAndIdentify')
-
           console.log(reject)
-
           return res.status(reject.status).send(reject)
         })
     }).catch(reject => {

@@ -4,12 +4,19 @@
 <script src="/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
+<!-- AngularJS -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
 <link rel="stylesheet" href="/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="/stylesheets/style.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- <meta name="google-signin-client_id" content="813488161964-k5qfdk00du27d7dlas57f2n2htrfmb8l.apps.googleusercontent.com">
 <meta name="google-signin-cookiepolicy" content="single_host_origin">
 <meta name="google-signin-scope" content="profile email"> -->
+
+<script type="text/javascript">
+  var app = angular.module('GodsEye', [])
+</script>
 
 <!-- Firebase App is always required and must be first -->
 <script src="https://www.gstatic.com/firebasejs/5.0.2/firebase-app.js"></script>
@@ -29,3 +36,5 @@
   };
   firebase.initializeApp(config);
 </script>
+
+<script src="/javascripts/common.js"></script>
