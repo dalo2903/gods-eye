@@ -23,11 +23,33 @@ const imageApi = 'http://storage.googleapis.com/centering-dock-194606.appspot.co
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  return res.render('index', constants.index)
+  return res.render('index', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || ''
+  })
 })
 
 router.get('/sign-in', (req, res) => {
-  return res.render('sign-in', constants.index)
+  const sessionCookie = req.cookies.session || ''
+  authController.verifySessionCookie(sessionCookie)
+    .then(resolve => {
+      return res.redirect('/')
+    }).catch(reject => {
+      return res.render('sign-in', {
+        image: constants.index.image,
+        description: constants.index.description,
+        title: constants.index.title,
+        type: constants.index.type,
+        url: constants.index.url,
+        user_id: req.cookies.user_id || '',
+        user_name: req.cookies.user_name || ''
+      })
+    })
 })
 
 router.get('/*', (req, res, next) => {
@@ -40,7 +62,7 @@ router.get('/*', (req, res, next) => {
     })
 })
 
-function createPersonGroup (personGroupId, group) {
+function createPersonGroup(personGroupId, group) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId
     var options = {
@@ -61,7 +83,7 @@ function createPersonGroup (personGroupId, group) {
         return reject({ status: 500, error: err })
       }
       if (res.statusCode === 200) {
-        return resolve({status: res.statusCode})
+        return resolve({ status: res.statusCode })
       } else {
         return reject({ status: res.statusCode, error: res.body.error })
       }
@@ -84,7 +106,7 @@ router.put('/person-groups/:personGroupId/', (req, res) => {
     })
 })
 
-function createPersonInPersonGroup (personGroupId, person) {
+function createPersonInPersonGroup(personGroupId, person) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
     var options = {
@@ -128,7 +150,7 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
     })
 })
 
-function addFaceForPerson (personGroupId, personId, faceURL) {
+function addFaceForPerson(personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
     var options = {
@@ -158,11 +180,27 @@ function addFaceForPerson (personGroupId, personId, faceURL) {
 }
 
 router.get('/upload', function (req, res, next) {
-  res.render('upload', constants.index)
+  return res.render('upload', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || ''
+  })
 })
 
 router.get('/identify', function (req, res, next) {
-  res.render('identify', constants.index)
+  return res.render('identify', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || ''
+  })
 })
 
 router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
@@ -268,7 +306,7 @@ router.post('/identify', function (req, res) {
   })
 })
 
-function getPersonId (mssv) {
+function getPersonId(mssv) {
   return new Promise((resolve, reject) => {
     userRef.child(mssv).once('value', function (data) {
       const user = data.val()
@@ -278,7 +316,7 @@ function getPersonId (mssv) {
   })
 }
 
-function trainPersonGroup (personGroupId) {
+function trainPersonGroup(personGroupId) {
   return new Promise((resolve, reject) => {
     const url = config.microsoft.face + '/persongroups/' + personGroupId + '/train'
     var options = {
@@ -316,7 +354,7 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
 //   res.render('login', constants.index)
 // })
 
-function uploadFile (pathFile, fileName) {
+function uploadFile(pathFile, fileName) {
   return new Promise((resolve, reject) => {
     storage
       .bucket(bucketName)
@@ -341,7 +379,7 @@ router.get('/person-groups/:personGroupId', (req, res) => {
     })
 })
 
-function listAllPersonsInPersonGroup (personGroupId, start, top) {
+function listAllPersonsInPersonGroup(personGroupId, start, top) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' +
       (start ? '?start=' + start : '') +
@@ -368,7 +406,7 @@ function listAllPersonsInPersonGroup (personGroupId, start, top) {
   })
 }
 
-function initPersonInPersonGroup (personGroupId) {
+function initPersonInPersonGroup(personGroupId) {
   const array = [
     {
       name: 'Dinh Duy Kha',
@@ -404,7 +442,7 @@ router.get('/person-groups/:personGroupId/init', (req, res) => {
   return res.status(200)
 })
 
-function saveImageToDatabase (imgObj) {
+function saveImageToDatabase(imgObj) {
   imageRef.child(imgObj.name).set({
     location: imgObj.location,
     time: Date.now(),
@@ -412,7 +450,7 @@ function saveImageToDatabase (imgObj) {
   })
 }
 
-function saveUserToDatabase (userId, person) {
+function saveUserToDatabase(userId, person) {
   userRef.child(userId).set({
     MSPersonId: person.personId,
     name: person.name

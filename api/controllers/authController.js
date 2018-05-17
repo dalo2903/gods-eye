@@ -1,5 +1,6 @@
 // var firebase = require('./firebaseController')
 var responseStatus = require('../../configs/responseStatus')
+var config = require('../../config')
 var admin = require('./firebaseAdminController')
 
 // function testSignIn (_idToken) {
@@ -36,18 +37,27 @@ function verifyIdToken (idToken) {
 
 function generateSessionCookie (idToken) {
   return new Promise((resolve, reject) => {
-    // Set session expiration to 5 days.
-    const expiresIn = 60 * 60 * 24 * 5 * 1000
     // Create the session cookie. This will also verify the ID token in the process.
     // The session cookie will have the same claims as the ID token.
     // To only allow session cookie setting on recent sign-in, auth_time in ID token
     // can be checked to ensure user was recently signed in before creating a session cookie.
-
+    const expiresIn = config.cookieOptions.maxAge
     admin.auth().createSessionCookie(idToken, { expiresIn })
       .then((sessionCookie) => {
         // Set cookie policy for session cookie.
-        const options = { maxAge: expiresIn, httpOnly: true } // Bo secure: true vi khong co HTTPS
-        return resolve(responseStatus.Response(200, {sessionCookie: sessionCookie, options: options}))
+        const options = config.cookieOptions
+        verifySessionCookie(sessionCookie)
+          .then(resolveVerify => {
+            const userInfo = {
+              userId: resolveVerify.user_id,
+              name: resolveVerify.name
+            }
+            return resolve(responseStatus.Response(200, {sessionCookie: sessionCookie, options: options, userInfo: userInfo}))
+          })
+          .catch(rejectVerify => {
+            console.log(rejectVerify)
+            return reject(responseStatus.Response(401, { errorMessage: 'UNAUTHORIZED REQUEST!' }))
+          })
       }, err => {
         if (err) {
           console.log(err)
@@ -67,7 +77,7 @@ function verifySessionCookie (sessionCookie) {
     }).catch(err => {
       // Session cookie is unavailable or invalid. Force user to login.
       if (err) {
-        console.log(err)
+        console.log(err.errorInfo.message)
         return reject(responseStatus.Response(401))
       }
     })

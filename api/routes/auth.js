@@ -9,7 +9,8 @@ router.post('/', (req, res) => {
     .then(resolve => {
       const sessionCookie = resolve.sessionCookie
       const options = resolve.options
-      return res.cookie('session', sessionCookie, options).status(resolve.status).send()
+      const userInfo = resolve.userInfo
+      return res.cookie('user_id', userInfo.userId, options).cookie('user_name', userInfo.name, options).cookie('session', sessionCookie, options).status(resolve.status).send()
     })
     .catch(reject => {
       return res.status(reject.status).send(reject)
@@ -28,7 +29,9 @@ router.get('/test', (req, res) => {
 
 router.get('/sign-out', (req, res) => {
   res.clearCookie('session')
-  return res.redirect('/sign-in')
+  res.clearCookie('user_id')
+  res.clearCookie('user_name')
+  return res.redirect('/')
 })
 
 module.exports = router

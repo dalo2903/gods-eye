@@ -19,5 +19,9 @@ module.exports = {
     storageBucket: 'centering-dock-194606.appspot.com',
     messagingSenderId: '813488161964'
   },
-  address: 'http://20.184.8.69:3000'
+  address: 'http://20.184.8.69:3000',
+  cookieOptions: { // Bo secure: true vi khong co HTTPS
+    maxAge: 60 * 60 * 24 * 5 * 1000, // Set session expiration to 5 days.
+    httpOnly: true
+  }
 }
