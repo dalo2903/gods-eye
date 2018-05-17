@@ -1,61 +1,48 @@
 <% layout('./share/layout.ejs') -%>
 
-  <title>
-
-  </title>
-
-
   <div class="container">
-    <script>
-      var provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithPopup(provider).then(function (result) {
+
+  </div>
+
+
+  <script>
+    var provider = new firebase.auth.GoogleAuthProvider()
+
+    firebase.auth().getRedirectResult().then(function (result) {
+      if (result.credential) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
         // ...
-        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
-          // Send token to your backend via HTTPS
+      }
+      // The signed-in user info.
+      var user = result.user;
+      if (user) {
+        user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+          // Send token to your backend via HTTP
           // ...
           $.post("/api/auth",
-          {
-            idToken: idToken
-          },
-          function (data, status) {
-            console.log("Data: " + data + "\nStatus: " + status);
-            window.location.href = '/'
-          })
+            {
+              idToken: idToken
+            },
+            function (data, status) {
+              window.location.href = '/'
+            })
         }).catch(function (error) {
-          // Handle error
+          firebase.auth().signInWithRedirect(provider)
         });
-
-
-      }).catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-      });
-    </script>
-    <!-- <script>
-      function onSignIn(googleUser) {
-        console.log(googleUser)
-        // $.post('/api/auth',{
-        //   data:googleUser
-        // })
-        var id_token = googleUser.getAuthResponse().id_token
-        
-        $.post("/api/auth",
-          {
-            data: id_token
-          },
-          function (data, status) {
-            console.log("Data: " + data + "\nStatus: " + status);
-          })
       }
-    </script> -->
-  </div>
+      else {
+        firebase.auth().signInWithRedirect(provider)
+      }
+    }).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+      firebase.auth().signInWithRedirect(provider)
+    });
+  </script>
