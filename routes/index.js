@@ -34,24 +34,6 @@ router.get('/', function (req, res, next) {
   })
 })
 
-router.get('/sign-in', (req, res) => {
-  const sessionCookie = req.cookies.session || ''
-  authController.verifySessionCookie(sessionCookie)
-    .then(resolve => {
-      return res.redirect('/')
-    }).catch(reject => {
-      return res.render('sign-in', {
-        image: constants.index.image,
-        description: constants.index.description,
-        title: constants.index.title,
-        type: constants.index.type,
-        url: constants.index.url,
-        user_id: req.cookies.user_id || '',
-        user_name: req.cookies.user_name || ''
-      })
-    })
-})
-
 router.get('/*', (req, res, next) => {
   const sessionCookie = req.cookies.session || ''
   authController.verifySessionCookie(sessionCookie)
