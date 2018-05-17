@@ -6,22 +6,56 @@
         <i class="fa fa-times close"></i>
       </div>
       <div class="form-grp">
+        <label>Email</label>
+        <input type="text" name="email" id="email" placeholder="Email Address" disabled />
+      </div>
+      <div class="form-grp">
         <label>Full Name</label>
-        <input type="text" name="name" placeholder="Full Name" value="<%- user_name %>" />
+        <input type="text" name="name" id="name" placeholder="Full Name" value="<%- user_name %>" disabled />
       </div>
       <div class="form-grp">
         <label>Student ID</label>
-        <input type="text" name="studentID" placeholder="Student ID" required />
+        <input type="text" name="studentID" id="studentID" placeholder="Student ID" required />
       </div>
       <div class="form-grp">
-        <label>Email</label>
-        <input type="text" name="email" placeholder="Email Address" disabled />
+        <input type="submit" value="Update" onclick="updateProfile()" />
       </div>
-      <div class="form-grp">
-        <input type="submit" value="Update" />
+      <div class="hide">
+        <span id="user-id">
+          <%- user_id %>
+        </span>
       </div>
     </div>
   </div>
+
+  <script>
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        // User is signed in.
+        var userId = user.uid
+        firebase.database().ref('/user/' + userId).once('value').then(function (snapshot) {
+          var email = (snapshot.val() && snapshot.val().email) || '';
+          var studentID = (snapshot.val() && snapshot.val().studentID) || '';
+          $('#email').val(email)
+          $('#studentID').val(studentID)
+        })
+      } else {
+        window.location.href = '/'
+      }
+    });
+
+    function updateProfile() {
+      const userId = $('#user-id').text().trim()
+      firebase.database().ref().child('/user/' + userId)
+        .update({ studentID: $('#studentID').val().trim() })
+        .then(resolve => {
+          window.location.reload()
+        })
+        .catch(reject => {
+          console.log(reject)
+        })
+    }
+  </script>
 
   <style>
     body {

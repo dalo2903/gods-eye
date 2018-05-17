@@ -71,6 +71,19 @@
       // The signed-in user info.
       var user = result.user
       if (user) {
+        var ref = firebase.database().ref().child("user");
+        var data = {
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+          studentID: ''
+        }
+        ref.child(user.uid).set(data).then(function (ref) {
+          //use 'child' and 'set' combination to save data in your own generated key
+        }, function (error) {
+          console.log(error)
+        })
+
         user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
           // Send token to your backend via HTTP
           // ...
@@ -79,10 +92,10 @@
               idToken: idToken
             },
             function (data, status) {
-              if(result.additionalUserInfo.isNewUser){
-                window.location.href = '/sign-up'
+              if (result.additionalUserInfo.isNewUser) {
+                return window.location.href = '/my-profile'
               } else {
-                window.location.href = '/'
+                return window.location.href = '/'
               }
             })
         }).catch(function (error) {

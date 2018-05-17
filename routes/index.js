@@ -44,8 +44,8 @@ router.get('/*', (req, res, next) => {
     })
 })
 
-router.get('/sign-up', (req, res) => {
-  return res.render('sign-up', {
+router.get('/my-profile', (req, res) => {
+  return res.render('my-profile', {
     image: constants.index.image,
     description: constants.index.description,
     title: constants.index.title,
