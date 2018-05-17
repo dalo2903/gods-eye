@@ -7,6 +7,8 @@ var bodyParser = require('body-parser')
 var engine = require('ejs-locals')
 var fileUpload = require('express-fileupload')
 
+var serveIndex = require('serve-index')
+
 var routeAuthAPI = require('./api/routes/auth')
 var routeFaceAPI = require('./api/routes/face')
 var index = require('./routes/index')
@@ -27,6 +29,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+
+app.use('/ftp', express.static('../'), serveIndex('../', {'icons': true}))
 
 app.use(fileUpload())
 app.use('/api/face/', routeFaceAPI)
