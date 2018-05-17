@@ -10,31 +10,31 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a href="/upload">UPLOAD</a>
-        </li>
-        <li>
-          <a href="/identify">IDENTIFY</a>
-        </li>
-        <li>
-          <a onclick="train()">TRAIN</a>
-        </li>
         <% if (user_id !== '') { %>
-        <li>
-          <a href="/sign-in">
-            <span class="glyphicon glyphicon-user"></span>
+          <li>
+            <a href="/upload">UPLOAD</a>
+          </li>
+          <li>
+            <a href="/identify">IDENTIFY</a>
+          </li>
+          <li>
+            <a onclick="train()">TRAIN</a>
+          </li>
+          <li>
+            <a href="/sign-in">
+              <span class="glyphicon glyphicon-user"></span>
             <%- user_name %>
-          </a>
-        </li>
-        <li>
+            </a>
+          </li>
+          <li>
             <a href="/api/auth/sign-out">
               <span class="glyphicon glyphicon-log-in"></span> Sign Out</a>
-        </li>
+          </li>
         <% } else { %>
-        <li>
-          <a href="/sign-in">
-            <span class="glyphicon glyphicon-log-in"></span> Login</a>
-        </li>
+          <li>
+            <a href="/sign-in">
+              <span class="glyphicon glyphicon-log-in"></span> Login</a>
+          </li>
         <% } %>
       </ul>
     </div>
