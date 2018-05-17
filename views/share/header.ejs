@@ -74,12 +74,16 @@
         user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
           // Send token to your backend via HTTP
           // ...
-          $.post("/api/auth",
+          $.post('/api/auth',
             {
               idToken: idToken
             },
             function (data, status) {
-              window.location.href = '/'
+              if(result.additionalUserInfo.isNewUser){
+                window.location.href = '/sign-up'
+              } else {
+                window.location.href = '/'
+              }
             })
         }).catch(function (error) {
 
