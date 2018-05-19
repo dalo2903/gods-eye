@@ -44,18 +44,6 @@ router.get('/*', (req, res, next) => {
     })
 })
 
-router.get('/my-profile', (req, res) => {
-  return res.render('my-profile', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.cookies.user_id || '',
-    user_name: req.cookies.user_name || ''
-  })
-})
-
 function createPersonGroup (personGroupId, group) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId
