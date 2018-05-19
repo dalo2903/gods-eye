@@ -9,7 +9,6 @@ var userRef = db.ref('user')
 
 userRef.limitToLast(1).on('child_added', function (snapshot, prevChildKey) {
   var newUser = snapshot.val()
-  console.log(newUser)
 })
 
 // function testSignIn (_idToken) {
