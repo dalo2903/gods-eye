@@ -78,11 +78,24 @@
           photoURL: user.photoURL,
           studentID: ''
         }
-        ref.child(user.uid).set(data).then(function (ref) {
-          //use 'child' and 'set' combination to save data in your own generated key
-        }, function (error) {
-          console.log(error)
-        })
+
+        if (result.additionalUserInfo.isNewUser) {
+          ref.child(user.uid).set(data).then(function (ref) {
+            //use 'child' and 'set' combination to save data in your own generated key
+            // $.post('/api/auth',{
+            //   idToken: idToken
+            // },
+            // function (data, status) {
+            //   if (result.additionalUserInfo.isNewUser) {
+            //     return window.location.href = '/my-profile'
+            //   } else {
+            //     return window.location.href = '/'
+            //   }
+            // })
+          }, function (error) {
+            console.log(error)
+          })
+        }
 
         user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
           // Send token to your backend via HTTP

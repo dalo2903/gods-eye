@@ -3,6 +3,15 @@ var responseStatus = require('../../configs/responseStatus')
 var config = require('../../config')
 var admin = require('./firebaseAdminController')
 
+// Get a database reference to our posts
+var db = admin.database()
+var userRef = db.ref('user')
+
+userRef.limitToLast(1).on('child_added', function (snapshot, prevChildKey) {
+  var newUser = snapshot.val()
+  console.log(newUser)
+})
+
 // function testSignIn (_idToken) {
 //   const idToken = _idToken.toString()
 //   var credential = firebase.auth.GoogleAuthProvider.credential(idToken)
