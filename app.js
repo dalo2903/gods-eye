@@ -11,7 +11,6 @@ var serveIndex = require('serve-index')
 
 var routeAuthAPI = require('./api/routes/auth')
 var routeFaceAPI = require('./api/routes/face')
-var routePersonAPI = require('./api/routes/person')
 var index = require('./routes/index')
 var users = require('./routes/users')
 
@@ -34,9 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/ftp', express.static('../'), serveIndex('../', {'icons': true}))
 
 app.use(fileUpload())
-app.use('/api/auth/', routeAuthAPI)
 app.use('/api/face/', routeFaceAPI)
-app.use('/api/person/', routePersonAPI)
+app.use('/api/auth/', routeAuthAPI)
 app.use('/', index)
 app.use('/users', users)
 

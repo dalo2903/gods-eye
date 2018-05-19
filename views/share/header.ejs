@@ -92,23 +92,11 @@
           photoURL: user.photoURL,
           studentID: ''
         }
-
-        if (result.additionalUserInfo.isNewUser) {
-          ref.child(user.uid).set(data).then(function (ref) {
-            //use 'child' and 'set' combination to save data in your own generated key
-            $.post('/api/person/',{
-              name: user.displayName,
-              userData: user.uid
-            },
-            function (data, status) {
-              console.log(data)
-            })
-          }, function (error) {
-            console.log(error)
-          })
-        }
-
-        return
+        ref.child(user.uid).set(data).then(function (ref) {
+          //use 'child' and 'set' combination to save data in your own generated key
+        }, function (error) {
+          console.log(error)
+        })
 
         user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
           // Send token to your backend via HTTP
