@@ -28,40 +28,10 @@
     </div>
   </div>
 
-  <script>
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        // User is signed in.
-        var userId = user.uid
-        firebase.database().ref('/user/' + userId).once('value').then(function (snapshot) {
-          var email = (snapshot.val() && snapshot.val().email) || '';
-          var studentID = (snapshot.val() && snapshot.val().studentID) || '';
-          $('#email').val(email)
-          $('#studentID').val(studentID)
-        })
-      } else {
-        window.location.href = '/'
-      }
-    });
-
-    function updateProfile() {
-      const userId = $('#user-id').text().trim()
-      firebase.database().ref().child('/user/' + userId)
-        .update({ studentID: $('#studentID').val().trim() })
-        .then(resolve => {
-          window.location.reload()
-        })
-        .catch(reject => {
-          console.log(reject)
-        })
-    }
-  </script>
-
   <style>
     body {
       font-size: 100%;
       font-family: 'Open Sans', sans-serif;
-      background: #BDBDBD;
     }
 
     .wrapper {

@@ -1,34 +1,34 @@
 <!doctype html>
 <html lang="en" ng-app="GodsEye">
 
-    <head>
-        <% include ./head.ejs -%>
-        <title>
-            <%= title %>
-        </title>
-        <meta name="description" content="<%= description %>">
+<head>
+    <% include ./head.ejs -%>
+    <title>
+        <%= title %>
+    </title>
+    <meta name="description" content="<%= description %>">
     
-        <!--meta tag for Facebook OpenGraph -->
-        <meta property="og:description" content="<%= description %>" />
-        <meta property="og:image" content="<%= image %>" />
-        <meta property="og:title" content="<%= title %>" />
-        <meta property="og:type" content="<%= type %>" />
-        <meta property="og:url" content="<%= url %>" />
+    <!--meta tag for Facebook OpenGraph -->
+    <meta property="og:description" content="<%= description %>" />
+    <meta property="og:image" content="<%= image %>" />
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:type" content="<%= type %>" />
+    <meta property="og:url" content="<%= url %>" />
 
-    </head>
+</head>
 
-    <body>
-        <div class="text-center">
-            <div class="header">
-                <% include ./header.ejs %>
-            </div>
-            <div class="content" style="margin-top:100px">
-                <%- body %>
-            </div>
-            <div class="footer" style="margin-top:20px">
-                <% include ./footer.ejs %>
-            </div>
+<body>
+    <div class="text-center">
+        <div class="header">
+            <% include ./header.ejs %>
         </div>
-    </body>
+        <div class="content" style="margin-top:50px">
+            <%- body %>
+        </div>
+        <div class="footer" style="margin-top:20px">
+            <% include ./footer.ejs %>
+        </div>
+    </div>
+</body>
 
 </html>
