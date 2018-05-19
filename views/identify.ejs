@@ -3,7 +3,9 @@
   <form action='/identify' method='post' encType="multipart/form-data">
     <div class="form-group">
       <input class="hide" type="file" name="sampleFile" id="image" accept="image/*" required/>
-      <% include ./share/logo.ejs %>
+      <div style="width: 1170px;margin: 0 auto;">
+        <% include ./share/logo.ejs %>
+      </div>
     </div>
     <button class="btn btn-primary" type="submit">IDENTIFY</button>
   </form>
