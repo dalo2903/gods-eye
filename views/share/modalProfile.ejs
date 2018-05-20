@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="/stylesheets/modalProfile.css">
+<div id="id01" class="modal">
+
+    <form class="modal-content animate" action="/action_page.php">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <img src="" alt="Avatar" id="avatar" class="avatar">
+        </div>
+
+        <div class="container">
+            <div class="form-grp">
+                <label>Email</label>
+                <input type="text" name="email" id="email" placeholder="Email Address" disabled />
+            </div>
+            <div class="form-grp">
+                <label>Full Name</label>
+                <input type="text" name="name" id="name" placeholder="Full Name" value="<%- user_name %>" disabled />
+            </div>
+            <div class="form-grp">
+                <label>Student ID</label>
+                <input type="text" name="studentID" id="studentID" placeholder="Student ID" required />
+            </div>
+            <div class="form-grp">
+                <input class="btn btn-primary" type="submit" value="Update" onclick="updateProfile()" />
+            </div>
+            <div class="hide">
+                <span id="user-id">
+                    <%- user_id %>
+                </span>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // User is signed in.
+            var userId = user.uid
+            firebase.database().ref('/user/' + userId).once('value').then(function (snapshot) {
+                var email = (snapshot.val() && snapshot.val().email) || '';
+                var studentID = (snapshot.val() && snapshot.val().studentID) || '';
+                var photoURL = (snapshot.val() && snapshot.val().photoURL) || '';
+                $('#email').val(email)
+                $('#studentID').val(studentID)
+                $('#avatar').attr('src', photoURL)
+            })
+        } else {
+            window.location.href = '/'
+        }
+    });
+
+    function updateProfile() {
+        const userId = $('#user-id').text().trim()
+        firebase.database().ref().child('/user/' + userId)
+            .update({ studentID: $('#studentID').val().trim() })
+            .then(resolve => {
+                window.location.reload()
+            })
+            .catch(reject => {
+                console.log(reject)
+            })
+    }
+</script>

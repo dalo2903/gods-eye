@@ -3,7 +3,10 @@
   <form action='/identify' method='post' encType="multipart/form-data">
     <div class="form-group">
       <input class="hide" type="file" name="sampleFile" id="image" accept="image/*" required/>
-      <img class="img-responsive" style="margin:auto;cursor: pointer;" id="preview" alt="preview" src="favicon.ico" />
+      <div class="row">
+        <% include ./share/logo.ejs %>
+      </div>
+      <strong style="font-size: 30px">Click the eye to choose image.</strong>
     </div>
     <button class="btn btn-primary" type="submit">IDENTIFY</button>
   </form>
@@ -19,7 +22,7 @@
       }
     }
 
-    $('#preview').click(function(){
+    $('#preview').click(function () {
       $('#image').click()
     })
 

@@ -3,9 +3,10 @@
   <form action='/upload' method='post' encType="multipart/form-data">
     <div class="form-group">
       <input class="hide" type="file" name="sampleFile" id="image" accept="image/*" required/>
-      <a href="#">
-        <img class="img-responsive" style="margin:auto;cursor: pointer;" id="preview" alt="preview" src="favicon.ico" />
-      </a>
+        <div class="row">
+          <% include ./share/logo.ejs %>
+        </div>
+        <strong style="font-size: 30px">Click the eye to choose image.</strong>
     </div>
     <div class="form-group">
       <label for="email">Student ID:</label>

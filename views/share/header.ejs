@@ -17,11 +17,11 @@
           <li>
             <a href="/identify">IDENTIFY</a>
           </li>
-          <li>
+          <li class="hide">
             <a onclick="train()">TRAIN</a>
           </li>
           <li>
-            <a href="/my-profile">
+            <a onclick="document.getElementById('id01').style.display='block'">
               <span class="glyphicon glyphicon-user"></span>
               <%- user_name %>
             </a>
@@ -40,6 +40,20 @@
     </div>
   </div>
 </nav>
+<% include ./modalProfile.ejs %>
+
+<script>
+  // Get the modal
+  var modal = document.getElementById('id01');
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+
 <script>
   function train() {
     $.ajax({
@@ -78,7 +92,7 @@
           photoURL: user.photoURL,
           studentID: ''
         }
-
+      
         if (result.additionalUserInfo.isNewUser) {
           ref.child(user.uid).set(data).then(function (ref) {
             //use 'child' and 'set' combination to save data in your own generated key
@@ -94,6 +108,8 @@
           })
         }
 
+        return
+        
         user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
           // Send token to your backend via HTTP
           // ...
