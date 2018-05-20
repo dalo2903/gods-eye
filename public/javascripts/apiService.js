@@ -10,6 +10,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
         data: formData
       }
       return $http(req)
+    },
+    getImages: function () {
+      return $http.get('/images')
     }
   }
 }])

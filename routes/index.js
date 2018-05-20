@@ -364,6 +364,44 @@ function uploadFile (pathFile, fileName) {
   })
 }
 
+function listFilesByPrefix (bucketName, prefix, delimiter) {
+  return new Promise((resolve, reject) => {
+    // [START storage_list_files_with_prefix]
+  // Imports the Google Cloud client library
+    const Storage = require('@google-cloud/storage')
+
+    // Creates a client
+    const storage = new Storage()
+
+    const options = {
+      prefix: prefix
+    }
+
+    if (delimiter) {
+      options.delimiter = delimiter
+    }
+
+    // Lists files in the bucket, filtered by a prefix
+    storage
+      .bucket(bucketName)
+      .getFiles(options)
+      .then(results => {
+        const files = results[0]
+        var urls = []
+        files.forEach(file => {
+          const url = 'https://storage.cloud.google.com/centering-dock-194606.appspot.com/' + file.name
+          urls.push(url)
+        })
+        return resolve(responseStatus.Response(200, {images: urls}))
+      })
+      .catch(err => {
+        console.error('ERROR:', err)
+        return reject(responseStatus.Response(500, err))
+      })
+  // [END storage_list_files_with_prefix]
+  })
+}
+
 router.get('/person-groups/:personGroupId', (req, res) => {
   listAllPersonsInPersonGroup(req.params.personGroupId)
     .then(resolve => {
@@ -434,6 +472,28 @@ function initPersonInPersonGroup (personGroupId) {
 router.get('/person-groups/:personGroupId/init', (req, res) => {
   initPersonInPersonGroup(req.params.personGroupId)
   return res.status(200)
+})
+
+router.get('/gallery', (req, res) => {
+  return res.render('gallery', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || ''
+  })
+})
+
+router.get('/images', (req, res) => {
+  listFilesByPrefix(bucketName, 'images/')
+    .then(resolve => {
+      return res.status(resolve.status).send(resolve)
+    })
+    .catch(reject => {
+      return res.status(reject.status).send(reject)
+    })
 })
 
 function saveImageToDatabase (imgObj) {
