@@ -3,9 +3,10 @@
   <form action='/identify' method='post' encType="multipart/form-data">
     <div class="form-group">
       <input class="hide" type="file" name="sampleFile" id="image" accept="image/*" required/>
-      <div style="width: 1170px;margin: 0 auto;">
+      <div class="row">
         <% include ./share/logo.ejs %>
       </div>
+      <strong style="font-size: 30px">Click the eye to choose image.</strong>
     </div>
     <button class="btn btn-primary" type="submit">IDENTIFY</button>
   </form>
