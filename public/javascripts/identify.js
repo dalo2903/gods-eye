@@ -7,6 +7,7 @@ app.controller('identifyController', ['$scope', 'apiService', function ($scope, 
     apiService.identify(formData)
       .then(function (res) {
         console.log(res)
+        $('#result').append('<table class="table"><thead><td>Name</td><td>Student ID</td><thead><tr><td>'+res.data[0].name +'</td><td>'+res.data[0].MSSV +'</td></tr></table>')
       })
       .catch(function (res) {
         console.log(res)
