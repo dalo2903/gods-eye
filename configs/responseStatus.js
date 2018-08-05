@@ -4,5 +4,6 @@ module.exports = {
       status: status,
       message: message || ''
     }, object)
-  }
+  },
+  POST_NOT_FOUND: 'Post not found'
 }

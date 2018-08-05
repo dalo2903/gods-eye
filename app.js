@@ -9,11 +9,13 @@ var fileUpload = require('express-fileupload')
 
 var serveIndex = require('serve-index')
 
+require('./configs/loadModelsMongoose')
+
 var routeAuthAPI = require('./api/routes/auth')
 var routeFaceAPI = require('./api/routes/face')
 var routePersonAPI = require('./api/routes/person')
+var postRouteAPI = require('./api/routes/post')
 var index = require('./routes/index')
-var users = require('./routes/users')
 
 var app = express()
 app.use(cookieParser())
@@ -37,8 +39,9 @@ app.use(fileUpload())
 app.use('/api/auth/', routeAuthAPI)
 app.use('/api/face/', routeFaceAPI)
 app.use('/api/person/', routePersonAPI)
+app.use('/api/post/', postRouteAPI)
+
 app.use('/', index)
-app.use('/users', users)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

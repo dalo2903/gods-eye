@@ -3,18 +3,21 @@ var router = express.Router()
 var authController = require('../controllers/authController')
 
 router.post('/', (req, res) => {
-  // authController.verifyIdToken(req.body.idToken).then().catch()
-  const idToken = req.body.idToken.toString() || ''
-  authController.generateSessionCookie(idToken)
-    .then(resolve => {
-      const sessionCookie = resolve.sessionCookie
-      const options = resolve.options
-      const userInfo = resolve.userInfo
-      return res.cookie('user_id', userInfo.userId, options).cookie('user_name', userInfo.name, options).cookie('session', sessionCookie, options).status(resolve.status).send()
-    })
-    .catch(reject => {
-      return res.status(reject.status).send(reject)
-    })
+  try {
+    const idToken = req.body.idToken.toString() || ''
+    authController.generateSessionCookie(idToken)
+      .then(resolve => {
+        const sessionCookie = resolve.sessionCookie
+        const options = resolve.options
+        const userInfo = resolve.userInfo
+        return res.cookie('user_id', userInfo.userId, options).cookie('user_name', userInfo.name, options).cookie('session', sessionCookie, options).status(resolve.status).send()
+      })
+      .catch(reject => {
+        return res.status(reject.status).send(reject)
+      })
+  } catch (error) {
+    return res.status(error.status || 500).send(error)
+  }
 })
 
 router.get('/test', (req, res) => {

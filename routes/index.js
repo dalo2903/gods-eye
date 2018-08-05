@@ -34,6 +34,31 @@ router.get('/', function (req, res, next) {
   })
 })
 
+router.get('/post/create', (req, res) => {
+  res.render('post/create', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: '',
+    user_name: ''
+  })
+})
+
+router.get('/post/:id', (req, res) => {
+  res.render('post/detail', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: '',
+    user_name: '',
+    _id: req.params.id
+  })
+})
+
 router.get('/*', (req, res, next) => {
   const sessionCookie = req.cookies.session || ''
   authController.verifySessionCookie(sessionCookie)

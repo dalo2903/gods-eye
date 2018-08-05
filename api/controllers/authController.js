@@ -2,14 +2,15 @@
 var responseStatus = require('../../configs/responseStatus')
 var config = require('../../config')
 var admin = require('./firebaseAdminController')
+const UserController = require('../controllers/UserController')
 
 // Get a database reference to our posts
-var db = admin.database()
-var userRef = db.ref('user')
+// var db = admin.database()
+// var userRef = db.ref('user')
 
-userRef.limitToLast(1).on('child_added', function (snapshot, prevChildKey) {
-  var newUser = snapshot.val()
-})
+// userRef.limitToLast(1).on('child_added', function (snapshot, prevChildKey) {
+//   var newUser = snapshot.val()
+// })
 
 // function testSignIn (_idToken) {
 //   const idToken = _idToken.toString()
@@ -58,8 +59,12 @@ function generateSessionCookie (idToken) {
           .then(resolveVerify => {
             const userInfo = {
               userId: resolveVerify.user_id,
-              name: resolveVerify.name
+              name: resolveVerify.name,
+              uuid: resolveVerify.user_id,
+              avatar: resolveVerify.picture,
+              email: resolveVerify.email
             }
+            UserController.createUser(userInfo)
             return resolve(responseStatus.Response(200, {sessionCookie: sessionCookie, options: options, userInfo: userInfo}))
           })
           .catch(rejectVerify => {
