@@ -7,6 +7,10 @@ app.controller('identifyController', ['$scope', 'apiService', function ($scope, 
     apiService.identify(formData)
       .then(function (res) {
         console.log(res)
+        $.each(res.data, function (index, ele) {
+          $('#table').append('<tr><td>' + ele.name + '</td><td>' + ele.MSSV + '</td></tr>')
+        })
+
       })
       .catch(function (res) {
         console.log(res)

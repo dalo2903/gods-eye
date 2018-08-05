@@ -222,6 +222,18 @@ router.get('/identify', function (req, res, next) {
   })
 })
 
+router.get('/newsfeed', function (req, res, next) {
+  return res.render('newsfeed', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || ''
+  })
+})
+
 router.post('/person-groups/:personGroupId/persons/:personId', (req, res) => {
   addFaceForPerson(req.params.personGroupId, req.params.personId, req.body.url)
     .then(resolve => {
