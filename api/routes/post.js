@@ -13,7 +13,7 @@ const m = multer({
   }
 })
 
-router.post('/', m.single('file'), async (req, res) => {
+router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
     const session = AuthService.getSessionFromRequest(req)
     const uuid = await AuthService.isLoggedIn(session)
