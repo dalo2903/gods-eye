@@ -1,5 +1,5 @@
 module.exports = {
-  uriMongo: 'mongodb://localhost/GodsEye',
+  uriMongo: 'mongodb://god:eye@godseye.ml:27017/GodsEye',
   google: {
     projectId: 'centering-dock-194606',
     cloudStorage: {
