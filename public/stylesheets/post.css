@@ -9,3 +9,7 @@ h1 {
 .postContainer{
     
 }
+
+.line{
+    border-top: solid 1px black 
+}
