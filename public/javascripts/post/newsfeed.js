@@ -1,6 +1,6 @@
 var app = angular.module('GodsEye')
 
-app.controller('getController', ['$scope', 'apiService', '$http', function ($scope, apiService, $http) {
+app.controller('NewsFeedController', ['$scope', 'apiService', '$http', function ($scope, apiService, $http) {
     $http({
         method: 'GET',
         url: '/api/post'
