@@ -41,8 +41,8 @@ router.get('/post/create', (req, res) => {
     title: constants.index.title,
     type: constants.index.type,
     url: constants.index.url,
-    user_id: '',
-    user_name: ''
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || ''
   })
 })
 
@@ -53,8 +53,8 @@ router.get('/post/:id', (req, res) => {
     title: constants.index.title,
     type: constants.index.type,
     url: constants.index.url,
-    user_id: '',
-    user_name: '',
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || '',
     _id: req.params.id
   })
 })

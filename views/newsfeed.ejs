@@ -15,16 +15,19 @@
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-lg-6">
-                <div id="postContainer" class="postContainer">
-                    <!-- <div>
-                        <h1>Title</h1>
+                <div infinite-scroll='loadMore()' id="postsContainer" class="postsContainer">
+                    <div id="{{post._id}}" class="post" ng-repeat="post in scrollData">
+                        <div>
+                            <h1>{{post.title}}</h1>
+                        </div>
+                        <div class="author">by {{post.author.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy "}}</div>
+                        <div class="data" ng-repeat="data in post.datas">
+                            <img ng-src="{{data.URL}}">
+                        </div>
+                        <div class="fb-comments" data-href="http://godseye.ml/{{post._id}}" data-width="100%" data-numposts="2"></div>
+                        <div class="line">
+                        </div>
                     </div>
-                    <div class="data">
-                        <img src="https://img-9gag-fun.9cache.com/photo/aV31Mmw_460swp.webp">
-                    </div>
-                    <div class="fb-comments" data-href="http://godseye.ml/1" data-width="100%" data-numposts="2"></div>
-                    <div class="line">
-                    </div> -->
                 </div>
                 <div class="col-lg-3"></div>
             </div>

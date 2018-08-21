@@ -6,10 +6,17 @@ h1 {
 .data{
     text-align: left
 }
-.postContainer{
+.postsContainer{
     
 }
-
+.author{
+    color:grey;
+    font-size: 15px;
+    text-align: left
+}
 .line{
     border-top: solid 1px black 
+}
+img{
+    width: 100%
 }

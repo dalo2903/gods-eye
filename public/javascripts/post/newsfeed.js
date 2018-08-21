@@ -5,12 +5,17 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', function 
         method: 'GET',
         url: '/api/post'
     }).then(function success(response) {
-        response.data.posts.forEach(element => {
-            $('#postContainer').append('<div><h1>' + element.title + '</h1></div><div id="' + element._id + '" class="data"></div><div class="fb-comments" data-href="http://godseye.ml/' + element._id + '" data-width="100%" data-numposts="2"></div><div class="line"><div>')
-            element.datas.forEach(data => {
-                $('#' + element._id).append('<img src=' + data.URL + '>')
-            })
-        });
+        posts = response.data.posts
+        $scope.scrollData = []
+        for (var i = 0; i < 2; i++) {
+            $scope.scrollData.push(posts[i]);
+        }
+        $scope.loadMore = function () {
+            last = $scope.scrollData.length - 1
+            for (var i = last + 1; i < last + 3; i++) {
+                $scope.scrollData.push(posts[i]);
+            }
+        };
     }, function error(response) {
         console.log(response)
     });

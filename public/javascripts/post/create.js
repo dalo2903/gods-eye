@@ -8,7 +8,7 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
 
   let files = []
 
-  function readURL (input) {
+  function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader()
       reader.onload = function (e) {
@@ -38,6 +38,8 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
     apiService.createPost(formData)
       .then(function (res) {
         console.log(res)
+        window.location.replace("/newsfeed");
+        alert('Post created successfully')
       })
       .catch(function (res) {
         console.log(res)

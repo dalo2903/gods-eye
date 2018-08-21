@@ -34,7 +34,7 @@ class PostController extends BaseController {
   }
 
   async getPostsPopulateAuthor () {
-    const posts = await Post.find().populate({ path: 'author', select: 'name avatar uuid' }).populate({ path: 'datas', select: 'URL' }).exec()
+    const posts = await Post.find().populate({ path: 'author', select: 'name avatar uuid' }).populate({ path: 'datas', select: 'URL' }).sort('-createdAt').exec()
     return responseStatus.Response(200, { posts: posts })
   }
 }
