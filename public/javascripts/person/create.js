@@ -38,8 +38,8 @@ app.controller('personController', ['$scope', 'apiService', function ($scope, ap
     apiService.createPerson(formData)
       .then(function (res) {
         console.log(res)
-        // window.location.replace("/newsfeed");
         alert('Person created successfully')
+        window.location.href = '/'
       })
       .catch(function (res) {
         console.log(res)

@@ -1,7 +1,7 @@
 const BaseController = require('./BaseController')
 const mongoose = require('mongoose')
 const Person = mongoose.model('Person')
-var request = require('request')
+const rpn = require('request-promise-native')
 var config = require('../../config')
 const responseStatus = require('../../configs/responseStatus')
 
@@ -11,16 +11,22 @@ class PersonController extends BaseController {
   }
 
   async createPerson (obj, uuid) {
-    // if (!obj.title) throw responseStatus.Response(400, {}, 'title')
-    const person = {
+    let person = {
       uuid: uuid,
-      name: obj.title || 'name',
+      name: obj.name,
       mspersonid: '',
       status: 100,
       score: 100,
       datas: obj.datas
     }
-    await this.create(person)
+    person = await this.create(person)
+    return person
+  }
+
+  async updateMicrosoftPersonId (_id, mspersonId) {
+    let person = await this.get(_id)
+    person.mspersonId = mspersonId
+    await person.save()
   }
 
   async getPerson (_id) {
@@ -44,118 +50,36 @@ class PersonController extends BaseController {
       },
       json: true
     }
-    request(options, (err, res) => {
-      if (err) {
-        console.log(err)
-        throw err
-      }
-      if (res.statusCode === 200) {
-        const personId = res.body.personId
-        console.log(personId)
-        return { status: res.statusCode, personId: personId }
-      } else {
-        throw responseStatus.Response(res.statusCode, { status: res.statusCode, error: res.body.error }, res.body.error)
-      }
-    })
+    try {
+      const res = await rpn(options)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when create person in person group')
+    }
   }
 
-  // async addFaceForPerson (personGroupId, personId, faceURL) {
-  //   var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
-  //   var options = {
-  //     url: url,
-  //     method: 'POST',
-  //     headers: {
-  //       'Ocp-Apim-Subscription-Key': config.microsoft.key1
-  //     },
-  //     body: {
-  //       url: faceURL
-  //     },
-  //     json: true
-  //   }
-  //   request(options, (err, res) => {
-  //     if (err) {
-  //       console.log(err)
-  //       throw responseStatus.Response(500, {error: err})
-  //     }
-  //     console.log(res.b)
-  //     if (res.statusCode === 200) {
-  //       var message = 'Add face (url: ' + faceURL + ') for Person with id' + personId + ' successfully. PersistedFaceId:: ' + res.body.persistedFaceId
-  //       return { status: res.statusCode, message: message }
-  //     } else {
-  //       throw responseStatus.Response(res.statusCode, { status: res.statusCode, error: res.body.error }, res.body.error)
-  //     }
-  //   })
-  // }
-
-  // async getPostPopulateAuthor (_id) {
-  //   const person = await Post.findById(_id).populate({ path: 'author', select: 'name avatar uuid' }).exec()
-  //   if (!person) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
-  //   else return responseStatus.Response(200, { person: person })
-  // }
-
-  // async getPostsPopulateAuthor () {
-  //   const posts = await Post.find().populate({ path: 'author', select: 'name avatar uuid' }).populate({ path: 'datas', select: 'URL' }).sort('-createdAt').exec()
-  //   return responseStatus.Response(200, { posts: posts })
-  // }
+  async addFaceForPerson (personGroupId, personId, faceURL) {
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
+    var options = {
+      url: url,
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      body: {
+        url: faceURL
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options) // persistedFaceId
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when add face for person')
+    }
+  }
 }
-
-// function createPersonInPersonGroup (personGroupId, person) {
-//   return new Promise((resolve, reject) => {
-//     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
-//     var options = {
-//       url: url,
-//       method: 'POST',
-//       headers: {
-//         'Ocp-Apim-Subscription-Key': config.microsoft.key1
-//       },
-//       body: {
-//         name: person.name,
-//         userData: person.userData
-//       },
-//       json: true
-//     }
-//     request(options, (err, res) => {
-//       if (err) {
-//         console.log(err)
-//         return reject({ status: 500, error: err })
-//       }
-//       if (res.statusCode === 200) {
-//         person.personId = res.body.personId
-//         return resolve({ status: res.statusCode, person: person })
-//       } else {
-//         return reject({ status: res.statusCode, error: res.body.error })
-//       }
-//     })
-//   })
-// }
-
-// function addFaceForPerson (personGroupId, personId, faceURL) {
-//   return new Promise((resolve, reject) => {
-//     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
-//     var options = {
-//       url: url,
-//       method: 'POST',
-//       headers: {
-//         'Ocp-Apim-Subscription-Key': config.microsoft.key1
-//       },
-//       body: {
-//         url: faceURL
-//       },
-//       json: true
-//     }
-//     request(options, (err, res) => {
-//       if (err) {
-//         console.log(err)
-//         return reject({ status: 500, error: err })
-//       }
-//       if (res.statusCode === 200) {
-//         var message = 'Add face (url: ' + faceURL + ') for Person with id' + personId + ' successfully. PersistedFaceId:: ' + res.body.persistedFaceId
-//         return resolve({ status: res.statusCode, message: message })
-//       } else {
-//         return reject({ status: res.statusCode, error: res.body.error })
-//       }
-//     })
-//   })
-// }
 
 module.exports = new PersonController()

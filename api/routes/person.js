@@ -41,17 +41,11 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       isImage: true
     })
     req.body.datas = [visualData._id]
-    PersonController.createPersonInPersonGroup('test-faces', { name: req.body.name })
-      .then(resolve => {
-        const personId = resolve.personId
-      })
-      .catch(reject => {
-
-      })
-    // await PersonController.addFaceForPerson('test-faces', personId, url)
-
-    await PersonController.createPerson(req.body, uuid)
-    return res.send()
+    const person = await PersonController.createPerson(req.body, uuid)
+    res.send() // Send response after upload image and create person in database
+    const personId = (await PersonController.createPersonInPersonGroup('test-faces', { name: req.body.name })).personId
+    await PersonController.addFaceForPerson('test-faces', personId, url)
+    await PersonController.updateMicrosoftPersonId(person._id, personId)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
