@@ -8,7 +8,7 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
 
   let files = []
 
-  function readURL(input) {
+  function readURL (input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader()
       reader.onload = function (e) {
@@ -34,15 +34,28 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
   $scope.createPost = function () {
     let formData = new FormData()
     formData.append('title', $scope.post.title)
+    formData.append('location', $('#location').val())
     formData.append('file', files[0])
     apiService.createPost(formData)
       .then(function (res) {
         console.log(res)
-        window.location.replace("/newsfeed");
+        window.location.replace('/newsfeed')
         alert('Post created successfully')
       })
       .catch(function (res) {
         console.log(res)
       })
   }
+
+  apiService.getLocations()
+    .then(function (res) {
+      $scope.locations = res.data.locations
+    })
+    .catch(function (res) {
+      console.log(res)
+    })
+
+  $(document).ready(function () {
+    $('#location').select2()
+  })
 }])

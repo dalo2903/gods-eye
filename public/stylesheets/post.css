@@ -20,3 +20,10 @@ h1 {
 img{
     width: 100%
 }
+
+.address{
+    color:grey;
+    font-size: 13px;
+    text-align: left;
+    font-style: italic;
+}

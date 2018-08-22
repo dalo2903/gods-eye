@@ -20,7 +20,8 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     const url = await UploadController.uploadFile(req)
     const visualData = await VisualDataController.createVisualData({
       URL: url,
-      isImage: true
+      isImage: true,
+      location: req.body.location
     })
     req.body.datas = [visualData._id]
     console.log(req.body)

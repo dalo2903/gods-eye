@@ -13,6 +13,10 @@ const VisualDataSchema = new Schema({
   isImage: {
     type: Boolean,
     default: true
+  },
+  location: {
+    type: Schema.Types.ObjectId,
+    ref: 'Location'
   }
 }, { usePushEach: true, timestamps: true })
 

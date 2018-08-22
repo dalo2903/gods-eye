@@ -21,7 +21,11 @@ const PostSchema = new Schema({
   datas: [{
     type: Schema.Types.ObjectId,
     ref: 'VisualData'
-  }]
+  }],
+  location: {
+    type: Schema.Types.ObjectId,
+    ref: 'Location'
+  }
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
 
 PostSchema.virtual('author', {
