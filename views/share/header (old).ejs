@@ -1,0 +1,151 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">God's Eye</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <% if (user_id !== '') { %>
+          <li>
+            <a href="/person/create">ADD PERSON</a>
+          </li>
+          <li>
+            <a href="/upload">UPLOAD</a>
+          </li>
+          <li class ="hide">
+            <a href="/identify">IDENTIFY</a>
+          </li>
+          <li class="hide">
+            <a onclick="train()">TRAIN</a>
+          </li>
+          <li>
+            <a href="/newsfeed">NEWS FEED</a>
+          </li>
+          <li>
+            <a href="/post/create">CREATE POST</a>
+          </li>
+          <li>
+            <a onclick="document.getElementById('id01').style.display='block'">
+              <span class="glyphicon glyphicon-user"></span>
+              <%- user_name %>
+            </a>
+          </li>
+          <li>
+            <a href="/api/auth/sign-out">
+              <span class="glyphicon glyphicon-log-in"></span> Sign Out</a>
+          </li>
+          <% } else { %>
+            <li>
+              <a href="#" onclick="signIn()">
+                <span class="glyphicon glyphicon-log-in"></span> Sign In</a>
+            </li>
+            <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+<% include ./modalProfile.ejs %>
+
+<script>
+  // Get the modal
+  var modal = document.getElementById('id01');
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+
+<script>
+  function train() {
+    $.ajax({
+      url: '/person-groups/test-faces/train',
+      success: function (res) {
+        alert('Train successfully')
+      },
+      error: function (res) {
+        alert(res.responseJSON.error.message)
+      }
+    })
+  }
+</script>
+
+<script>
+  var provider = new firebase.auth.GoogleAuthProvider()
+
+  function signIn() {
+    firebase.auth().signInWithRedirect(provider)
+  }
+
+  $(document).ready(function () {
+    firebase.auth().getRedirectResult().then(function (result) {
+      if (result.credential) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken
+        // ...
+      }
+      // The signed-in user info.
+      var user = result.user
+      if (user) {
+        var ref = firebase.database().ref().child("user");
+        var data = {
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+          studentID: ''
+        }
+      
+        if (result.additionalUserInfo.isNewUser) {
+          ref.child(user.uid).set(data).then(function (ref) {
+            //use 'child' and 'set' combination to save data in your own generated key
+            $.post('/api/person/',{
+              name: user.displayName,
+              userData: user.uid
+            },
+            function (data, status) {
+              console.log(data)
+            })
+          }, function (error) {
+            console.log(error)
+          })
+        }
+
+        
+        user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+          // Send token to your backend via HTTP
+          // ...
+          $.post('/api/auth',
+            {
+              idToken: idToken
+            },
+            function (data, status) {
+              if (result.additionalUserInfo.isNewUser) {
+                return window.location.href = '/my-profile'
+              } else {
+                return window.location.href = '/'
+              }
+            })
+        }).catch(function (error) {
+
+        })
+      }
+    }).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code
+      var errorMessage = error.message
+      // The email of the user's account used.
+      var email = error.email
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential
+      // ...
+    })
+  })
+
+</script>

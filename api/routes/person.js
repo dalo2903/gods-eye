@@ -14,7 +14,7 @@
 //   //   }).catch(reject => {
 //   //     return res.status(reject.status).send(reject)
 //   //   })
-  
+
 // })
 const express = require('express')
 let router = express.Router()
@@ -41,7 +41,15 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       isImage: true
     })
     req.body.datas = [visualData._id]
-    console.log(req.body)
+    PersonController.createPersonInPersonGroup('test-faces', { name: req.body.name })
+      .then(resolve => {
+        const personId = resolve.personId
+      })
+      .catch(reject => {
+
+      })
+    // await PersonController.addFaceForPerson('test-faces', personId, url)
+
     await PersonController.createPerson(req.body, uuid)
     return res.send()
   } catch (error) {
