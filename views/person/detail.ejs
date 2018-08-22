@@ -1,0 +1,9 @@
+<% layout('../share/layout.ejs') -%>
+
+    <div class="container text-left" ng-controller="createController">
+        <h1>{{ post.title }}</h1>
+        <img ng-repeat="image in person.datas" ng-src="{{ image.URL }}">
+        <span id="_id" class="hide"><%- _id %></span>
+    </div>
+
+    <script src="/javascripts/person/detail.js"></script>
