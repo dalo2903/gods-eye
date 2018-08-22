@@ -11,7 +11,8 @@ class VisualDataController extends BaseController {
     const _visualData = {
       description: obj.description,
       URL: obj.URL,
-      isImage: obj.isImage
+      isImage: obj.isImage,
+      location: obj.location
     }
     const visualData = await this.create(_visualData)
     return visualData
