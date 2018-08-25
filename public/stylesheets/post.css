@@ -15,6 +15,7 @@ h1 {
     text-align: left
 }
 .line{
+    margin-top: 20px;
     border-top: solid 1px black 
 }
 img{

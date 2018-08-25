@@ -1,0 +1,125 @@
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar text-left">
+  <div class="profile-sidebar">
+    <div class="profile-userpic">
+      <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
+    </div>
+    <div class="profile-usertitle">
+      <div class="profile-usertitle-name">
+        <%- user_name %>
+      </div>
+      <div class="profile-usertitle-status">
+        <span class="indicator label-success"></span>Online</div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="divider"></div>
+  <form role="search">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Search">
+    </div>
+  </form>
+  <ul class="nav menu">
+    <% if (user_id !== '') { %>
+      <li>
+        <a href="/person/create"><i class="fas fa-user-plus"></i> ADD PERSON</a>
+      </li>
+      <li>
+        <a href="/upload">UPLOAD</a>
+      </li>
+      <li class="hide">
+        <a href="/identify">IDENTIFY</a>
+      </li>
+      <li class="hide">
+        <a onclick="train()">TRAIN</a>
+      </li>
+      <li>
+        <a href="/newsfeed"><i class="fas fa-newspaper"></i> NEWS FEED</a>
+      </li>
+      <li>
+        <a href="/post/create"><i class="fas fa-upload"></i> CREATE POST</a>
+      </li>
+      <li>
+        <a href="/api/auth/sign-out">
+          <span class="glyphicon glyphicon-log-in"></span> Sign Out</a>
+      </li>
+      <% } else { %>
+        <li>
+          <a href="#" onclick="signIn()">
+            <span class="glyphicon glyphicon-log-in"></span> Sign In</a>
+        </li>
+        <% } %>
+  </ul>
+</div>
+<!--/.sidebar-->
+<script>
+  var provider = new firebase.auth.GoogleAuthProvider()
+
+  function signIn() {
+    firebase.auth().signInWithRedirect(provider)
+  }
+
+  $(document).ready(function () {
+    firebase.auth().getRedirectResult().then(function (result) {
+      if (result.credential) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken
+        // ...
+      }
+      // The signed-in user info.
+      var user = result.user
+      if (user) {
+        var ref = firebase.database().ref().child("user");
+        var data = {
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+          studentID: ''
+        }
+
+        if (result.additionalUserInfo.isNewUser) {
+          ref.child(user.uid).set(data).then(function (ref) {
+            //use 'child' and 'set' combination to save data in your own generated key
+            $.post('/api/person/', {
+              name: user.displayName,
+              userData: user.uid
+            },
+              function (data, status) {
+                console.log(data)
+              })
+          }, function (error) {
+            console.log(error)
+          })
+        }
+
+
+        user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+          // Send token to your backend via HTTP
+          // ...
+          $.post('/api/auth',
+            {
+              idToken: idToken
+            },
+            function (data, status) {
+              if (result.additionalUserInfo.isNewUser) {
+                return window.location.href = '/my-profile'
+              } else {
+                return window.location.href = '/'
+              }
+            })
+        }).catch(function (error) {
+
+        })
+      }
+    }).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code
+      var errorMessage = error.message
+      // The email of the user's account used.
+      var email = error.email
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential
+      // ...
+    })
+  })
+
+</script>

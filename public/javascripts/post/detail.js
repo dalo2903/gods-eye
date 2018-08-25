@@ -1,6 +1,6 @@
 var app = angular.module('GodsEye')
 
-app.controller('createController', ['$scope', 'apiService', function ($scope, apiService) {
+app.controller('detailController', ['$scope', 'apiService', function ($scope, apiService) {
   const _id = $('#_id').text().trim()
   apiService.getPost(_id)
     .then(function (res) {

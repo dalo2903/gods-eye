@@ -19,11 +19,4 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', function 
   }, function error(response) {
     console.log(response)
   })
-  apiService.getLocations()
-    .then(function (res) {
-      $scope.locations = res.data.locations
-    })
-    .catch(function (res) {
-      console.log(res)
-    })
 }])
