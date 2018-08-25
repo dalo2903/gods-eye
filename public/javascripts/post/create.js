@@ -39,7 +39,7 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
     apiService.createPost(formData)
       .then(function (res) {
         console.log(res)
-        window.location.replace('/newsfeed')
+        window.location.replace('/')
         alert('Post created successfully')
       })
       .catch(function (res) {

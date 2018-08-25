@@ -234,8 +234,8 @@ router.get('/identify', function (req, res, next) {
   })
 })
 
-router.get('/newsfeed', function (req, res, next) {
-  return res.render('newsfeed', {
+router.get('/about', function (req, res, next) {
+  return res.render('about', {
     image: constants.index.image,
     description: constants.index.description,
     title: constants.index.title,

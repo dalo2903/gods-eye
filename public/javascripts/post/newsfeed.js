@@ -4,7 +4,7 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', function 
   $http({
     method: 'GET',
     url: '/api/post'
-  }).then(function success (response) {
+  }).then(function success(response) {
     posts = response.data.posts
     $scope.scrollData = []
     for (var i = 0; i < 2; i++) {
@@ -16,7 +16,14 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', function 
         $scope.scrollData.push(posts[i])
       }
     }
-  }, function error (response) {
+  }, function error(response) {
     console.log(response)
   })
+  apiService.getLocations()
+    .then(function (res) {
+      $scope.locations = res.data.locations
+    })
+    .catch(function (res) {
+      console.log(res)
+    })
 }])

@@ -1,89 +1,42 @@
 <% layout('./share/layout.ejs') -%>
-  <div class="container">
-    <!-- Logo -->
-    <div class="row">
-      <% include ./share/logo.ejs %>
-    </div>
-    <!-- About -->
-    <div id="band" class="container">
-      <h3>GOD'S EYES</h3>
-      <p>
-        <em>We are watching!</em>
-      </p>
-      <p>If you’re someone who is routinely misplacing or losing things like the TV remote, your keys, wallet, or smartphone,
-        then this app is created for you. GE is an app that can identify objects, match and link existing data from open
-        data sources (images, videos, audio files are shared publicly by users) to search for an object. This can be applied
-        to tracing lost items, lost or missing person, and improve security in the Smart City.</p>
-      <br>
-      <div class="row">
-        <div class="col-sm-4">
-          <a href="#demo" data-toggle="collapse">
-            <img src="/images/team/vu-minh-tri.jpg" class="img-circle person" alt="Vũ Minh Trí">
-          </a>
-          <p>
-            <strong>Vũ Minh Trí</strong>
-          </p>
-          <div id="demo" class="collapse">
-            <span>Front End Developer</span>
-          </div>
+    <script src="/javascripts/post/newsfeed.js"></script>
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+    <div ng-controller="NewsFeedController">
+        <div class="row">
+            <!-- sidebar -->
+            <div id="sidebar-collapse" class="col-lg-3 sidebar text-left">
+                <h2>Popular locations</h2>
+                <ul class="nav menu">
+                    <li ng-repeat="location in locations"><a href="#">{{ location.address }}</a></li>
+                </ul>
+            </div>
+            <!--/.sidebar-->
+            <div class="col-lg-6">
+                <div infinite-scroll='loadMore()' id="postsContainer" class="postsContainer">
+                    <div id="{{post._id}}" class="post" ng-repeat="post in scrollData">
+                        <div>
+                            <h1>{{post.title}}</h1>
+                        </div>
+                        <div class="author">by {{post.author.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
+                        <div class="address">{{ post.location.address }}</div>
+                        <div class="data" ng-repeat="data in post.datas">
+                            <img ng-src="{{data.URL}}">
+                        </div>
+                        <div class="fb-comments" data-href="http://godseye.ml/{{post._id}}" data-width="100%" data-numposts="2"></div>
+                        <div class="line">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3"></div>
+            </div>
         </div>
-        <div class="col-sm-4">
-          <a href="#demo2" data-toggle="collapse">
-            <img src="/images/team/nguyen-khanh-nam.jpg" class="img-circle person" alt="Nguyễn Khánh Nam">
-          </a>
-          <p>
-            <strong>Nguyễn Khánh Nam</strong>
-          </p>
-          <div id="demo2" class="collapse">
-            <span>Back End Developer</span>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <a href="#demo3" data-toggle="collapse">
-            <img src="/images/team/dinh-duy-kha.jpg" class="img-circle person" alt="Đinh Duy Kha">
-          </a>
-          <p>
-            <strong>Đinh Duy Kha</strong>
-          </p>
-          <div id="demo3" class="collapse">
-            <span>Back End Developer</span>
-          </div>
-        </div>
-      </div>
-      <div class="row" style="margin-top:10px">
-        <div class="col-sm-4">
-          <a href="#demo4" data-toggle="collapse">
-            <img src="/images/team/dao-duy-phat.jpg" class="img-circle person" alt="Đào Duy Phát">
-          </a>
-          <p>
-            <strong>Đào Duy Phát</strong>
-          </p>
-          <div id="demo4" class="collapse">
-            <span>Android Developer</span>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <a href="#demo5" data-toggle="collapse">
-            <img src="/images/team/vo-tuan-kiet.jpg" class="img-circle person" alt="Võ Tuấn Kiệt">
-          </a>
-          <p>
-            <strong>Võ Tuấn Kiệt</strong>
-          </p>
-          <div id="demo5" class="collapse">
-            <span>Back End Developer</span>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <a href="#demo6" data-toggle="collapse">
-            <img src="/images/team/pham-hong-thai.jpg" class="img-circle person" alt="Phạm Hồng Thái">
-          </a>
-          <p>
-            <strong>Phạm Hồng Thái</strong>
-          </p>
-          <div id="demo6" class="collapse">
-            <span>Singer</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
