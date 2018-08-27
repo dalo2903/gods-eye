@@ -1,12 +1,13 @@
 const express = require('express')
-const router = express.Router()
-
+let router = express.Router()
+const multer = require('multer')
 const Constants = require('../../configs/constants')
 const AuthService = require('../services/AuthService')
-const VisualDataController = require('../controllers/VisualDataController')
-const UploadController = require('../controllers/UploadController')
-const FaceController = require('../controllers/FaceController')
 const PersonController = require('../controllers/PersonController1')
+const FaceController = require('../controllers/FaceController')
+const UploadController = require('../controllers/UploadController')
+const VisualDataController = require('../controllers/VisualDataController')
+
 
 // router.post('/detect', (req, res) => {
 //   FaceController.detect(req.body.url)
