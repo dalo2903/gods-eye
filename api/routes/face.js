@@ -4,7 +4,7 @@ const multer = require('multer')
 const Constants = require('../../configs/constants')
 const AuthService = require('../services/AuthService')
 const PersonController = require('../controllers/PersonController1')
-const FaceController = require('../controllers/faceController')
+const FaceController = require('../controllers/FaceController')
 const UploadController = require('../controllers/UploadController')
 const VisualDataController = require('../controllers/VisualDataController')
 
