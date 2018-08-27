@@ -4,30 +4,9 @@ const multer = require('multer')
 const Constants = require('../../configs/constants')
 const AuthService = require('../services/AuthService')
 const PersonController = require('../controllers/PersonController1')
-const FaceController = require('../controllers/FaceController')
+const FaceController = require('../controllers/faceController')
 const UploadController = require('../controllers/UploadController')
 const VisualDataController = require('../controllers/VisualDataController')
-
-
-// router.post('/detect', (req, res) => {
-//   FaceController.detect(req.body.url)
-//     .then(resolve => {
-//       return res.status(resolve.status).send(resolve)
-//     }
-//     ).catch(reject => {
-//       return res.status(reject.status).send(reject)
-//     })
-// })
-
-// router.post('/identify', (req, res) => {
-//   FaceController.identify(req.body.faceIds, req.body.personGroupId)
-//     .then(resolve => {
-//       return res.status(resolve.status).send(resolve)
-//     })
-//     .catch(reject => {
-//       return res.status(reject.status).send(reject)
-//     })
-// })
 
 router.get('/persongroup/create/:persongroupid/:name/:userdata?', async (req, res) => {
   try {
@@ -46,6 +25,7 @@ router.get('/persongroup/create/:persongroupid/:name/:userdata?', async (req, re
     return res.status(error.status || 500).send(error)
   }
 })
+
 router.get('/persongroup/list/', async (req, res) => {
   try {
     const response = await FaceController.listPersonGroup()
@@ -93,6 +73,7 @@ router.post('/face/add/', async (req, res) => {
     return res.status(error.status || 500).send(error)
   }
 })
+
 router.get('/persongroup/train/:persongroupid', async (req, res) => {
   try {
     const id = req.params.persongroupid
@@ -104,6 +85,7 @@ router.get('/persongroup/train/:persongroupid', async (req, res) => {
     return res.status(error.status || 500).send(error)
   }
 })
+
 router.get('/persongroup/training/:persongroupid', async (req, res) => {
   try {
     const id = req.params.persongroupid
@@ -115,6 +97,7 @@ router.get('/persongroup/training/:persongroupid', async (req, res) => {
     return res.status(error.status || 500).send(error)
   }
 })
+
 router.get('/persongroup/:persongroupid', async (req, res) => {
   try {
     const id = req.params.persongroupid
@@ -126,6 +109,7 @@ router.get('/persongroup/:persongroupid', async (req, res) => {
     return res.status(error.status || 500).send(error)
   }
 })
+
 router.get('/persongroup/:persongroupid/persons', async (req, res) => {
   try {
     const id = req.params.persongroupid
@@ -137,4 +121,5 @@ router.get('/persongroup/:persongroupid/persons', async (req, res) => {
     return res.status(error.status || 500).send(error)
   }
 })
+
 module.exports = router
