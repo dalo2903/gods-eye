@@ -7,6 +7,11 @@ const index = {
   type: 'website',
   url: config.address
 }
+const face = {
+  known: 'known-faces',
+  unknown: 'unidentified-faces'
+}
 module.exports = {
-  index: index
+  index: index,
+  face: face
 }

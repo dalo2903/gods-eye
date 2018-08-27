@@ -19,8 +19,10 @@
 const express = require('express')
 let router = express.Router()
 const multer = require('multer')
+const Constants = require('../../configs/constants')
 const AuthService = require('../services/AuthService')
 const PersonController = require('../controllers/PersonController1')
+const FaceController = require('../controllers/FaceController')
 const UploadController = require('../controllers/UploadController')
 const VisualDataController = require('../controllers/VisualDataController')
 
@@ -43,9 +45,9 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     req.body.datas = [visualData._id]
     const person = await PersonController.createPerson(req.body, uuid)
     res.send() // Send response after upload image and create person in database
-    const personId = (await PersonController.createPersonInPersonGroup('test-faces', { name: req.body.name })).personId
-    await PersonController.addFaceForPerson('test-faces', personId, url)
-    await PersonController.updateMicrosoftPersonId(person._id, personId)
+    const personId = (await FaceController.createPersonInPersonGroup(Constants.face.known, { name: req.body.name })).personId
+    await FaceController.addFaceForPerson(Constants.face.known, personId, url) // Add face in face api
+    await PersonController.updateMicrosoftPersonId(person._id, personId) // Update MSid in DB
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)

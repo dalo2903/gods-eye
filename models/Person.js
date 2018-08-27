@@ -11,7 +11,7 @@ const PersonSchema = new Schema({
   },
   name: {
     type: String,
-    required: true,
+    required: false,
     default: ''
   },
   status: {
@@ -23,7 +23,12 @@ const PersonSchema = new Schema({
   datas: [{
     type: Schema.Types.ObjectId,
     ref: 'VisualData'
-  }]
+  }],
+  isknown: {
+    type: Boolean,
+    required: true,
+    default: true
+  }
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
 
 PersonSchema.virtual('author', {

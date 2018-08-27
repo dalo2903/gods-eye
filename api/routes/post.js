@@ -5,6 +5,7 @@ const AuthService = require('../services/AuthService')
 const PostController = require('../controllers/PostController')
 const UploadController = require('../controllers/UploadController')
 const VisualDataController = require('../controllers/VisualDataController')
+const IdentifyController = require('../controllers/IdentifyController')
 
 const m = multer({
   storage: multer.memoryStorage(),
@@ -26,6 +27,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     req.body.datas = [visualData._id]
     console.log(req.body)
     await PostController.createPost(req.body, uuid)
+    await IdentifyController.analyzeFace(url)
     return res.send()
   } catch (error) {
     console.log(error)

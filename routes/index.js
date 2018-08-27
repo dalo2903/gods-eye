@@ -6,7 +6,7 @@ var constants = require('../configs/constants')
 const Storage = require('@google-cloud/storage')
 var path = require('path')
 var request = require('request')
-var faceController = require('../api/controllers/faceController')
+var FaceController = require('../api/controllers/FaceController')
 var admin = require('../api/controllers/firebaseAdminController')
 var authController = require('../api/controllers/authController')
 var responseStatus = require('../configs/responseStatus')
@@ -304,13 +304,13 @@ router.post('/identify', function (req, res) {
   sampleFile.mv(pathFile, function (err) {
     if (err) { return res.status(500).send(err) }
     uploadFile(pathFile, newName).then(resolve => {
-      faceController.detectAndIdentify(imageApi + newName, 'test-faces')
+      FaceController.detectAndIdentify(imageApi + newName, 'test-faces')
         .then(resolve => {
           var personData = []
           const faceIds = resolve.faceIds
           async.each(faceIds, (faceId, callback) => {
             if (faceId.candidates.length !== 0) {
-              faceController.getPersonInfo('test-faces', faceId.candidates[0].personId)
+              FaceController.getPersonInfo('test-faces', faceId.candidates[0].personId)
                 .then(resolvePersonInfo => {
                   console.log(resolvePersonInfo.person)
                   var data = resolvePersonInfo.person

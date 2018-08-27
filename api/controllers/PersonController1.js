@@ -17,7 +17,8 @@ class PersonController extends BaseController {
       mspersonid: '',
       status: 100,
       score: 100,
-      datas: obj.datas
+      datas: obj.datas,
+      isknown: true
     }
     person = await this.create(person)
     return person
@@ -35,50 +36,9 @@ class PersonController extends BaseController {
     if (!person) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { person: person })
   }
-
-  async createPersonInPersonGroup (personGroupId, person) {
-    const url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
-    const options = {
-      url: url,
-      method: 'POST',
-      headers: {
-        'Ocp-Apim-Subscription-Key': config.microsoft.key1
-      },
-      body: {
-        name: person.name,
-        userData: ''
-      },
-      json: true
-    }
-    try {
-      const res = await rpn(options)
-      return res
-    } catch (error) {
-      console.log(error)
-      throw responseStatus.Response(500, {}, 'Error when create person in person group')
-    }
-  }
-
-  async addFaceForPerson (personGroupId, personId, faceURL) {
-    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
-    var options = {
-      url: url,
-      method: 'POST',
-      headers: {
-        'Ocp-Apim-Subscription-Key': config.microsoft.key1
-      },
-      body: {
-        url: faceURL
-      },
-      json: true
-    }
-    try {
-      const res = await rpn(options) // persistedFaceId
-      return res
-    } catch (error) {
-      console.log(error)
-      throw responseStatus.Response(500, {}, 'Error when add face for person')
-    }
+  async addDataForPerson (_id, dataId) {
+    let person = await this.get(_id)
+    person.datas.push(dataId)
   }
 }
 

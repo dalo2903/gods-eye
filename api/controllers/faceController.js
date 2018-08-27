@@ -1,9 +1,45 @@
 var request = require('request')
 var config = require('../../config')
-var responseStatus = require('../../configs/responseStatus')
+const rpn = require('request-promise-native')
 
-function detect (urlImage) {
-  return new Promise((resolve, reject) => {
+var responseStatus = require('../../configs/responseStatus')
+var BaseController = require('./BaseController')
+var Person = require('../../models/Person')
+
+// function detect (urlImage) {
+//   return new Promise((resolve, reject) => {
+//     var url = config.microsoft.face + '/detect?returnFaceId=true'
+//     var options = {
+//       url: url,
+//       method: 'POST',
+//       headers: {
+//         'Ocp-Apim-Subscription-Key': config.microsoft.key1
+//       },
+//       body: {
+//         url: urlImage
+//       },
+//       json: true
+//     }
+//     request(options, (err, res) => {
+//       if (err) {
+//         console.log(err)
+//         return reject(responseStatus.Response(500, err))
+//       }
+//       const status = res.statusCode
+//       if (status === 200) {
+//         return resolve(responseStatus.Response(200, { faceIds: res }))
+//       } else {
+//         return reject(responseStatus.Response(status, { error: res.error }))
+//       }
+//     })
+//   })
+// }
+class FaceController extends BaseController {
+  constructor () {
+    super(Person)
+  }
+
+  async detect (urlImage) {
     var url = config.microsoft.face + '/detect?returnFaceId=true'
     var options = {
       url: url,
@@ -16,23 +52,46 @@ function detect (urlImage) {
       },
       json: true
     }
-    request(options, (err, res) => {
-      if (err) {
-        console.log(err)
-        return reject(responseStatus.Response(500, err))
-      }
-      const status = res.statusCode
-      if (status === 200) {
-        return resolve(responseStatus.Response(200, { faceIds: res.body }))
-      } else {
-        return reject(responseStatus.Response(status, { error: res.body.error }))
-      }
-    })
-  })
-}
+    try {
+      const res = await rpn(options)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when detect face')
+    }
+  }
 
-function identify (faceIds, personGroupId) {
-  return new Promise((resolve, reject) => {
+  // function identify (faceIds, personGroupId) {
+  //   return new Promise((resolve, reject) => {
+  //     var url = config.microsoft.face + '/identify'
+  //     var options = {
+  //       url: url,
+  //       method: 'POST',
+  //       headers: {
+  //         'Ocp-Apim-Subscription-Key': config.microsoft.key1
+  //       },
+  //       body: {
+  //         faceIds: faceIds,
+  //         personGroupId: personGroupId
+  //       },
+  //       json: true
+  //     }
+  //     request(options, (err, res) => {
+  //       if (err) {
+  //         console.log(err)
+  //         return reject(responseStatus.Response(500, err))
+  //       }
+  //       const status = res.statusCode
+  //       if (status === 200) {
+  //         return resolve(responseStatus.Response(status, { faceIds: res }))
+  //       } else {
+  //         return reject(responseStatus.Response(status, { error: res.error }))
+  //       }
+  //     })
+  //   })
+  // }
+
+  async identify (faceIds, personGroupId) {
     var url = config.microsoft.face + '/identify'
     var options = {
       url: url,
@@ -46,45 +105,94 @@ function identify (faceIds, personGroupId) {
       },
       json: true
     }
-    request(options, (err, res) => {
-      if (err) {
-        console.log(err)
-        return reject(responseStatus.Response(500, err))
-      }
-      const status = res.statusCode
-      if (status === 200) {
-        return resolve(responseStatus.Response(status, { faceIds: res.body }))
-      } else {
-        return reject(responseStatus.Response(status, { error: res.body.error }))
-      }
-    })
-  })
-}
+    try {
+      const res = await rpn(options)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when identifying face')
+    }
+  }
 
-function detectAndIdentify (url, personGroupId) {
-  return new Promise((resolve, reject) => {
-    detect(url).then(resolveDetect => {
-      var detectFaceIds = resolveDetect.faceIds
-      var identifyFaceIds = []
-      console.log(detectFaceIds)
-      detectFaceIds.forEach(element => {
-        identifyFaceIds.push(element.faceId)
-      })
-      identify(identifyFaceIds, personGroupId)
-        .then(resolveIdentify => {
-          return resolve(resolveIdentify)
-        }).catch(rejectIdentify => {
-          return rejectIdentify
-        })
-    }).catch(rejectDetect => {
-      return rejectDetect
-    })
-  })
-}
+  // function detectAndIdentify (url, personGroupId) {
+  //   return new Promise((resolve, reject) => {
+  //     detect(url).then(resolveDetect => {
+  //       var detectFaceIds = resolveDetect.faceIds
+  //       var identifyFaceIds = []
+  //       console.log(detectFaceIds)
+  //       detectFaceIds.forEach(element => {
+  //         identifyFaceIds.push(element.faceId)
+  //       })
+  //       identify(identifyFaceIds, personGroupId)
+  //         .then(resolveIdentify => {
+  //           return resolve(resolveIdentify)
+  //         }).catch(rejectIdentify => {
+  //           return rejectIdentify
+  //         })
+  //     }).catch(rejectDetect => {
+  //       return rejectDetect
+  //     })
+  //   })
+  // }
 
-function getPersonInfo (personGroupId, personId) {
-  return new Promise((resolve, reject) => {
-    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId
+  async detectAndIdentify (url, personGroupId) {
+    var detectFaceIds = await this.detect(url)
+    var identifyFaceIds = []
+    console.log(detectFaceIds)
+    detectFaceIds.forEach(element => {
+      identifyFaceIds.push(element.faceId)
+    })
+    if (detectFaceIds.length !== 0) {
+      const res = this.identify(identifyFaceIds, personGroupId)
+      return res
+    }
+  }
+
+  async createPersonGroup (personGroupId, group) {
+    var url = config.microsoft.face + '/persongroups/' + personGroupId
+    var options = {
+      url: url,
+      method: 'PUT',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      body: {
+        name: group.name,
+        userData: group.userData
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options)
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when detect face')
+    }
+  }
+
+  async deletePersonGroup (personGroupId) {
+    var url = config.microsoft.face + '/persongroups/' + personGroupId
+    var options = {
+      url: url,
+      method: 'DELETE',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when detect face')
+    }
+  }
+
+  async listPersonGroup () {
+    var url = config.microsoft.face + '/persongroups/'
     var options = {
       url: url,
       method: 'GET',
@@ -93,27 +201,165 @@ function getPersonInfo (personGroupId, personId) {
       },
       json: true
     }
-    request(options, (err, res) => {
-      if (err) {
-        console.log(err)
-        return reject(responseStatus.Response(500, err))
+    try {
+      const res = await rpn(options)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when detect face')
+    }
+  }
+
+  async createPersonInPersonGroup (personGroupId, person) {
+    const url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
+    const options = {
+      url: url,
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      body: {
+        name: person.name,
+        userData: ''
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when create person in person group')
+    }
+  }
+
+  async addFaceForPerson (personGroupId, personId, faceURL) {
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
+    var options = {
+      url: url,
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      body: {
+        url: faceURL
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options) // persistedFaceId
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when add face for person')
+    }
+  }
+  async getPersonInfo (personGroupId, personId) {
+    return new Promise((resolve, reject) => {
+      var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId
+      var options = {
+        url: url,
+        method: 'GET',
+        headers: {
+          'Ocp-Apim-Subscription-Key': config.microsoft.key1
+        },
+        json: true
       }
-      const statusCode = res.statusCode
-      if (statusCode === 200) {
-        var result = {
-          name: res.body.name,
-          MSSV: res.body.userData
+      request(options, (err, res) => {
+        if (err) {
+          console.log(err)
+          return reject(responseStatus.Response(500, err))
         }
-        return resolve(responseStatus.Response(statusCode, { person: result }))
-      } else {
-        return reject(responseStatus.Response(statusCode, { error: res.body.error }))
-      }
+        const statusCode = res.statusCode
+        if (statusCode === 200) {
+          var result = {
+            name: res.name,
+            MSSV: res.userData
+          }
+          return resolve(responseStatus.Response(statusCode, { person: result }))
+        } else {
+          return reject(responseStatus.Response(statusCode, { error: res.error }))
+        }
+      })
     })
-  })
+  }
+
+  async trainPersonGroup (personGroupId) {
+    const url = config.microsoft.face + '/persongroups/' + personGroupId + '/train'
+    var options = {
+      url: url,
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options) // persistedFaceId
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when training person group')
+    }
+  }
+  async getTrainingStatus (personGroupId) {
+    const url = config.microsoft.face + '/persongroups/' + personGroupId + '/training'
+    var options = {
+      url: url,
+      method: 'GET',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options) // persistedFaceId
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when getting training status of person group')
+    }
+  }
+  async getPersonGroup (personGroupId) {
+    const url = config.microsoft.face + '/persongroups/' + personGroupId
+    var options = {
+      url: url,
+      method: 'GET',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options) // persistedFaceId
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when getting person group')
+    }
+  }
+
+  async getPersonInPersonGroup (personGroupId) {
+    const url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons'
+    var options = {
+      url: url,
+      method: 'GET',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options) // persistedFaceId
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when getting person')
+    }
+  }
 }
-module.exports = {
-  detect: detect,
-  identify: identify,
-  detectAndIdentify: detectAndIdentify,
-  getPersonInfo: getPersonInfo
-}
+module.exports = new FaceController()
