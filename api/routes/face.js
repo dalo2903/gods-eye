@@ -26,6 +26,18 @@ router.get('/persongroup/create/:persongroupid/:name/:userdata?', async (req, re
   }
 })
 
+router.get('/person/create/:persongroupid/:name/:urlimage', async (req, res) => {
+  try {
+    const personGroupId = req.params.persongroupid
+    const name = req.params.name
+    const urlImage = req.params.urlImage
+    PersonController.createPerson()
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.get('/persongroup/list/', async (req, res) => {
   try {
     const response = await FaceController.listPersonGroup()
@@ -113,7 +125,7 @@ router.get('/persongroup/:persongroupid', async (req, res) => {
 router.get('/persongroup/:persongroupid/persons', async (req, res) => {
   try {
     const id = req.params.persongroupid
-    const response = await FaceController.getPersonInPersonGroup(id)
+    const response = await FaceController.getPersonsInPersonGroup(id)
     console.log(response)
     return res.send(response)
   } catch (error) {

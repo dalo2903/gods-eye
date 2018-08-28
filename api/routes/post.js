@@ -27,7 +27,8 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     req.body.datas = [visualData._id]
     console.log(req.body)
     await PostController.createPost(req.body, uuid)
-    await IdentifyController.analyzeFace(url)
+    const identifyResponse = await IdentifyController.analyzeFace(url)
+    console.log(identifyResponse)
     return res.send()
   } catch (error) {
     console.log(error)
@@ -42,10 +43,6 @@ router.get('/:id', async (req, res) => {
     return res.send(response)
   } catch (error) {
     console.log(error)
-    return res.status(error.status || 500).send(error)
-  }
-})
-
 router.get('/', async (req, res) => {
   try {
     const response = await PostController.getPostsPopulateAuthor()

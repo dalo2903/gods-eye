@@ -342,7 +342,7 @@ class FaceController extends BaseController {
     }
   }
 
-  async getPersonInPersonGroup (personGroupId) {
+  async getPersonsInPersonGroup (personGroupId) {
     const url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons'
     var options = {
       url: url,

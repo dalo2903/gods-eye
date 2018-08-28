@@ -10,26 +10,18 @@ class IdentifyController extends BaseController {
     super(Person)
   }
   async analyzeFace (url) {
-    var knownFaceIds = await this.checkKnownFace(url)
-    console.log(knownFaceIds)
-    var unknownFaceIds = await this.checkUnknownFace(url)
-    console.log(unknownFaceIds)
+    var knownFaceRes = await this.checkKnownFace(url)
+    console.log(knownFaceRes)
   }
 
   async checkKnownFace (url) {
-    const faceIds = await FaceController.detectAndIdentify(url, constants.face.known)
-    faceIds.forEach(element => {
-      console.log(element.candidates)
-    })
-    return faceIds
+    const res = await FaceController.detectAndIdentify(url, constants.face.known)
+    return res
   }
 
   async checkUnknownFace (url) {
-    const faceIds = await FaceController.detectAndIdentify(url, constants.face.unknown)
-    faceIds.forEach(element => {
-      console.log(element.candidates)
-    })
-    return faceIds
+    const res = await FaceController.detectAndIdentify(url, constants.face.unknown)
+    return res
   }
 }
 module.exports = new IdentifyController()
