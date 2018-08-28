@@ -27,6 +27,10 @@ const UserSchema = new Schema({
   studentId: {
     type: String
   },
+  personId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Person'
+  },
   department: {
     type: String
   },

@@ -31,7 +31,7 @@ class PersonController extends BaseController {
   }
 
   async getPerson (_id) {
-    const person = await Person.findById(_id).populate({ path: 'author', select: 'name avatar uuid' })
+    const person = await Person.findById(_id).populate({ path: 'person', select: 'mspersonid name locationid' })
       .populate({ path: 'datas', select: 'URL' }).exec()
     if (!person) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { person: person })
