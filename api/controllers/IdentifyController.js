@@ -4,6 +4,7 @@ var responseStatus = require('../../configs/responseStatus')
 var Person = require('../../models/Person')
 var constants = require('../../configs/constants')
 var FaceController = require('./FaceController')
+var RecordController = require('./RecordController')
 
 class IdentifyController extends BaseController {
   constructor () {
@@ -22,6 +23,9 @@ class IdentifyController extends BaseController {
   async checkUnknownFace (url) {
     const res = await FaceController.detectAndIdentify(url, constants.face.unknown)
     return res
+  }
+  async calculateScore (personId) {
+
   }
 }
 module.exports = new IdentifyController()
