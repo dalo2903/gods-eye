@@ -97,9 +97,15 @@ function verifySessionCookie (sessionCookie) {
   })
 }
 
+async function signUp (obj) {
+  await UserController.createUserV2(obj)
+  return responseStatus.Response(200, {}, responseStatus.SIGN_UP_SUCCESSFULLY)
+}
+
 module.exports = {
   verifyIdToken: verifyIdToken,
   // testSignIn: testSignIn,
   generateSessionCookie: generateSessionCookie,
-  verifySessionCookie: verifySessionCookie
+  verifySessionCookie: verifySessionCookie,
+  signUp: signUp
 }

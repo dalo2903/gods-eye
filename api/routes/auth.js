@@ -20,6 +20,16 @@ router.post('/', (req, res) => {
   }
 })
 
+router.post('/sign-up', async (req, res) => {
+  try {
+    const response = await authController.signUp(req.body)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.get('/test', (req, res) => {
   const sessionCookie = req.cookies.session || ''
   authController.verifySessionCookie(sessionCookie)

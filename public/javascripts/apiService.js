@@ -70,5 +70,8 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
       }
       return $http(req)
     },
+    signUp: function (json) {
+      return $http.post('/api/auth/sign-up', json)
+    }
   }
 }])

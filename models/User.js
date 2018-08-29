@@ -3,9 +3,7 @@ const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
   uuid: {
-    type: String,
-    unique: true,
-    required: true
+    type: String
   },
   avatar: {
     type: String,
@@ -21,21 +19,28 @@ const UserSchema = new Schema({
     lowercase: true,
     sparse: true
   },
+  password: {
+    type: String
+  },
   phone: {
     type: Number
   },
-  studentId: {
-    type: String
-  },
+  // studentId: {
+  //   type: String
+  // },
   personId: {
     type: Schema.Types.ObjectId,
     ref: 'Person'
   },
-  department: {
-    type: String
-  },
-  year: {
-    type: String
+  // department: {
+  //   type: String
+  // },
+  // year: {
+  //   type: String
+  // }
+  role: {
+    type: Number,
+    default: 0
   }
 }, { usePushEach: true, timestamps: true })
 
