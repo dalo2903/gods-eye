@@ -58,6 +58,19 @@ router.get('/person/create', (req, res) => {
   })
 })
 
+router.get('/person/face/add/:id', (req, res) => {
+  res.render('person/add-face', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || '',
+    _id: req.params.id
+  })
+})
+
 router.get('/post/:id', (req, res) => {
   res.render('post/detail', {
     image: constants.index.image,
