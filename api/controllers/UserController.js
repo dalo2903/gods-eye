@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const responseStatus = require('../../configs/responseStatus')
 const common = require('../common')
+const bcrypt = require('bcrypt')
 
 class UserController extends BaseController {
   constructor () {
@@ -36,6 +37,11 @@ class UserController extends BaseController {
     let user = await this.getUserByEmail(obj.email)
     if (!user) {
       user = await this.create(obj)
+      bcrypt.hash(user.password, 10, function (err, hash) {
+        if (err) return err
+        user.password = hash
+        user.save()
+      })
     } else {
       throw responseStatus.Response(409, {}, responseStatus.EMAIL_EXISTED)
     }
