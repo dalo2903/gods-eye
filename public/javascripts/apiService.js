@@ -39,11 +39,36 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
       }
       return $http(req)
     },
+    addDataForPerson: function (formData) {
+      var req = {
+        method: 'POST',
+        url: '/api/person/face/add',
+        headers: {
+          'Content-Type': undefined
+        },
+        data: formData
+      }
+      return $http(req)
+    },
     getPersons: function () {
       return $http.get('/api/person')
     },
+    getPerson: function (_id) {
+      return $http.get('/api/person/' + _id)
+    },
     getLocations: function (_id) {
       return $http.get('/api/location/')
-    }
+    },
+    addFace: function (formData) {
+      var req = {
+        method: 'POST',
+        url: '/api/person/add-face',
+        headers: {
+          'Content-Type': undefined
+        },
+        data: formData
+      }
+      return $http(req)
+    },
   }
 }])

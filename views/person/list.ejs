@@ -8,9 +8,17 @@
             float: right;
         }
 
-        /* .avatar-header {
+        .avatar-header {
             width: 80px;
-        } */
+        }
+
+        .created-at-header {
+            width: 140px;
+        }
+
+        .button-header {
+            width: 140px;
+        }
     </style>
 
     <div class="container text-left" ng-controller="listController">
@@ -22,7 +30,8 @@
                         <th>Name</th>
                         <th>Score</th>
                         <th>Status</th>
-                        <th>Created At</th>
+                        <th class="created-at-header">Created At</th>
+                        <th class="button-header"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +41,7 @@
                         <td>{{ person.score }}</td>
                         <td>{{ person.status }}</td>
                         <td>{{ person.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
+                        <td><a href="/person/face/add/{{person._id}}" class="btn btn-primary">Add photo</a></td>
                     </tr>
                 </tbody>
             </table>

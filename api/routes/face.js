@@ -31,7 +31,20 @@ router.get('/person/create/:persongroupid/:name/:urlimage', async (req, res) => 
     const personGroupId = req.params.persongroupid
     const name = req.params.name
     const urlImage = req.params.urlImage
-    PersonController.createPerson()
+
+    const visualData = await VisualDataController.createVisualData({
+      URL: urlImage,
+      isImage: true
+    })
+    const request = {
+      name: name,
+      datas: [visualData._id]
+    }
+    const person = await PersonController.createPerson(request, 'CMo8CqLzzBXn19GSCcEuNnHJYhq1')
+    res.send()
+    const personId = await (FaceController.createPersonInPersonGroup(personGroupId, {name: name})).personId
+    await FaceController.addFaceForPerson(personGroupId, personId, urlImage) // Add face in face api
+    await PersonController.updateMicrosoftPersonId(person._id, personId) // Update MSid in DB
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)

@@ -33,6 +33,29 @@ const m = multer({
   }
 })
 
+router.post('/add-face', async (req, res) => {
+  try {
+    const session = AuthService.getSessionFromRequest(req)
+    await AuthService.isLoggedIn(session)
+    const url = await UploadController.uploadFile(req)
+    const visualData = await VisualDataController.createVisualData({
+      URL: url,
+      isImage: true
+    })
+    const response = await PersonController.addDataForPerson(req.body._id, visualData._id)
+    res.send(response)
+    try {
+      const mspersonId = response.person.mspersonId
+      await FaceController.addFaceForPerson(Constants.face.known, mspersonId, url) // Add face to mspersonid
+    } catch (error) {
+      console.log(error)
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
     const session = AuthService.getSessionFromRequest(req)
@@ -48,6 +71,16 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     const personId = (await FaceController.createPersonInPersonGroup(Constants.face.known, { name: req.body.name })).personId
     await FaceController.addFaceForPerson(Constants.face.known, personId, url) // Add face in face api
     await PersonController.updateMicrosoftPersonId(person._id, personId) // Update MSid in DB
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
+router.get('/:id', async (req, res) => {
+  try {
+    const response = await PersonController.getPerson(req.params.id)
+    return res.send(response)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
