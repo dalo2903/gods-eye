@@ -47,7 +47,10 @@
           </li>
           <% } else { %>
             <li>
-              <a href="#" onclick="signIn()">
+              <a href="/about">ABOUT US</a>
+            </li>
+            <li>
+              <a href="#" onclick="document.getElementById('modal-sign-in').style.display='block'">
                 <span class="glyphicon glyphicon-log-in"></span> Sign In</a>
             </li>
             <% } %>
@@ -55,7 +58,6 @@
     </div>
   </div>
 </nav>
-<% include ./modalProfile.ejs %>
 <% include ./signin.ejs %>
 
   <script>

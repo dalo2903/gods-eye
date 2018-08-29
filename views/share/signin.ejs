@@ -1,10 +1,7 @@
 <style>
     /* The Modal (background) */
-    .modal-backdrop {
-        display: none;
-    }
-
     .modal {
+        margin: 0px auto;
         display: none;
         /* Hidden by default */
         position: fixed;
@@ -36,58 +33,106 @@
         /* Could be more or less, depending on screen size */
     }
 
+
+    .btn {
+        border-radius: 5px
+    }
+
+    .close {
+        font-size: 25px;
+        opacity: 0.5;
+        right: 5px;
+        position: absolute;
+    }
+
+    #modal-sign-in form {
+        width: 50%
+    }
+
     #modal-sign-in .input-group {
         width: 70%;
         margin-left: auto;
         margin-right: auto;
     }
+
+    #modal-sign-up form {
+        width: 50%
+    }
+
+    #modal-sign-up .input-group {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
-
-<div class="modal" id="modal-sign-in">
-
-    <form class='modal-content' ref='signinForm' id='signinForm' ng-submit="signIn()" style="height: 300px">
-        <h1 class="text-center">SIGN IN</h1>
-        <div class="form-group">
-            <label for="email">Email address</label>
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
-                </span>
-                <input type="email" class="form-control" id="email" placeholder="Email address" name="username" required>
+<script src="/javascripts/signin.js"></script>
+<div ng-controller='SignInController'>
+    <div class="modal" id="modal-sign-in">
+        <!-- Sign In -->
+        <form class='modal-content' ref='signinForm' id='signinForm' ng-submit="SignIn()" style="height: 420px">
+            <i class="fa fa-times close" onclick="document.getElementById('modal-sign-in').style.display='none'" title="Close Modal"></i>
+            <h1 class="text-center">SIGN IN</h1>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="email" class="form-control" id="email" placeholder="Email address" name="username" required>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-key fa-lg" aria-hidden="true"></i>
-                </span>
-                <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-key fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                </div>
             </div>
-        </div>
 
-        <!--<div class="checkbox">
-            <label>
-                <input type="checkbox"> Remember me
-            </label>
-        </div>-->
-        <div class="pull-left">
-            <button type="button" onclick="window.location.href='/signup'" class="btn btn-primary my-btn">
+            <button type="button" onclick="$('#modal-sign-in').hide();$('#modal-sign-up').show();" class="btn btn-primary my-btn">
                 <i class="fa fa-user-plus fa-lg" aria-hidden="true"></i> Sign up</button>
-        </div>
-        <div class="pull-right">
             <button class="btn btn-primary my-btn">
                 <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Sign in</button>
-        </div>
-    </form>
-    <br>
-    <br>
-    <hr />
-    <div class="text-center">Or connect with:</div>
-    <div class="text-center">
-        <button style="background-color:#395697" class="btn btn-primary my-btn" onclick="window.location.href='/auth/facebook'">
-            <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i> Facebook</button>
-        <button style="background-color:#DD4B39; border-color:#DD4B39" class="btn btn-primary my-btn" onclick="window.location.href='/auth/google'">
-            <i class="fa fa-google-plus-official fa-lg" aria-hidden="true"></i> Google+</button>
+            <hr>
+            <div class="text-center">Or connect with:</div>
+            <div class="text-center">
+                <button style="background-color:#395697" class="btn btn-primary my-btn" onclick="window.location.href='/auth/facebook'">
+                    <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i> Facebook</button>
+                <button style="background-color:#DD4B39; border-color:#DD4B39" class="btn btn-primary my-btn" onclick="window.location.href='/auth/google'">
+                    <i class="fa fa-google-plus-official fa-lg" aria-hidden="true"></i> Google+</button>
+            </div>
+        </form>
+
+
+    </div>
+    <div class="modal" id="modal-sign-up">
+        <!-- Sign up -->
+        <form class='modal-content' id='signupForm' ng-submit="SignUp()" style="height: 300px">
+            <i class="fa fa-times close" onclick="document.getElementById('modal-sign-up').style.display='none'" title="Close Modal"></i>
+            <h1 class="text-center">SIGN UP</h1>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="email" class="form-control" id="email" placeholder="Email address" name="username" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-key fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary my-btn" ng-click='SignUp()'>
+                <i class="fa fa-user-plus fa-lg" aria-hidden="true"></i> Sign up</button>
+        </form>
     </div>
 </div>
