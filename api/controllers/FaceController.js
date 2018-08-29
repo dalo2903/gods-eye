@@ -187,7 +187,26 @@ class FaceController extends BaseController {
       return res
     } catch (error) {
       console.log(error)
-      throw responseStatus.Response(500, {}, 'Error when detect face')
+      throw responseStatus.Response(500, {}, 'Error when delete person group face')
+    }
+  }
+
+  async deletePersonInPersonGroup (personGroupId, personId) {
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId
+    var options = {
+      url: url,
+      method: 'DELETE',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when delete person face')
     }
   }
 
@@ -255,33 +274,22 @@ class FaceController extends BaseController {
     }
   }
   async getPersonInfo (personGroupId, personId) {
-    return new Promise((resolve, reject) => {
-      var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId
-      var options = {
-        url: url,
-        method: 'GET',
-        headers: {
-          'Ocp-Apim-Subscription-Key': config.microsoft.key1
-        },
-        json: true
-      }
-      request(options, (err, res) => {
-        if (err) {
-          console.log(err)
-          return reject(responseStatus.Response(500, err))
-        }
-        const statusCode = res.statusCode
-        if (statusCode === 200) {
-          var result = {
-            name: res.name,
-            MSSV: res.userData
-          }
-          return resolve(responseStatus.Response(statusCode, { person: result }))
-        } else {
-          return reject(responseStatus.Response(statusCode, { error: res.error }))
-        }
-      })
-    })
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId
+    var options = {
+      url: url,
+      method: 'GET',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1
+      },
+      json: true
+    }
+    try {
+      const res = await rpn(options) // persistedFaceId
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when add face for person')
+    }
   }
 
   async trainPersonGroup (personGroupId) {

@@ -27,8 +27,8 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     req.body.datas = [visualData._id]
     console.log(req.body)
     await PostController.createPost(req.body, uuid)
-    const identifyResponse = await IdentifyController.analyzeFace(url)
-    console.log(identifyResponse)
+    await IdentifyController.analyzeFace(url)
+    // console.log(identifyResponse)
     return res.send()
   } catch (error) {
     console.log(error)
