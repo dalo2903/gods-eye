@@ -54,6 +54,15 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
   }
 })
 
+router.get('/:id', async (req, res) => {
+  try {
+    const response = await PersonController.getPerson(req.params.id)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
 router.get('/', async (req, res) => {
   try {
     const session = AuthService.getSessionFromRequest(req)
