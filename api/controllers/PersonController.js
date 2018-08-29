@@ -36,6 +36,12 @@ class PersonController extends BaseController {
     if (!person) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { person: person })
   }
+
+  async getPersonsSameAuthor (uuid) {
+    const persons = await Person.find({ uuid: uuid }).populate({ path: 'author', select: 'name avatar uuid' }).populate({ path: 'datas', select: 'URL' })
+    return responseStatus.Response(200, { persons: persons })
+  }
+
   async addDataForPerson (_id, dataId) {
     let person = await this.get(_id)
     person.datas.push(dataId)

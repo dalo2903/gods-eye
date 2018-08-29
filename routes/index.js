@@ -545,6 +545,18 @@ router.get('/images', (req, res) => {
     })
 })
 
+router.get('/person', (req, res) => {
+  return res.render('person/list', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || ''
+  })
+})
+
 function saveImageToDatabase (imgObj) {
   imageRef.child(imgObj.name).set({
     location: imgObj.location,

@@ -54,4 +54,16 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
   }
 })
 
+router.get('/', async (req, res) => {
+  try {
+    const session = AuthService.getSessionFromRequest(req)
+    const uuid = await AuthService.isLoggedIn(session)
+    const response = await PersonController.getPersonsSameAuthor(uuid)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 module.exports = router
