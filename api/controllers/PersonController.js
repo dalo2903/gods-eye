@@ -45,6 +45,8 @@ class PersonController extends BaseController {
   async addDataForPerson (_id, dataId) {
     let person = await this.get(_id)
     person.datas.push(dataId)
+    person = await person.save()
+    return responseStatus.Response(200, { person: person }, 'Add photo successfully')
   }
 }
 
