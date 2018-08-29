@@ -34,18 +34,6 @@ router.get('/', function (req, res, next) {
   })
 })
 
-router.get('/signup', function (req, res, next) {
-  return res.render('signup', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.cookies.user_id || '',
-    user_name: req.cookies.user_name || ''
-  })
-})
-
 router.get('/post/create', (req, res) => {
   res.render('post/create', {
     image: constants.index.image,
