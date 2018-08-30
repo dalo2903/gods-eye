@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var authController = require('../controllers/authController')
+const AuthService = require('../services/AuthService')
 
 router.post('/', (req, res) => {
   try {
@@ -20,6 +21,19 @@ router.post('/', (req, res) => {
   }
 })
 
+router.post('/sign-in', async (req, res) => {
+  try {
+    const response = await authController.signIn(req.body)
+    const token = AuthService.signJWTToken(req.body.email)
+    req.session.token = token
+    req.session.user = response.user
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.post('/sign-up', async (req, res) => {
   try {
     const response = await authController.signUp(req.body)
@@ -30,20 +44,37 @@ router.post('/sign-up', async (req, res) => {
   }
 })
 
-router.get('/test', (req, res) => {
-  const sessionCookie = req.cookies.session || ''
-  authController.verifySessionCookie(sessionCookie)
-    .then(resolve => {
-      return res.status(resolve.status).send(resolve)
-    }).catch(reject => {
-      return res.status(reject.status).send(reject)
-    })
+// router.get('/test', (req, res) => {
+//   const sessionCookie = req.cookies.session || ''
+//   authController.verifySessionCookie(sessionCookie)
+//     .then(resolve => {
+//       return res.status(resolve.status).send(resolve)
+//     }).catch(reject => {
+//       return res.status(reject.status).send(reject)
+//     })
+// })
+
+router.get('/test', async (req, res) => {
+  try {
+    const token = req.session.token
+    const response = await AuthService.verifyJWTToken(token)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
 })
 
+// router.get('/sign-out', (req, res) => {
+//   res.clearCookie('session')
+//   res.clearCookie('user_id')
+//   res.clearCookie('user_name')
+//   return res.redirect('/')
+// })
+
 router.get('/sign-out', (req, res) => {
-  res.clearCookie('session')
-  res.clearCookie('user_id')
-  res.clearCookie('user_name')
+  delete req.session.user
+  delete req.session.token
   return res.redirect('/')
 })
 

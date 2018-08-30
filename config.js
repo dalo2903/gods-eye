@@ -24,5 +24,9 @@ module.exports = {
   cookieOptions: { // Bo secure: true vi khong co HTTPS
     maxAge: 60 * 60 * 24 * 5 * 1000, // Set session expiration to 5 days.
     httpOnly: true
+  },
+  token: {
+    expiresIn: '1m',
+    secret: 'cuoituancuoituan'
   }
 }

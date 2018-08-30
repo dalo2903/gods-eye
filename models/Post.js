@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const PostSchema = new Schema({
-  uuid: {
-    type: String,
-    required: true
+  userCreated: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   },
   tags: [{
     type: String,
@@ -28,11 +28,11 @@ const PostSchema = new Schema({
   }
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
 
-PostSchema.virtual('author', {
-  ref: 'User',
-  localField: 'uuid',
-  foreignField: 'uuid',
-  justOne: true
-})
+// PostSchema.virtual('author', {
+//   ref: 'User',
+//   localField: 'uuid',
+//   foreignField: 'uuid',
+//   justOne: true
+// })
 
 mongoose.model('Post', PostSchema)

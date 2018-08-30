@@ -8,10 +8,10 @@ class PostController extends BaseController {
     super(Post)
   }
 
-  async createPost (obj, uuid) {
+  async createPost (obj, userCreated) {
     // if (!obj.title) throw responseStatus.Response(400, {}, 'title')
     const post = {
-      uuid: uuid,
+      userCreated: userCreated,
       tags: obj.tags || [],
       title: obj.title || 'title',
       type: obj.type,
@@ -22,20 +22,20 @@ class PostController extends BaseController {
   }
 
   async getPost (_id) {
-    const post = await Post.findById(_id).populate({ path: 'author', select: 'name avatar uuid' })
+    const post = await Post.findById(_id).populate({ path: 'userCreated', select: 'name avatar' })
       .populate({ path: 'datas location', select: 'URL address' }).exec()
     if (!post) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { post: post })
   }
 
   async getPostPopulateAuthor (_id) {
-    const post = await Post.findById(_id).populate({ path: 'author', select: 'name avatar uuid' }).exec()
+    const post = await Post.findById(_id).populate({ path: 'userCreated', select: 'name avatar' }).exec()
     if (!post) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { post: post })
   }
 
   async getPostsPopulateAuthor () {
-    const posts = await Post.find().populate({ path: 'author', select: 'name avatar uuid' }).populate({ path: 'datas location', select: 'URL address' }).sort('-createdAt').exec()
+    const posts = await Post.find().populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address' }).sort('-createdAt').exec()
     return responseStatus.Response(200, { posts: posts })
   }
 }

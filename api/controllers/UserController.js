@@ -46,6 +46,21 @@ class UserController extends BaseController {
       throw responseStatus.Response(409, {}, responseStatus.EMAIL_EXISTED)
     }
   }
+
+  async signIn (obj) {
+    if (!obj.email) throw responseStatus.Response(400, {}, responseStatus.EMAIL_REQUIRED)
+    if (!common.validateEmail(obj.email)) throw responseStatus.Response(400, {}, responseStatus.INVALID_EMAIL)
+    if (!obj.password) throw responseStatus.Response(400, {}, responseStatus.PASSWORD_REQUIRED)
+    let user = await this.getUserByEmail(obj.email)
+    if (!user) {
+      throw responseStatus.Response(403, {}, responseStatus.WRONG_EMAIL_OR_PASSWORD)
+    }
+    const resolve = await bcrypt.compare(obj.password, user.password)
+    if (!resolve) throw responseStatus.Response(403, {}, responseStatus.WRONG_EMAIL_OR_PASSWORD)
+    user = JSON.parse(JSON.stringify(user))
+    delete user.password
+    return responseStatus.Response(200, { user: user }, responseStatus.SIGN_IN_SUCCESSFULLY)
+  }
 }
 
 module.exports = new UserController()

@@ -16,4 +16,19 @@ app.controller('SignInController', ['$scope', 'apiService', function ($scope, ap
         alert(res.data.message)
       })
   }
+
+  $scope.signIn = function () {
+    const json = {
+      email: $('#signinForm input[name=email]').val().trim(),
+      password: $('#signinForm input[name=password]').val().trim()
+    }
+    apiService.signIn(json)
+      .then(function (res) {
+        alert(res.data.message)
+        window.location.href = '/'
+      })
+      .catch(function (res) {
+        alert(res.data.message)
+      })
+  }
 }])

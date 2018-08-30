@@ -1,6 +1,6 @@
 const express = require('express')
 let router = express.Router()
-const multer = require('multer')
+// const multer = require('multer')
 const Constants = require('../../configs/constants')
 const AuthService = require('../services/AuthService')
 const PersonController = require('../controllers/PersonController')
@@ -78,6 +78,7 @@ router.post('/face/add/', async (req, res) => {
   try {
     // const session = AuthService.getSessionFromRequest(req)
     // const uuid = await AuthService.isLoggedIn(session)
+    await AuthService.isLoggedIn(req)
     const url = await UploadController.uploadFile(req)
     const visualData = await VisualDataController.createVisualData({
       URL: url,

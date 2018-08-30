@@ -6,8 +6,11 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var engine = require('ejs-locals')
 var fileUpload = require('express-fileupload')
+var session = require('express-session')
 
 var serveIndex = require('serve-index')
+
+const config = require('./config')
 
 require('./configs/loadModelsMongoose')
 
@@ -20,6 +23,13 @@ var index = require('./routes/index')
 
 var app = express()
 app.use(cookieParser())
+
+app.use(session({
+  httpOnly: true,
+  secret: config.token.secret,
+  resave: true,
+  saveUninitialized: false
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))

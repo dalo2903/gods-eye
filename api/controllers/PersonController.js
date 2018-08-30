@@ -1,8 +1,8 @@
 const BaseController = require('./BaseController')
 const mongoose = require('mongoose')
 const Person = mongoose.model('Person')
-const rpn = require('request-promise-native')
-var config = require('../../config')
+// const rpn = require('request-promise-native')
+// var config = require('../../config')
 const responseStatus = require('../../configs/responseStatus')
 
 class PersonController extends BaseController {
@@ -10,9 +10,10 @@ class PersonController extends BaseController {
     super(Person)
   }
 
-  async createPerson (obj, uuid) {
+  async createPerson (obj, userCreated) {
     let person = {
-      uuid: uuid,
+      // author: uuid,
+      userCreated: userCreated,
       name: obj.name,
       mspersonid: '',
       status: 100,
@@ -37,8 +38,8 @@ class PersonController extends BaseController {
     else return responseStatus.Response(200, { person: person })
   }
 
-  async getPersonsSameAuthor (uuid) {
-    const persons = await Person.find({ uuid: uuid }).populate({ path: 'author', select: 'name avatar uuid' }).populate({ path: 'datas', select: 'URL' })
+  async getPersonsSameAuthor (userCreated) {
+    const persons = await Person.find({ userCreated: userCreated }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL' })
     return responseStatus.Response(200, { persons: persons })
   }
 

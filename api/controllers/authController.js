@@ -102,10 +102,16 @@ async function signUp (obj) {
   return responseStatus.Response(200, {}, responseStatus.SIGN_UP_SUCCESSFULLY)
 }
 
+async function signIn (obj) {
+  const response = await UserController.signIn(obj)
+  return response
+}
+
 module.exports = {
   verifyIdToken: verifyIdToken,
   // testSignIn: testSignIn,
   generateSessionCookie: generateSessionCookie,
   verifySessionCookie: verifySessionCookie,
-  signUp: signUp
+  signUp: signUp,
+  signIn: signIn
 }

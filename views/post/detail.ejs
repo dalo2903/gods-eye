@@ -11,7 +11,7 @@
                 <div>
                     <h1>{{post.title}}</h1>
                 </div>
-                <div class="author">by {{post.author.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
+                <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
                 <div class="address">{{ post.location.address }}</div>
                 <div class="data" ng-repeat="data in post.datas">
                     <img ng-src="{{data.URL}}">
