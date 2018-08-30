@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const PersonSchema = new Schema({
-  uuid: {
-    type: String,
-    required: true
+  userCreated: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   },
   mspersonId: {
     type: String
@@ -31,11 +31,11 @@ const PersonSchema = new Schema({
   }
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
 
-PersonSchema.virtual('author', {
-  ref: 'User',
-  localField: 'uuid',
-  foreignField: 'uuid',
-  justOne: true
-})
+// PersonSchema.virtual('author', {
+//   ref: 'User',
+//   localField: 'uuid',
+//   foreignField: 'uuid',
+//   justOne: true
+// })
 
 mongoose.model('Person', PersonSchema)
