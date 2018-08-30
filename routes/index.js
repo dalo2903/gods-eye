@@ -91,8 +91,8 @@ router.get('/about', function (req, res, next) {
     title: constants.index.title,
     type: constants.index.type,
     url: constants.index.url,
-    user_id: req.cookies.user_id || '',
-    user_name: req.cookies.user_name || ''
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
   })
 })
 
