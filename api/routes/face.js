@@ -74,6 +74,19 @@ router.get('/persongroup/delete/:id', async (req, res) => {
   }
 })
 
+router.get('/persongroup/:persongroupid/delete/:personid', async (req, res) => {
+  try {
+    const personId = req.params.personid
+    const personGroupId = req.params.persongroupid
+    const response = await FaceController.deletePersonInPersonGroup(personGroupId, personId)
+    console.log(response)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.post('/face/add/', async (req, res) => {
   try {
     // const session = AuthService.getSessionFromRequest(req)

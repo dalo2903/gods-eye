@@ -13,6 +13,8 @@ class IdentifyController extends BaseController {
   async analyzeFace (url) {
     var knownFaceRes = await this.checkKnownFace(url)
     console.log(knownFaceRes[0].candidates)
+    var infoRes = await FaceController.getPersonInfo(constants.face.known, knownFaceRes[0].candidates[0].personId)
+    console.log(infoRes)
   }
 
   async checkKnownFace (url) {

@@ -84,6 +84,17 @@ router.get('/post/:id', (req, res) => {
     _id: req.params.id
   })
 })
+router.get('/about', function (req, res, next) {
+  return res.render('about', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.cookies.user_id || '',
+    user_name: req.cookies.user_name || ''
+  })
+})
 
 // router.get('/*', (req, res, next) => {
 //   const sessionCookie = req.cookies.session || ''
@@ -258,8 +269,8 @@ router.get('/identify', function (req, res, next) {
   })
 })
 
-router.get('/about', function (req, res, next) {
-  return res.render('about', {
+router.get('/user', function (req, res, next) {
+  return res.render('user', {
     image: constants.index.image,
     description: constants.index.description,
     title: constants.index.title,
