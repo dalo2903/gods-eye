@@ -1,14 +1,23 @@
 <% layout('./share/layout.ejs') -%>
-    <script src="javascript/user.js"></script>
+    <script src="javascripts/user.js"></script>
     <div ng-controller="UserController">
         <div class="row">
             <div class="col-lg-3">
                 <% include ./share/sidebar.ejs -%>
             </div>
             <div class="col-lg-6">
-
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a href="#1a" data-toggle="tab">Overview</a>
+                    </li>
+                    <li><a href="#2a" data-toggle="tab">Using nav-pills</a>
+                    </li>
+                    <li><a href="#3a" data-toggle="tab">Applying clearfix</a>
+                    </li>
+                    <li><a href="#4a" data-toggle="tab">Background color</a>
+                    </li>
+                </ul>
             </div>
             <div class="col-lg-3"></div>
         </div>
-    </div>
     </div>

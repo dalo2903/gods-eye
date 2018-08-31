@@ -26,7 +26,7 @@ module.exports = {
     httpOnly: true
   },
   token: {
-    expiresIn: '1m',
+    expiresIn: '365 days',
     secret: 'cuoituancuoituan'
   }
 }

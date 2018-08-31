@@ -38,6 +38,10 @@ class PostController extends BaseController {
     const posts = await Post.find().populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address' }).sort('-createdAt').exec()
     return responseStatus.Response(200, { posts: posts })
   }
+  async getPersonsSameAuthor (userCreated) {
+    const posts = await Post.find({ userCreated: userCreated }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL' })
+    return responseStatus.Response(200, { posts: posts })
+  }
 }
 
 module.exports = new PostController()
