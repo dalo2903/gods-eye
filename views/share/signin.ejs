@@ -69,7 +69,7 @@
 <div ng-controller='SignInController'>
     <div class="modal" id="modal-sign-in">
         <!-- Sign In -->
-        <form class='modal-content' ref='signinForm' id='signinForm' style="height: 420px">
+        <form class='modal-content' ref='signinForm' id='signinForm' style="height: 420px" ng-submit="signIn()">
             <i class="fa fa-times close" onclick="document.getElementById('modal-sign-in').style.display='none'" title="Close Modal"></i>
             <h1 class="text-center">SIGN IN</h1>
             <div class="form-group">
@@ -93,7 +93,7 @@
 
             <button type="button" onclick="$('#modal-sign-in').hide();$('#modal-sign-up').show();" class="btn btn-primary my-btn">
                 <i class="fa fa-user-plus fa-lg" aria-hidden="true"></i> Sign up</button>
-            <button type="button" class="btn btn-primary my-btn" ng-click="signIn()">
+            <button type="submit" class="btn btn-primary my-btn" ng-click="signIn()">
                 <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Sign in</button>
             <hr>
             <div class="text-center">Or connect with:</div>
