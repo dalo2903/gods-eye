@@ -43,6 +43,11 @@ class PersonController extends BaseController {
     return responseStatus.Response(200, { persons: persons })
   }
 
+  async getPersonByMSPersonId (mspersonId) {
+    const person = await Person.find({ mspersonId: mspersonId }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL' })
+    return responseStatus.Response(200, { person: person })
+  }
+
   async addDataForPerson (_id, dataId) {
     let person = await this.get(_id)
     person.datas.push(dataId)
