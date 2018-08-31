@@ -1,8 +1,15 @@
 <!-- sidebar -->
+<style>
+    .popular-locations {
+        color: black;
+        background-color: lightgrey;
+        margin-top: 10px
+    }
+</style>
 <div id="sidebar-collapse" class="sidebar text-left" ng-controller='sideBarController'>
     <h2>Popular locations</h2>
     <ul class="nav menu">
-        <li ng-repeat="location in locations"><a href="#">{{ location.address }}</a></li>
+        <li ng-repeat="location in locations"><a class="popular-locations" href="#">{{ location.address }}</a></li>
     </ul>
 </div>
 <!--/.sidebar-->

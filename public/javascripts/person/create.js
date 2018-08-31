@@ -8,7 +8,7 @@ app.controller('personController', ['$scope', 'apiService', function ($scope, ap
 
   let files = []
 
-  function readURL (input) {
+  function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader()
       reader.onload = function (e) {
@@ -35,6 +35,8 @@ app.controller('personController', ['$scope', 'apiService', function ($scope, ap
     let formData = new FormData()
     formData.append('name', $scope.person.name)
     formData.append('file', files[0])
+    $("#submit-create-person").attr("disabled", true);
+
     apiService.createPerson(formData)
       .then(function (res) {
         console.log(res)
@@ -42,6 +44,8 @@ app.controller('personController', ['$scope', 'apiService', function ($scope, ap
         window.location.href = '/'
       })
       .catch(function (res) {
+        $("#submit-create-person").attr("disabled", false);
+        alert(res.data.message)
         console.log(res)
       })
   }
