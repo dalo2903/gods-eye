@@ -50,6 +50,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
       }
       return $http(req)
     },
+    getPostsSameUserCreated: function (userId) {
+      return $http.get(`/api/user/${userId}/posts`)
+    },
     getPersons: function () {
       return $http.get('/api/person')
     },

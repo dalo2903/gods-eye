@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
         <% if (user_id !== '') { %>
-          <li>
+          <li class="hide">
             <a href="/person">PERSON LIST</a>
           </li>
           <li>
@@ -36,7 +36,7 @@
             <a href="/about">ABOUT US</a>
           </li>
           <li>
-            <a href="/user">
+            <a href="/user/<%- user_id %>">
               <span class="glyphicon glyphicon-user"></span>
               <%- user_name %>
             </a>

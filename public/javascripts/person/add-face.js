@@ -13,7 +13,7 @@ app.controller('addFaceController', ['$scope', 'apiService', function ($scope, a
 
   let files = []
 
-  function readURL (input) {
+  function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader()
       reader.onload = function (e) {
@@ -40,6 +40,8 @@ app.controller('addFaceController', ['$scope', 'apiService', function ($scope, a
     let formData = new FormData()
     formData.append('_id', _id)
     formData.append('file', files[0])
+    $("#submit-add-face").attr("disabled", true);
+
     apiService.addFace(formData)
       .then(function (res) {
         console.log(res)
@@ -47,6 +49,8 @@ app.controller('addFaceController', ['$scope', 'apiService', function ($scope, a
         window.location.href = '/'
       })
       .catch(function (res) {
+        $("#submit-add-face").attr("disabled", false);
+        alert(res.data.message)
         console.log(res)
       })
   }

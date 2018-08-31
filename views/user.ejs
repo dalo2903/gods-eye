@@ -1,24 +1,126 @@
 <% layout('./share/layout.ejs') -%>
-    <script src="javascripts/user.js"></script>
+    <style>
+        .avatar {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            float: right;
+        }
+
+        .avatar-header {
+            width: 80px;
+        }
+
+        .created-at-header {
+            width: 140px;
+        }
+
+        .button-header {
+            width: 140px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+    <script src="/javascripts/user.js"></script>
     <div ng-controller="UserController">
         <div class="row">
             <div class="col-lg-3">
                 <% include ./share/sidebar.ejs -%>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6" style="margin-top: 20px">
+                <span class="hide" id="user_id">
+                    <%- user_id -%>
+                </span>
+                <div>
+                    <img id='avatar' class="img-circle" ng-src="{{ user.avatar ||'https://accounts-cdn.9gag.com/media/avatar/21748854_100_1.jpg' }}"
+                        alt="Avatar">
+                </div>
+                <h2>
+                    <%- user_name -%>
+                </h2>
                 <ul class="nav nav-pills">
                     <li class="active">
-                        <a href="#1a" data-toggle="tab">Overview</a>
+                        <a href="#posts" data-toggle="tab">Posts</a>
                     </li>
-                    <li><a href="#2a" data-toggle="tab">Using nav-pills</a>
-                    </li>
-                    <li><a href="#3a" data-toggle="tab">Applying clearfix</a>
-                    </li>
-                    <li><a href="#4a" data-toggle="tab">Background color</a>
+                    <li>
+                        <a href="#people" data-toggle="tab">People</a>
                     </li>
                 </ul>
+                <!-- Nav pills content -->
+                <div class="tab-content clearfix">
+                    <!-- Posts -->
+                    <div class="tab-pane active" id="posts">
+                        <div id="postsContainer" class="postsContainer">
+                            <div id="{{post._id}}" class="post" ng-repeat="post in posts">
+                                <a href="/post/{{post._id}}" style="text-decoration:none">
+                                    <div>
+                                        <h1>{{post.title}}</h1>
+                                    </div>
+                                    <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
+                                    <div class="address">{{ post.location.address }}</div>
+                                    <div class="data" ng-repeat="data in post.datas">
+                                        <img class='post' ng-src="{{data.URL}}">
+                                    </div>
+                                    <hr>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- People -->
+                    <div class="tab-pane" id="people">
+                        <div class="table-responsive">
+                            <table class="table table-striped w-auto">
+                                <thead>
+                                    <tr>
+                                        <th class="avatar-header"></th>
+                                        <th>Name</th>
+                                        <th>Score</th>
+                                        <th>Status</th>
+                                        <th class="created-at-header">Created At</th>
+                                        <th class="button-header"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="person in persons | orderBy:'-createdAt'">
+                                        <td><img class="avatar" ng-src="{{ person.datas[0].URL }}"></td>
+                                        <td>{{ person.name }}</td>
+                                        <td>{{ person.score }}</td>
+                                        <td>{{ person.status }}</td>
+                                        <td>{{ person.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
+                                        <td><a href="/person/face/add/{{person._id}}" class="btn btn-primary">Add photo</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="col-lg-3"></div>
+
         </div>
+        <div class="col-lg-3"></div>
     </div>
-<style
+    </div>
+    <style>
+        .nav-pills>li.active>a,
+        .nav-pills>li.active>a:focus,
+        .nav-pills>li.active>a:hover {
+            border-bottom: solid black 3px;
+            color: black;
+            font-weight: 650;
+            font-size: 30px;
+            background-color: #fff;
+        }
+
+        .nav-pills>li>a {
+            color: grey;
+            font-weight: 650;
+            font-size: 30px;
+            background-color: #fff;
+        }
+
+        .nav-pills>li>a:hover {
+            color: black;
+            background-color: #fff;
+        }
+    </style>
