@@ -21,7 +21,8 @@ class IdentifyController extends BaseController {
           var person = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
           persons.push({
             person: person,
-            confidence: element.candidates[0].confidence
+            confidence: element.candidates[0].confidence,
+            facerectangle: element.faceRectangle
           })
         }
       }      
@@ -29,15 +30,19 @@ class IdentifyController extends BaseController {
     for(let element of unknownFaceRes){
       if(element.candidates.length !== 0){
         if(element.candidates[0].confidence >= 0.5){
-          var person = await PersonController.getPersonByMSPersonId(element.candidates[0].personId)
+          var person = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
           persons.push({
             person: person,
-            confidence: element.candidates[0].confidence
+            confidence: element.candidates[0].confidence,
+            facerectangle: element.faceRectangle
           })
         }
       }
     }
-    console.log(persons)
+    for(let element of persons){
+      console.log(element)
+    }
+    return persons
   }
 
   async checkKnownFace (url) {

@@ -26,11 +26,14 @@ router.get('/persongroup/create/:persongroupid/:name/:userdata?', async (req, re
   }
 })
 
+router.get('/init', async (req, res) => {
+
+})
 router.get('/person/create/:persongroupid/:name/:urlimage', async (req, res) => {
   try {
     const personGroupId = req.params.persongroupid
     const name = req.params.name
-    //const urlImage = req.params.urlImage
+    // const urlImage = req.params.urlImage
     const urlImage = 'https://media.thethaovanhoa.vn/2015/11/13/10/40/Cong-Phuong%20(2).jpg'
     const visualData = await VisualDataController.createVisualData({
       URL: urlImage,

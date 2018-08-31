@@ -143,8 +143,17 @@ class FaceController extends BaseController {
       identifyFaceIds.push(element.faceId)
     })
     if (detectFaceIds.length !== 0) {
-      const res = this.identify(identifyFaceIds, personGroupId)
-      return res
+      var identifyRes = await this.identify(identifyFaceIds, personGroupId)
+      var detectMap = {}
+      detectFaceIds.forEach(function (face) {
+        detectMap[face.faceId] = face.faceRectangle
+      })
+      // console.log(detectMap)
+      identifyRes.forEach(function (face) {
+        face.faceRectangle = detectMap[face.faceId]
+      })
+      // console.log(identifyRes)
+      return identifyRes
     }
   }
 
