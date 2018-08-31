@@ -11,7 +11,36 @@ const VisualDataSchema = new Schema({
     required: true
   },
   identifyResult: {
-    type: String
+    persons: [
+      {
+        person: {
+          type: Schema.Types.ObjectId,
+          ref: 'Person'
+        },
+        confidence: {
+          type: Number,
+          default: 0
+        },
+        facerectangle: {
+          top: {
+            type: Number,
+            default: 0
+          },
+          left: {
+            type: Number,
+            default: 0
+          },
+          width: {
+            type: Number,
+            default: 0
+          },
+          height: {
+            type: Number,
+            default: 0
+          }
+        }
+      }
+    ]
   },
   isImage: {
     type: Boolean,
