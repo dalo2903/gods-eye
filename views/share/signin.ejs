@@ -1,6 +1,7 @@
 <style>
     /* The Modal (background) */
     .modal {
+        z-index: 4 !important;
         margin: 0px auto;
         display: none;
         /* Hidden by default */
@@ -45,9 +46,7 @@
         position: absolute;
     }
 
-    #modal-sign-in form {
-        width: 50%
-    }
+
 
     #modal-sign-in .input-group {
         width: 70%;
@@ -55,14 +54,29 @@
         margin-right: auto;
     }
 
-    #modal-sign-up form {
-        width: 50%
-    }
+
 
     #modal-sign-up .input-group {
         width: 70%;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    @media only screen and (min-width:768px) {
+        #modal-sign-up form {
+            width: 50%
+        }
+        #modal-sign-in form {
+            width: 50%
+        }
+    }
+    @media only screen and (max-width:768px) {
+        #modal-sign-up form {
+            width: 100%
+        }
+        #modal-sign-in form {
+            width: 100%
+        }
     }
 </style>
 <script src="/javascripts/signin.js"></script>
