@@ -20,7 +20,7 @@ class IdentifyController extends BaseController {
         if(element.candidates[0].confidence >= 0.5){
           var person = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
           persons.push({
-            person: person,
+            person: person._id,
             confidence: element.candidates[0].confidence,
             facerectangle: element.faceRectangle
           })
@@ -32,7 +32,7 @@ class IdentifyController extends BaseController {
         if(element.candidates[0].confidence >= 0.5){
           var person = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
           persons.push({
-            person: person,
+            person: person._id,
             confidence: element.candidates[0].confidence,
             facerectangle: element.faceRectangle
           })
