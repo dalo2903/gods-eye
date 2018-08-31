@@ -23,7 +23,7 @@ class PostController extends BaseController {
 
   async getPost (_id) {
     const post = await Post.findById(_id).populate({ path: 'userCreated', select: 'name avatar' })
-      .populate({ path: 'datas location', select: 'URL address' }).exec()
+      .populate({ path: 'datas location', select: 'URL address identifyResult' }).exec()
     if (!post) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { post: post })
   }
