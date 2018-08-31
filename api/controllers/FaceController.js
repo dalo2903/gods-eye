@@ -138,7 +138,7 @@ class FaceController extends BaseController {
   async detectAndIdentify (url, personGroupId) {
     var detectFaceIds = await this.detect(url)
     var identifyFaceIds = []
-    console.log(detectFaceIds)
+    // console.log(detectFaceIds)
     detectFaceIds.forEach(element => {
       identifyFaceIds.push(element.faceId)
     })
@@ -245,6 +245,7 @@ class FaceController extends BaseController {
     }
     try {
       const res = await rpn(options)
+      console.log(res)
       return res
     } catch (error) {
       console.log(error)
@@ -267,6 +268,7 @@ class FaceController extends BaseController {
     }
     try {
       const res = await rpn(options) // persistedFaceId
+      console.log(res)
       return res
     } catch (error) {
       console.log(error)
