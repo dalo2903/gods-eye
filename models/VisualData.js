@@ -10,6 +10,9 @@ const VisualDataSchema = new Schema({
     type: String,
     required: true
   },
+  identifyResult: {
+    type: String
+  },
   isImage: {
     type: Boolean,
     default: true

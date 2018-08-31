@@ -17,6 +17,11 @@ class VisualDataController extends BaseController {
     const visualData = await this.create(_visualData)
     return visualData
   }
+  async updateIdentifyResult (_id, identifyResult) {
+    let visualData = await this.get(_id)
+    visualData.identifyResult = identifyResult
+    await visualData.save()
+  }
 }
 
 module.exports = new VisualDataController()

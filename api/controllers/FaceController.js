@@ -138,13 +138,22 @@ class FaceController extends BaseController {
   async detectAndIdentify (url, personGroupId) {
     var detectFaceIds = await this.detect(url)
     var identifyFaceIds = []
-    console.log(detectFaceIds)
+    // console.log(detectFaceIds)
     detectFaceIds.forEach(element => {
       identifyFaceIds.push(element.faceId)
     })
     if (detectFaceIds.length !== 0) {
-      const res = this.identify(identifyFaceIds, personGroupId)
-      return res
+      var identifyRes = await this.identify(identifyFaceIds, personGroupId)
+      var detectMap = {}
+      detectFaceIds.forEach(function (face) {
+        detectMap[face.faceId] = face.faceRectangle
+      })
+      // console.log(detectMap)
+      identifyRes.forEach(function (face) {
+        face.faceRectangle = detectMap[face.faceId]
+      })
+      // console.log(identifyRes)
+      return identifyRes
     }
   }
 
@@ -245,6 +254,7 @@ class FaceController extends BaseController {
     }
     try {
       const res = await rpn(options)
+      console.log(res)
       return res
     } catch (error) {
       console.log(error)
@@ -267,6 +277,7 @@ class FaceController extends BaseController {
     }
     try {
       const res = await rpn(options) // persistedFaceId
+      console.log(res)
       return res
     } catch (error) {
       console.log(error)

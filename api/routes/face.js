@@ -26,12 +26,15 @@ router.get('/persongroup/create/:persongroupid/:name/:userdata?', async (req, re
   }
 })
 
+router.get('/init', async (req, res) => {
+
+})
 router.get('/person/create/:persongroupid/:name/:urlimage', async (req, res) => {
   try {
     const personGroupId = req.params.persongroupid
     const name = req.params.name
-    const urlImage = req.params.urlImage
-
+    // const urlImage = req.params.urlImage
+    const urlImage = 'https://media.thethaovanhoa.vn/2015/11/13/10/40/Cong-Phuong%20(2).jpg'
     const visualData = await VisualDataController.createVisualData({
       URL: urlImage,
       isImage: true
@@ -40,11 +43,13 @@ router.get('/person/create/:persongroupid/:name/:urlimage', async (req, res) => 
       name: name,
       datas: [visualData._id]
     }
-    const person = await PersonController.createPerson(request, 'CMo8CqLzzBXn19GSCcEuNnHJYhq1')
+    const person = await PersonController.createPerson(request, '5b86b4a8a96c6a000446705b')
+    console.log(person)
     res.send()
-    const personId = await (FaceController.createPersonInPersonGroup(personGroupId, {name: name})).personId
-    await FaceController.addFaceForPerson(personGroupId, personId, urlImage) // Add face in face api
-    await PersonController.updateMicrosoftPersonId(person._id, personId) // Update MSid in DB
+    const createPersonRes = await FaceController.createPersonInPersonGroup(personGroupId, {name: name})
+    console.log(createPersonRes)
+    await FaceController.addFaceForPerson(personGroupId, createPersonRes.personId, urlImage) // Add face in face api
+    await PersonController.updateMicrosoftPersonId(person._id, createPersonRes.personId) // Update MSid in DB
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
