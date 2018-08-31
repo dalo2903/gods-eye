@@ -1,24 +1,44 @@
 <% layout('./share/layout.ejs') -%>
-    <script src="javascripts/user.js"></script>
+    <script src="/javascripts/user.js"></script>
     <div ng-controller="UserController">
         <div class="row">
             <div class="col-lg-3">
                 <% include ./share/sidebar.ejs -%>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6" style="margin-top: 20px">
+                <div>
+                    <img class="img-circle" ng-src="{{ user.avatar ||'https://accounts-cdn.9gag.com/media/avatar/21748854_100_1.jpg' }}" alt="Avatar">
+                </div>
+                <h2>
+                    <%- user_name -%>
+                </h2>
                 <ul class="nav nav-pills">
                     <li class="active">
-                        <a href="#1a" data-toggle="tab">Overview</a>
+                        <a href="/user/:id/posts" data-toggle="tab">Posts</a>
                     </li>
-                    <li><a href="#2a" data-toggle="tab">Using nav-pills</a>
-                    </li>
-                    <li><a href="#3a" data-toggle="tab">Applying clearfix</a>
-                    </li>
-                    <li><a href="#4a" data-toggle="tab">Background color</a>
+                    <li>
+                        <a href="/user/:id/people" data-toggle="tab">People</a>
                     </li>
                 </ul>
             </div>
             <div class="col-lg-3"></div>
         </div>
     </div>
-<style
+    <style>
+        .nav-pills>li.active>a,
+        .nav-pills>li.active>a:focus,
+        .nav-pills>li.active>a:hover {
+            border-bottom: solid black 3px;
+            color: black;
+            font-weight: 500;
+            font-size: 30px;
+            background-color: #fff;
+        }
+
+        .nav-pills>li>a {
+            color: black;
+            font-weight: 500;
+            font-size: 30px;
+            background-color: #fff;
+        }
+    </style>

@@ -128,7 +128,7 @@ router.get('/my-profile', (req, res) => {
   })
 })
 
-function createPersonGroup (personGroupId, group) {
+function createPersonGroup(personGroupId, group) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId
     var options = {
@@ -172,7 +172,7 @@ router.put('/person-groups/:personGroupId/', (req, res) => {
     })
 })
 
-function createPersonInPersonGroup (personGroupId, person) {
+function createPersonInPersonGroup(personGroupId, person) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/'
     var options = {
@@ -216,7 +216,7 @@ router.post('/person-groups/:personGroupId/persons/', (req, res) => {
     })
 })
 
-function addFaceForPerson (personGroupId, personId, faceURL) {
+function addFaceForPerson(personGroupId, personId, faceURL) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
     var options = {
@@ -269,7 +269,29 @@ router.get('/identify', function (req, res, next) {
   })
 })
 
-router.get('/user', function (req, res, next) {
+router.get('/user/:id', function (req, res, next) {
+  return res.render('user', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
+  })
+})
+router.get('/user/:id/posts', function (req, res, next) {
+  return res.render('user', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
+  })
+})
+router.get('/user/:id/persons', function (req, res, next) {
   return res.render('user', {
     image: constants.index.image,
     description: constants.index.description,
@@ -384,7 +406,7 @@ router.post('/identify', function (req, res) {
   })
 })
 
-function getPersonId (mssv) {
+function getPersonId(mssv) {
   return new Promise((resolve, reject) => {
     userRef.child(mssv).once('value', function (data) {
       const user = data.val()
@@ -394,7 +416,7 @@ function getPersonId (mssv) {
   })
 }
 
-function trainPersonGroup (personGroupId) {
+function trainPersonGroup(personGroupId) {
   return new Promise((resolve, reject) => {
     const url = config.microsoft.face + '/persongroups/' + personGroupId + '/train'
     var options = {
@@ -432,7 +454,7 @@ router.get('/person-groups/:personGroupId/train', function (req, res) {
 //   res.render('login', constants.index)
 // })
 
-function uploadFile (pathFile, fileName) {
+function uploadFile(pathFile, fileName) {
   return new Promise((resolve, reject) => {
     storage
       .bucket(bucketName)
@@ -448,7 +470,7 @@ function uploadFile (pathFile, fileName) {
   })
 }
 
-function listFilesByPrefix (bucketName, prefix, delimiter) {
+function listFilesByPrefix(bucketName, prefix, delimiter) {
   return new Promise((resolve, reject) => {
     // [START storage_list_files_with_prefix]
     // Imports the Google Cloud client library
@@ -495,7 +517,7 @@ router.get('/person-groups/:personGroupId', (req, res) => {
     })
 })
 
-function listAllPersonsInPersonGroup (personGroupId, start, top) {
+function listAllPersonsInPersonGroup(personGroupId, start, top) {
   return new Promise((resolve, reject) => {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' +
       (start ? '?start=' + start : '') +
@@ -522,7 +544,7 @@ function listAllPersonsInPersonGroup (personGroupId, start, top) {
   })
 }
 
-function initPersonInPersonGroup (personGroupId) {
+function initPersonInPersonGroup(personGroupId) {
   const array = [
     {
       name: 'Dinh Duy Kha',
@@ -592,7 +614,7 @@ router.get('/person', (req, res) => {
   })
 })
 
-function saveImageToDatabase (imgObj) {
+function saveImageToDatabase(imgObj) {
   imageRef.child(imgObj.name).set({
     location: imgObj.location,
     time: Date.now(),
@@ -600,7 +622,7 @@ function saveImageToDatabase (imgObj) {
   })
 }
 
-function saveUserToDatabase (userId, person) {
+function saveUserToDatabase(userId, person) {
   userRef.child(userId).set({
     MSPersonId: person.personId,
     name: person.name
