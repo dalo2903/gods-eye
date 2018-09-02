@@ -39,7 +39,10 @@ class IdentifyController {
     // for (let element of persons) {
     //   console.log(element)
     // }
-    Response(200, {persons: persons})
+    if (persons.length === 0) {
+      return responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
+    }
+    return responseStatus.Response(200, {persons: persons})
   }
 
   async checkKnownFace (url) {
@@ -51,8 +54,7 @@ class IdentifyController {
     const res = await FaceController.detectAndIdentify(url, constants.face.unknown)
     return res
   }
-  async calculateScore (personId) {
-    var person = await PersonController.getPerson(personId)
+  async calculateScore (personId, location) {
   }
 }
 module.exports = new IdentifyController()
