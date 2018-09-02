@@ -15,7 +15,7 @@ class RecordController extends BaseController {
       postId: postId,
       personid: obj.personid,
       location: obj.location,
-      datas: obj.datas
+      data: obj.data
     }
     record = await this.create(record)
     return record

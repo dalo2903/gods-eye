@@ -36,7 +36,8 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     // Create records for the detections
     for (let element of identifyResponse.persons) {
       const record = {
-        datas: [visualData._id],
+        postId: post._id,
+        data: visualData._id,
         personId: element.personId,
         location: location
       }
