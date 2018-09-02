@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const RecordSchema = new Schema({
+  postId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
+  },
   datas: [{
     type: Schema.Types.ObjectId,
     ref: 'VisualData'

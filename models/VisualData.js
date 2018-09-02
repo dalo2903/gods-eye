@@ -13,7 +13,7 @@ const VisualDataSchema = new Schema({
   identifyResult: {
     persons: [
       {
-        person: {
+        personId: {
           type: Schema.Types.ObjectId,
           ref: 'Person'
         },
