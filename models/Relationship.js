@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const relationshipEnum = require('../configs/constants').relationshipEnum
+const constants = require('../configs/constants')
 
 const RelationshipSchema = new Schema({
   personId: {
@@ -13,7 +13,8 @@ const RelationshipSchema = new Schema({
   },
   type: {
     type: String,
-    enum: relationshipEnum
+    enum: constants.RELATIONSHIP_TYPE_ARRAY,
+    default: constants.relationshipEnum.STRANGER
   }
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
 

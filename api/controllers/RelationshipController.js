@@ -14,7 +14,6 @@ class RelationshipController extends BaseController {
       personid: obj.personid,
       location: obj.location,
       type: obj.type
-
     }
     relationship = await this.create(relationship)
     return relationship

@@ -60,15 +60,13 @@ class IdentifyController {
 
   async calculateScore (personId, location) {
     const localScoreResponse = await LocalScoreController.getLocalScoreByPersonIdAndLocation(personId, location)
-
+    const relationship = await RelationshipController.getRelationship(personId, location)
     // Nếu chưa tồn tại thì tạo mới không thì update
-
     if (localScoreResponse.status === 404) {
       let localScore = {
         personid: personId,
         location: location
       }
-      const relationship = await RelationshipController.getRelationship(personId, location)
       if (!relationship || relationship.type === constants.relationshipEnum.STRANGER) {
         localScore.score = 10 // Todo:
       }
@@ -77,9 +75,14 @@ class IdentifyController {
       }
       await LocalScoreController.createLocalScore(localScore)
     } else {
-      let score = 0 // Todos
-
-      await LocalScoreController.updateScore(localScoreResponse.localScore._id, score) // TODOs
+      let score = localScoreResponse.localScore.score
+      if (relationship.type === constants.relationshipEnum.STRANGER) {
+        score -= 10 // Todo
+      }
+      if (relationship.type === constants.relationshipEnum.FRIEND) {
+        score -= 4 // TODO
+      }
+      await LocalScoreController.updateScore(localScoreResponse.localScore._id, score) // TODOS
     }
   }
 }
