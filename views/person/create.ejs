@@ -1,26 +1,29 @@
 <% layout('../share/layout.ejs') -%>
 
-    <div class="container text-left" ng-controller="personController">
-        <div class="wrapper col-xs-6 col-xs-offset-3">
-            <h1 class="form-header">Add new person </h1>
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" ng-model="person.name" placeholder="Name" />
-            </div>
-            <div class="form-group">
-                <label>Images</label>
-                <img class="thumb" ng-src="{{ imgSrc }}" ng-repeat="imgSrc in person.images">
-                <% include ./drag-and-drop.ejs %>
-            </div>
+    <div class="text-left" ng-controller="personController">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="wrapper col-lg-6">
+                <h1 class="form-header">Add new person </h1>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" ng-model="person.name" placeholder="Name" />
+                </div>
+                <div class="form-group">
+                    <label>Images</label>
+                    <img class="thumb" ng-src="{{ imgSrc }}" ng-repeat="imgSrc in person.images">
+                    <% include ./drag-and-drop.ejs %>
+                </div>
 
 
-            <div class="form-group">
-                <input id='submit-create-person'type="submit" value="Create" ng-click="createPerson()" />
-            </div>
-            <div class="hide">
-                <span id="user-id">
-                    <%- user_id %>
-                </span>
+                <div class="form-group">
+                    <input id='submit-create-person' type="submit" value="Create" ng-click="createPerson()" />
+                </div>
+                <div class="hide">
+                    <span id="user-id">
+                        <%- user_id %>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
