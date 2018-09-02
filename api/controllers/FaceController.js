@@ -3,7 +3,6 @@ var config = require('../../config')
 const rpn = require('request-promise-native')
 
 var responseStatus = require('../../configs/responseStatus')
-var BaseController = require('./BaseController')
 var Person = require('../../models/Person')
 
 // function detect (urlImage) {
@@ -34,11 +33,7 @@ var Person = require('../../models/Person')
 //     })
 //   })
 // }
-class FaceController extends BaseController {
-  constructor () {
-    super(Person)
-  }
-
+class FaceController {
   async detect (urlImage) {
     var url = config.microsoft.face + '/detect?returnFaceId=true'
     var options = {

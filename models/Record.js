@@ -2,10 +2,14 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const RecordSchema = new Schema({
-  datas: [{
+  postId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Post'
+  },
+  data: {
     type: Schema.Types.ObjectId,
     ref: 'VisualData'
-  }],
+  },
   locationid: {
     type: Schema.Types.ObjectId,
     ref: 'Location'

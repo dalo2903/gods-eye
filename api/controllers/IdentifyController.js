@@ -1,4 +1,3 @@
-const BaseController = require('./BaseController')
 var responseStatus = require('../../configs/responseStatus')
 
 var Person = require('../../models/Person')
@@ -6,43 +5,41 @@ var constants = require('../../configs/constants')
 var FaceController = require('./FaceController')
 var RecordController = require('./RecordController')
 var PersonController = require('./PersonController')
+// var RecordController = require('./RecordController')
 
-class IdentifyController extends BaseController {
-  constructor () {
-    super(Person)
-  }
+class IdentifyController {
   async analyzeFace (url) {
     var knownFaceRes = await this.checkKnownFace(url)
     var unknownFaceRes = await this.checkUnknownFace(url)
     var persons = []
-    for(let element of knownFaceRes){
-      if(element.candidates.length !== 0){
-        if(element.candidates[0].confidence >= 0.5){
-          var person = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
+    for (let element of knownFaceRes) {
+      if (element.candidates.length !== 0) {
+        if (element.candidates[0].confidence >= 0.5) {
+          var personKnown = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
           persons.push({
-            person: person._id,
-            confidence: element.candidates[0].confidence,
-            facerectangle: element.faceRectangle
-          })
-        }
-      }      
-    }
-    for(let element of unknownFaceRes){
-      if(element.candidates.length !== 0){
-        if(element.candidates[0].confidence >= 0.5){
-          var person = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
-          persons.push({
-            person: person._id,
+            personId: personKnown._id,
             confidence: element.candidates[0].confidence,
             facerectangle: element.faceRectangle
           })
         }
       }
     }
-    for(let element of persons){
-      console.log(element)
+    for (let element of unknownFaceRes) {
+      if (element.candidates.length !== 0) {
+        if (element.candidates[0].confidence >= 0.5) {
+          var personUnknown = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
+          persons.push({
+            personId: personUnknown._id,
+            confidence: element.candidates[0].confidence,
+            facerectangle: element.faceRectangle
+          })
+        }
+      }
     }
-    return persons
+    // for (let element of persons) {
+    //   console.log(element)
+    // }
+    Response(200, {persons: persons})
   }
 
   async checkKnownFace (url) {
@@ -55,7 +52,7 @@ class IdentifyController extends BaseController {
     return res
   }
   async calculateScore (personId) {
-
+    var person = await PersonController.getPerson(personId)
   }
 }
 module.exports = new IdentifyController()
