@@ -1,10 +1,13 @@
 var responseStatus = require('../../configs/responseStatus')
 
-var Person = require('../../models/Person')
+// var Person = require('../../models/Person')
 var constants = require('../../configs/constants')
 var FaceController = require('./FaceController')
-var RecordController = require('./RecordController')
+// var RecordController = require('./RecordController')
 var PersonController = require('./PersonController')
+var LocalScoreController = require('./LocalScoreController')
+var RelationshipController = require('./RelationshipController')
+
 // var RecordController = require('./RecordController')
 
 class IdentifyController {
@@ -54,7 +57,31 @@ class IdentifyController {
     const res = await FaceController.detectAndIdentify(url, constants.face.unknown)
     return res
   }
+
   async calculateScore (personId, location) {
+    const localScoreResponse = await LocalScoreController.getLocalScoreByPersonIdAndLocation(personId, location)
+
+    // Nếu chưa tồn tại thì tạo mới không thì update
+
+    if (localScoreResponse.status === 404) {
+      let localScore = {
+        personid: personId,
+        location: location
+      }
+      const relationship = await RelationshipController.getRelationship(personId, location)
+      if (!relationship || relationship.type === constants.relationshipEnum.STRANGER) {
+        localScore.score = 10 // Todo:
+      }
+      if (relationship.type === constants.relationshipEnum.FRIEND) {
+        localScore.score = 50 // Todo:
+      }
+      await LocalScoreController.createLocalScore(localScore)
+    } else {
+      let score = 0 // Todos
+
+      await LocalScoreController.updateScore(localScoreResponse.localScore._id, score) // TODOs
+    }
   }
 }
+
 module.exports = new IdentifyController()

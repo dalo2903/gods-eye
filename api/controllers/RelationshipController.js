@@ -21,7 +21,7 @@ class RelationshipController extends BaseController {
   }
   async getRelationship (personId, location) {
     const relationship = await Relationship.find({ personId: personId, location: location })
-    return responseStatus.Response(200, { relationship: relationship })
+    return relationship
   }
   async updateRelationship (_id, type) {
     let relationship = await this.get(_id)
