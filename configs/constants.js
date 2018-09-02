@@ -11,7 +11,12 @@ const face = {
   known: 'known-faces',
   unknown: 'unidentified-faces'
 }
+const relationshipEnum = {
+  STRANGER: 0,
+  FRIEND: 1
+}
 module.exports = {
   index: index,
-  face: face
+  face: face,
+  relationshipEnum: relationshipEnum
 }

@@ -1,22 +1,20 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const relationshipEnum = require('../configs/constants').relationshipEnum
 
 const RelationshipSchema = new Schema({
-  personId1: {
+  personId: {
     type: Schema.Types.ObjectId,
     ref: 'Person'
   },
-  personId2: {
+  location: {
     type: Schema.Types.ObjectId,
-    ref: 'Person'
+    ref: 'Location'
+  },
+  type: {
+    type: String,
+    enum: relationshipEnum
   }
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
-
-RelationshipSchema.virtual('author', {
-  ref: 'User',
-  localField: 'uuid',
-  foreignField: 'uuid',
-  justOne: true
-})
 
 mongoose.model('Relationship', RelationshipSchema)
