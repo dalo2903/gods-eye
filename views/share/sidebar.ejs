@@ -46,19 +46,24 @@
             background-color: lightgrey;
             margin-top: 10px
         }
+        #navMenu>li>a.active {
+            background: lightslategrey
+        }
     }
 </style>
 <div id="sidebar-laptop" class="sidebar text-left" ng-controller='sideBarController'>
     <h2>Popular locations</h2>
-    <ul class="nav menu">
-        <li ng-repeat="location in locations"><a class="popular-locations" href="/location/{{location._id}}">{{ location.address
-                }}</a></li>
+    <ul id='navMenu' class="nav menu">
+        <li id="lap{{location._id}}" ng-repeat="location in locations"><a class="popular-locations" ng-class="{'active': isActiveLaptop(location._id)}"
+                href="/location/{{location._id}}">{{ location.address }}
+            </a></li>
     </ul>
 </div>
 <!-- sidebar mobile -->
 <div id='sidebar-mobile' ng-controller='sideBarController'>
-    <nav class='tabbar'>
-        <a ng-repeat="location in locations" class="popular-locations" href="/location/{{location._id}}">
+    <nav id='tabbar' class='tabbar'>
+        <a ng-repeat="location in locations" id="{{location._id}}" class="popular-locations" ng-class="{'active': isActiveMobile(location._id)}"
+            href="/location/{{location._id}}">
             {{ location.address}}
         </a>
     </nav>
