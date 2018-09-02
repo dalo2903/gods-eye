@@ -1,14 +1,18 @@
-<% layout('./share/layout.ejs') -%>
-    <script src="/javascripts/post/newsfeed.js"></script>
+<% layout('../share/layout.ejs') -%>
+    <script src="/javascripts/post/post-by-location.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
-    <div ng-controller="NewsFeedController">
+    <div id="locationId" class="hide">
+        <%- locationId %>
+    </div>
+    <div ng-controller="PostByLocationController">
         <div class="row">
             <div id='sidebar-container' class="col-lg-3">
-                <% include ./share/sidebar.ejs -%>
+                <% include ../share/sidebar.ejs -%>
             </div>
             <div class="col-lg-6">
+                <h2>Posts at location: {{posts[0].location.address}}</h2>
                 <div infinite-scroll='loadMore()' id="postsContainer" class="postsContainer">
-                    <div id="{{post._id}}" ng-repeat="post in scrollData">
+                    <div id="{{post._id}}" ng-repeat="post in posts">
                         <a href="/post/{{post._id}}" style="text-decoration:none">
                             <div>
                                 <h1>{{post.title}}</h1>

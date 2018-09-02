@@ -51,31 +51,16 @@
 <div id="sidebar-laptop" class="sidebar text-left" ng-controller='sideBarController'>
     <h2>Popular locations</h2>
     <ul class="nav menu">
-        <li ng-repeat="location in locations"><a class="popular-locations" href="#">{{ location.address }}</a></li>
+        <li ng-repeat="location in locations"><a class="popular-locations" href="/location/{{location._id}}">{{ location.address
+                }}</a></li>
     </ul>
 </div>
 <!-- sidebar mobile -->
 <div id='sidebar-mobile' ng-controller='sideBarController'>
     <nav class='tabbar'>
-        <a ng-repeat="location in locations" class="popular-locations" href="#">{{ location.address }}</a>
+        <a ng-repeat="location in locations" class="popular-locations" href="/location/{{location._id}}">
+            {{ location.address}}
+        </a>
     </nav>
 </div>
-<script>
-    if ($(window).width() < 1024) {
-        $('#sidebar-container').removeClass('col-lg-3')
-    }
-    else {
-        $('#sidebar-container').addClass('col-lg-3')
-    }
-    var app = angular.module('GodsEye')
-    app.controller('sideBarController', ['$scope', 'apiService', function ($scope, apiService) {
-        apiService.getLocations()
-            .then(function (res) {
-                $scope.locations = res.data.locations
-            })
-            .catch(function (res) {
-                console.log(res)
-            })
-
-    }])
-</script>
+<script src="/javascripts/sidebar.js"></script>
