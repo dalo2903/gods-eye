@@ -7,6 +7,7 @@ var FaceController = require('./FaceController')
 var PersonController = require('./PersonController')
 var LocalScoreController = require('./LocalScoreController')
 var RelationshipController = require('./RelationshipController')
+var VisualDataController = require('./VisualDataController')
 
 // var RecordController = require('./RecordController')
 
@@ -56,6 +57,65 @@ class IdentifyController {
   async checkUnknownFace (url) {
     const res = await FaceController.detectAndIdentify(url, constants.face.unknown)
     return res
+  }
+
+  async analyzeAndProcessFaces (url, location) {
+    var response = []
+    const detectRes = await FaceController.detect(url)
+    var identifyFaceIds = []
+    detectRes.forEach(element => {
+      identifyFaceIds.push(element.faceId)
+    })
+    if (identifyFaceIds.length !== 0) {
+      var identifyRes = await this.identify(identifyFaceIds, constants.face.known)
+      var detectMap = {}
+      detectRes.forEach(function (face) {
+        detectMap[face.faceId] = face.faceRectangle
+      })
+      identifyRes.forEach(function (face) {
+        face.faceRectangle = detectMap[face.faceId]
+      })
+      for (let element of identifyRes) {
+        if (element.candidates.length !== 0) {
+          if (element.candidates[0].confidence >= 0.5) {
+            var person = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
+            response.push({
+              faceId: element.faceId,
+              personId: person._id,
+              confidence: element.candidates[0].confidence,
+              facerectangle: element.faceRectangle
+            })
+          } else {
+            // Create new person
+            let newMSPerson = {
+              name: constants.name.unknown,
+              userData: constants.name.unknown
+            }
+            const createMSPersonRes = await FaceController.createPersonInPersonGroup(constants.face.known, newMSPerson)
+            let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
+            await FaceController.addFaceForPerson(constants.face.known, createMSPersonRes.personId, url, targetFace)
+            const visualData = await VisualDataController.createVisualData({
+              URL: url,
+              isImage: true,
+              location: location
+            })
+            let newPerson = {
+              mspersonid: createMSPersonRes.personId,
+              name: constants.name.unknown,
+              isknown: false,
+              datas: [visualData]
+            }
+            const createPersonRes = await PersonController.createPerson(newPerson, constants.adminInfo.id)
+            response.push({
+              faceId: element.faceId,
+              personId: createPersonRes._id,
+              isNew: true,
+              facerectangle: element.faceRectangle
+            })
+          }
+        }
+      }
+    } else return responseStatus.Response(404, {}, 'DEO THAY MAT')
   }
 
   async calculateScore (personId, location) {
