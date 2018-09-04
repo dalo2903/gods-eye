@@ -48,6 +48,12 @@ class IdentifyController {
           }
           const createRecordRes = await RecordController.createRecord(record)
           this.calculateScore(person._id, location)
+          if (element.candidates[0].confidence >= constants.face.ADDPERSONTHRESHOLD) {
+            console.log(`Candidate has confidence >= ${constants.face.ADDPERSONTHRESHOLD}, add to the system`)
+            let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
+            await FaceController.addFaceForPerson(constants.face.known, element.candidates[0].personId, url, targetFace)
+            await PersonController.addDataForPerson(person._id, visualDataId)
+          }
         } else {
           console.log(`Cannot identify person, creating new person`)
           // Create new person
@@ -59,7 +65,6 @@ class IdentifyController {
           // console.log(`Created new MS person id = ${createMSPersonRes.personId}`)
           let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
           await FaceController.addFaceForPerson(constants.face.known, createMSPersonRes.personId, url, targetFace)
-          FaceController.trainPersonGroup(constants.face.known)
           let newPerson = {
             msPersonId: createMSPersonRes.personId,
             name: constants.name.unknown,
@@ -83,6 +88,7 @@ class IdentifyController {
           this.calculateScore(createPersonRes._id, location)
         }
       }
+      FaceController.trainPersonGroup(constants.face.known)
       if (response.length !== 0) {
         return responseStatus.Response(200, response)
       } else return responseStatus.Response(404, {}, 'INTERNAL ERROR')
@@ -131,9 +137,9 @@ class IdentifyController {
           break
       }
       let newScore = parseFloat(localScore.score) + parseFloat(rate)
-      await LocalScoreController.updateRate(localScore._id, rate)
+      await await LocalScoreController.updateRate(localScore._id, rate)
       console.log(`Updated rate = ${rate}`)
-      await LocalScoreController.updateScore(localScore._id, newScore)
+      await await LocalScoreController.updateScore(localScore._id, newScore)
       console.log(`Updated score = ${newScore}`)
     }
   }

@@ -273,7 +273,7 @@ class FaceController {
     }
     try {
       const res = await rpn(options) // persistedFaceId
-      console.log(res)
+      //console.log(res)
       return res
     } catch (error) {
       console.log(error)

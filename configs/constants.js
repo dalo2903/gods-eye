@@ -9,7 +9,10 @@ const index = {
 }
 const face = {
   known: 'known-faces',
-  unknown: 'unidentified-faces'
+  unknown: 'unidentified-faces',
+  IDENTIFYTHRESHOLD: parseFloat(0.5),
+  ADDPERSONTHRESHOLD: parseFloat(0.85)
+
 }
 // const relationshipEnum = {
 //   STRANGER: 0,
@@ -24,7 +27,6 @@ const score = {
   STRANGERBASESCORE: 10,
   FRIENDBASESCORE: 10,
   FAMILYBASESCORE: 10
-
 }
 const relationshipEnum = {
   STRANGER: 0,
