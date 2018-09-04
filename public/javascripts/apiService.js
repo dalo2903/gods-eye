@@ -84,6 +84,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     },
     signIn: function (json) {
       return $http.post('/api/auth/sign-in', json)
+    },
+    getUserNotifications: function (userId) {
+      return $http.get(`/api/user/${userId}/notifications`)
     }
   }
 }])
