@@ -4,11 +4,11 @@ const Post = mongoose.model('Post')
 const responseStatus = require('../../configs/responseStatus')
 
 class PostController extends BaseController {
-  constructor() {
+  constructor () {
     super(Post)
   }
 
-  async createPost(obj, userCreated) {
+  async createPost (obj, userCreated) {
     // if (!obj.title) throw responseStatus.Response(400, {}, 'title')
     const post = {
       userCreated: userCreated,
@@ -21,30 +21,30 @@ class PostController extends BaseController {
     await this.create(post)
   }
 
-  async getPost(_id) {
+  async getPost (_id) {
     const post = await Post.findById(_id).populate({ path: 'userCreated', select: 'name avatar' })
       .populate({ path: 'datas location', select: 'URL address identifyResult' }).exec()
     if (!post) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { post: post })
   }
 
-  async getPostPopulateAuthor(_id) {
+  async getPostPopulateAuthor (_id) {
     const post = await Post.findById(_id).populate({ path: 'userCreated', select: 'name avatar' }).exec()
     if (!post) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { post: post })
   }
 
-  async getPostsPopulateAuthor() {
-    const posts = await Post.find().populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address' }).sort('-createdAt').exec()
+  async getPostsPopulateAuthor (skip, limit) {
+    const posts = await Post.find().sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address' }).exec()
     return responseStatus.Response(200, { posts: posts })
   }
 
-  async getPostsSameUserCreated(userCreated) {
+  async getPostsSameUserCreated (userCreated) {
     const posts = await Post.find({ userCreated: userCreated }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL' })
     return responseStatus.Response(200, { posts: posts })
   }
 
-  async getPostsByLocation(location) {
+  async getPostsByLocation (location) {
     const posts = await Post.find({ location: location }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address' }).sort('-createdAt')
     return responseStatus.Response(200, { posts: posts })
   }
