@@ -1,6 +1,6 @@
 <!-- sidebar laptop -->
 <style>
-    @media only screen and (max-width:1024px) {
+    @media only screen and (max-width:767px) {
         #sidebar-laptop {
             display: none
         }
@@ -34,9 +34,12 @@
         }
     }
 
-    @media only screen and (min-width:1024px) {
+    @media only screen and (min-width:768px) {
         #sidebar-laptop {
-            display: initial
+            display: initial;
+            /* position: sticky;
+            top: 10%;
+            left: 0px */
         }
         #sidebar-mobile {
             display: none
@@ -51,12 +54,14 @@
         }
     }
 </style>
-<div id="sidebar-laptop" class="sidebar text-left" ng-controller='sideBarController'>
+<div id="sidebar-laptop" ng-controller='sideBarController'>
     <h2>Popular locations</h2>
-    <ul id='navMenu' class="nav menu">
-        <li id="lap{{location._id}}" ng-repeat="location in locations"><a class="popular-locations" ng-class="{'active': isActiveLaptop(location._id)}"
-                href="/location/{{location._id}}">{{ location.address }}
-            </a></li>
+    <ul id='navMenu' class="nav">
+        <li id="lap{{location._id}}" ng-repeat="location in locations">
+            <a class="popular-locations" ng-class="{'active': isActiveLaptop(location._id)}" href="/location/{{location._id}}">{{
+                location.address }}
+            </a>
+        </li>
     </ul>
 </div>
 <!-- sidebar mobile -->

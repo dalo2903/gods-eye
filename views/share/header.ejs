@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" ng-controller="headerController">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -35,11 +35,25 @@
           <li>
             <a href="/about">ABOUT US</a>
           </li>
-          <li>
-            <a href="/user/<%- user_id %>">
+          <li style="display: flex">
+            <a href="/user/<%- user_id %>" style="padding-right: 0">
               <span class="glyphicon glyphicon-user"></span>
               <%- user_name %>
             </a>
+            <!-- <a href="#" class="dropdown-toggle" style="padding-left: 4px" data-toggle="dropdown"> -->
+            <!-- <i style="color: red" class="fa fa-circle" aria-hidden="true"></i> -->
+            <div class="dropdown" style="padding-top: 15px">
+              <a style="background-color: transparent !important" href="#notification" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true">
+                <i style="color: red" class="fa fa-circle" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li ng-repeat="notification in notifications">
+                  <a href="{{ notification.URL }}">{{ notification.title }}</a>
+                </li>
+              </ul>
+            </div>
+            <!-- </a> -->
           </li>
           <li>
             <a href="/api/auth/sign-out">
@@ -57,8 +71,13 @@
       </ul>
     </div>
   </div>
+  <span class="hide" id="user_id">
+    <%- user_id -%>
+  </span>
 </nav>
 <% include ./signin.ejs %>
+
+  <script src="/javascripts/header.js"></script>
 
   <script>
     // Get the modal

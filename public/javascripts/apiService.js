@@ -62,8 +62,11 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     getPerson: function (_id) {
       return $http.get('/api/person/' + _id)
     },
-    getLocations: function (_id) {
+    getLocations: function () {
       return $http.get('/api/location/')
+    },
+    getLocation: function (_id) {
+      return $http.get(`/api/location/${_id}`)
     },
     addFace: function (formData) {
       var req = {
@@ -81,6 +84,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     },
     signIn: function (json) {
       return $http.post('/api/auth/sign-in', json)
+    },
+    getUserNotifications: function (userId) {
+      return $http.get(`/api/user/${userId}/notifications`)
     },
     getPosts: function (skip, limit) {
       return $http.get(`/api/post?skip=${skip}&limit=${limit}`)
