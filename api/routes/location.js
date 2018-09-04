@@ -13,6 +13,17 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/:locationId', async (req, res) => {
+  try {
+    const locationId = req.params.locationId
+    const response = await LocationController.getLocation(locationId)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.get('/:locationId/posts', async (req, res) => {
   try {
     const locationId = req.params.locationId
