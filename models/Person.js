@@ -24,6 +24,10 @@ const PersonSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'VisualData'
   }],
+  location: {
+    type: Schema.Types.ObjectId,
+    ref: 'Location'
+  },
   isknown: {
     type: Boolean,
     required: true,

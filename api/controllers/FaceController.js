@@ -243,7 +243,7 @@ class FaceController {
       },
       body: {
         name: person.name,
-        userData: ''
+        userData: person.userData
       },
       json: true
     }
@@ -257,8 +257,8 @@ class FaceController {
     }
   }
 
-  async addFaceForPerson (personGroupId, personId, faceURL) {
-    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces'
+  async addFaceForPerson (personGroupId, personId, faceURL, targetFace) {
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces' + targetFace ? '?' + targetFace : ''
     var options = {
       url: url,
       method: 'POST',

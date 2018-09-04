@@ -11,7 +11,29 @@ const face = {
   known: 'known-faces',
   unknown: 'unidentified-faces'
 }
+// const relationshipEnum = {
+//   STRANGER: 0,
+//   FRIEND: 1
+// }
+
+const relationshipEnum = {
+  STRANGER: 0,
+  FRIEND: 1
+}
+const adminInfo = {
+  id: '5b86b4a8a96c6a000446705b'
+}
+
+const name = {
+  unknown: 'unknown'
+}
+const RELATIONSHIP_TYPE_ARRAY = Object.keys(relationshipEnum).map(key => relationshipEnum[key])
+
 module.exports = {
   index: index,
-  face: face
+  face: face,
+  name: name,
+  adminInfo: adminInfo,
+  relationshipEnum: relationshipEnum,
+  RELATIONSHIP_TYPE_ARRAY: RELATIONSHIP_TYPE_ARRAY
 }

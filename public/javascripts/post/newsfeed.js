@@ -1,25 +1,35 @@
 var app = angular.module('GodsEye')
 
 app.controller('NewsFeedController', ['$scope', 'apiService', '$http', function ($scope, apiService, $http) {
-  $http({
-    method: 'GET',
-    url: '/api/post'
-  }).then(function success (response) {
-    posts = response.data.posts
-    $scope.scrollData = []
-    for (var i = 0; i < 2; i++) {
-      $scope.scrollData.push(posts[i])
-    }
-    $scope.loadMore = function () {
-      last = $scope.scrollData.length - 1
-      for (var i = last + 1; i < last + 3; i++) {
-        $scope.scrollData.push(posts[i])
+  $scope.scrollData = []
+  let last = 0
+  $scope.block = false
+  function uniq_fast(a) {
+    var seen = {}
+    var out = []
+    var len = a.length
+    var j = 0
+    for (var i = 0; i < len; i++) {
+      var item = a[i]._id
+      if (seen[item] !== 1) {
+        seen[item] = 1
+        out[j++] = a[i]
       }
     }
-  }, function error (response) {
-    console.log(response)
-  })
-  $scope.detail = function (id) {
-    window.location.href = '/post/' + id
+    return out
   }
-}])
+  $scope.loadMore = async function () {
+    $scope.block = true
+    last = $scope.scrollData.length - 1
+    const newPosts = (await apiService.getPosts(last + 1, 5)).data.posts
+    // for (var i = last + 1; i < last + 3; i++) {
+    //   $scope.scrollData.push(posts[i])
+    // }
+    $scope.scrollData = $scope.scrollData.concat(newPosts)
+    $scope.scrollData = uniq_fast($scope.scrollData)
+    console.log($scope.scrollData.length)
+    $scope.block = false
+    $scope.$apply()
+  }
+}
+])

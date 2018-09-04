@@ -80,7 +80,9 @@ router.get('/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const response = await PostController.getPostsPopulateAuthor()
+    const skip = parseInt(req.query.skip || 0)
+    const limit = parseInt(req.query.limit || 10)
+    const response = await PostController.getPostsPopulateAuthor(skip, limit)
     return res.send(response)
   } catch (error) {
     console.log(error)

@@ -1,7 +1,7 @@
 const BaseController = require('./BaseController')
 const mongoose = require('mongoose')
 const LocalScore = mongoose.model('LocalScore')
-var config = require('../../config')
+// var config = require('../../config')
 const responseStatus = require('../../configs/responseStatus')
 
 class LocalScoreController extends BaseController {
@@ -13,7 +13,7 @@ class LocalScoreController extends BaseController {
     let LocalScore = {
       personid: obj.personid,
       location: obj.location,
-      datas: obj.datas
+      score: obj.score
     }
     LocalScore = await this.create(LocalScore)
     return LocalScore
@@ -25,7 +25,7 @@ class LocalScoreController extends BaseController {
   }
   async getLocalScoreByPersonIdAndLocation (personId, location) {
     const localScore = await LocalScore.find({personId: personId, location: location})
-    if (!localScore) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
+    if (!localScore) return responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, {localScore: localScore})
   }
   async getLocalScoreByPersonId (personId) {
