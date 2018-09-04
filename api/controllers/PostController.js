@@ -10,7 +10,7 @@ class PostController extends BaseController {
 
   async createPost (obj, userCreated) {
     // if (!obj.title) throw responseStatus.Response(400, {}, 'title')
-    const post = {
+    const _post = {
       userCreated: userCreated,
       tags: obj.tags || [],
       title: obj.title || 'title',
@@ -18,7 +18,8 @@ class PostController extends BaseController {
       datas: obj.datas,
       location: obj.location
     }
-    await this.create(post)
+    const post = await this.create(_post)
+    return post
   }
 
   async getPost (_id) {

@@ -6,7 +6,7 @@ const PersonSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  mspersonId: {
+  msPersonId: {
     type: String
   },
   name: {
@@ -28,7 +28,7 @@ const PersonSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Location'
   },
-  isknown: {
+  isKnown: {
     type: Boolean,
     required: true,
     default: true

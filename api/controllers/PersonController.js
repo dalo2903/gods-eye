@@ -15,19 +15,20 @@ class PersonController extends BaseController {
       // author: uuid,
       userCreated: userCreated,
       name: obj.name,
-      mspersonid: '',
+      msPersonId: obj.msPersonId || '',
       status: 100,
       score: 100,
       datas: obj.datas,
-      isknown: true
+      isKnown: obj.isKnown || true
     }
     person = await this.create(person)
+    console.log(`Created person id = ${person._id}`)
     return person
   }
 
-  async updateMicrosoftPersonId (_id, mspersonId) {
+  async updateMicrosoftPersonId (_id, msPersonId) {
     let person = await this.get(_id)
-    person.mspersonId = mspersonId
+    person.msPersonId = msPersonId
     await person.save()
   }
 
@@ -43,9 +44,9 @@ class PersonController extends BaseController {
     return responseStatus.Response(200, { persons: persons })
   }
 
-  async getPersonByMSPersonId (mspersonId) {
-    const person = await Person.find({ mspersonId: mspersonId }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL' })
-    return responseStatus.Response(200, { person: person })
+  async getPersonByMSPersonId (msPersonId) {
+    const person = await Person.findOne({ msPersonId: msPersonId }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL' })
+    return person
   }
 
   async addDataForPerson (_id, dataId) {

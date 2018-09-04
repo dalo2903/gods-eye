@@ -8,58 +8,12 @@ var PersonController = require('./PersonController')
 var LocalScoreController = require('./LocalScoreController')
 var RelationshipController = require('./RelationshipController')
 var VisualDataController = require('./VisualDataController')
-
+var RecordController = require('./RecordController')
 // var RecordController = require('./RecordController')
 
 class IdentifyController {
-  async analyzeFace (url) {
-    var knownFaceRes = await this.checkKnownFace(url)
-    var unknownFaceRes = await this.checkUnknownFace(url)
-    var persons = []
-    for (let element of knownFaceRes) {
-      if (element.candidates.length !== 0) {
-        if (element.candidates[0].confidence >= 0.5) {
-          var personKnown = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
-          persons.push({
-            personId: personKnown._id,
-            confidence: element.candidates[0].confidence,
-            facerectangle: element.faceRectangle
-          })
-        }
-      }
-    }
-    for (let element of unknownFaceRes) {
-      if (element.candidates.length !== 0) {
-        if (element.candidates[0].confidence >= 0.5) {
-          var personUnknown = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
-          persons.push({
-            personId: personUnknown._id,
-            confidence: element.candidates[0].confidence,
-            facerectangle: element.faceRectangle
-          })
-        }
-      }
-    }
-    // for (let element of persons) {
-    //   console.log(element)
-    // }
-    if (persons.length === 0) {
-      return responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
-    }
-    return responseStatus.Response(200, {persons: persons})
-  }
-
-  async checkKnownFace (url) {
-    const res = await FaceController.detectAndIdentify(url, constants.face.known)
-    return res
-  }
-
-  async checkUnknownFace (url) {
-    const res = await FaceController.detectAndIdentify(url, constants.face.unknown)
-    return res
-  }
-
-  async analyzeAndProcessFaces (url, location) {
+  async analyzeAndProcessFaces (url, location, postId, visualDataId) {
+    console.log(`analyzeAndProcessFaces: url = ${url}, location = ${location}`)
     var response = []
     const detectRes = await FaceController.detect(url)
     var identifyFaceIds = []
@@ -67,7 +21,7 @@ class IdentifyController {
       identifyFaceIds.push(element.faceId)
     })
     if (identifyFaceIds.length !== 0) {
-      var identifyRes = await this.identify(identifyFaceIds, constants.face.known)
+      var identifyRes = await FaceController.identify(identifyFaceIds, constants.face.known)
       var detectMap = {}
       detectRes.forEach(function (face) {
         detectMap[face.faceId] = face.faceRectangle
@@ -76,73 +30,111 @@ class IdentifyController {
         face.faceRectangle = detectMap[face.faceId]
       })
       for (let element of identifyRes) {
-        if (element.candidates.length !== 0) {
-          if (element.candidates[0].confidence >= 0.5) {
-            var person = (await PersonController.getPersonByMSPersonId(element.candidates[0].personId)).person
-            response.push({
-              faceId: element.faceId,
-              personId: person._id,
-              confidence: element.candidates[0].confidence,
-              facerectangle: element.faceRectangle
-            })
-          } else {
-            // Create new person
-            let newMSPerson = {
-              name: constants.name.unknown,
-              userData: constants.name.unknown
-            }
-            const createMSPersonRes = await FaceController.createPersonInPersonGroup(constants.face.known, newMSPerson)
-            let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
-            await FaceController.addFaceForPerson(constants.face.known, createMSPersonRes.personId, url, targetFace)
-            const visualData = await VisualDataController.createVisualData({
-              URL: url,
-              isImage: true,
-              location: location
-            })
-            let newPerson = {
-              mspersonid: createMSPersonRes.personId,
-              name: constants.name.unknown,
-              isknown: false,
-              datas: [visualData]
-            }
-            const createPersonRes = await PersonController.createPerson(newPerson, constants.adminInfo.id)
-            response.push({
-              faceId: element.faceId,
-              personId: createPersonRes._id,
-              isNew: true,
-              facerectangle: element.faceRectangle
-            })
+        if (element.candidates.length !== 0 && element.candidates[0].confidence >= 0.5) {
+          console.log(`Identified person MSId = ${element.candidates[0].personId}`)
+          var person = await PersonController.getPersonByMSPersonId(element.candidates[0].personId)
+          // console.log(person)
+          response.push({
+            faceId: element.faceId,
+            personId: person._id,
+            confidence: element.candidates[0].confidence,
+            facerectangle: element.faceRectangle
+          })
+          let record = {
+            personid: person._id,
+            location: location,
+            postId: postId,
+            data: visualDataId
           }
+          const createRecordRes = await RecordController.createRecord(record)
+          this.calculateScore(person._id, location)
+        } else {
+          console.log(`Cannot identify person, creating new person`)
+          // Create new person
+          let newMSPerson = {
+            name: constants.name.unknown,
+            userData: constants.name.unknown
+          }
+          const createMSPersonRes = await FaceController.createPersonInPersonGroup(constants.face.known, newMSPerson)
+          // console.log(`Created new MS person id = ${createMSPersonRes.personId}`)
+          let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
+          await FaceController.addFaceForPerson(constants.face.known, createMSPersonRes.personId, url, targetFace)
+          FaceController.trainPersonGroup(constants.face.known)
+          let newPerson = {
+            msPersonId: createMSPersonRes.personId,
+            name: constants.name.unknown,
+            isKnown: false,
+            datas: [visualDataId]
+          }
+          const createPersonRes = await PersonController.createPerson(newPerson, constants.adminInfo.id)
+          response.push({
+            faceId: element.faceId,
+            personId: createPersonRes._id,
+            isNew: true,
+            facerectangle: element.faceRectangle
+          })
+          let record = {
+            personid: createPersonRes._id,
+            location: location,
+            postId: postId,
+            data: visualDataId
+          }
+          const createRecordRes = await RecordController.createRecord(record)
+          this.calculateScore(createPersonRes._id, location)
         }
       }
+      if (response.length !== 0) {
+        return responseStatus.Response(200, response)
+      } else return responseStatus.Response(404, {}, 'INTERNAL ERROR')
     } else return responseStatus.Response(404, {}, 'DEO THAY MAT')
   }
 
   async calculateScore (personId, location) {
-    const localScoreResponse = await LocalScoreController.getLocalScoreByPersonIdAndLocation(personId, location)
+    const localScore = await LocalScoreController.getLocalScoreByPersonIdAndLocation(personId, location)
     const relationship = await RelationshipController.getRelationship(personId, location)
     // Nếu chưa tồn tại thì tạo mới không thì update
-    if (localScoreResponse.status === 404) {
-      let localScore = {
+    console.log(`calculateScore: personId = ${personId}, location = ${location}`)
+    if (!localScore) {
+      console.log('localScore not found, creating new localScore')
+      let newLocalScore = {
         personid: personId,
-        location: location
+        location: location,
+        rate: constants.score.DECREASERATE
       }
-      if (!relationship || relationship.type === constants.relationshipEnum.STRANGER) {
-        localScore.score = 10 // Todo:
+      switch (relationship.type) {
+        case constants.relationshipEnum.FAMILY:
+          newLocalScore.score = constants.score.FAMILYBASESCORE // Todo:
+          break
+        case constants.relationshipEnum.FRIEND:
+          newLocalScore.score = constants.score.FRIENDBASESCORE // Todo:
+          break
+        case constants.relationshipEnum.STRANGER:
+        default:
+          newLocalScore.score = constants.score.STRANGERBASESCORE // Todo:
+          break
       }
-      if (relationship.type === constants.relationshipEnum.FRIEND) {
-        localScore.score = 50 // Todo:
-      }
-      await LocalScoreController.createLocalScore(localScore)
+      // newLocalScore.score += newLocalScore.rate
+      const createLocalScoreRes = await LocalScoreController.createLocalScore(newLocalScore)
     } else {
-      let score = localScoreResponse.localScore.score
-      if (relationship.type === constants.relationshipEnum.STRANGER) {
-        score -= 10 // Todo
+      console.log(`Found local score id = ${localScore._id}`)
+      let rate = localScore.rate || -4
+      switch (relationship.type) {
+        case constants.relationshipEnum.FAMILY:
+          rate *= constants.score.FAMILYRATE // Todo:
+          break
+        case constants.relationshipEnum.FRIEND:
+          rate *= constants.score.FRIENDRATE // Todo:
+          break
+        case constants.relationshipEnum.STRANGER:
+        default:
+          rate *= constants.score.STRANGERRATE // Todo:
+          break
       }
-      if (relationship.type === constants.relationshipEnum.FRIEND) {
-        score -= 4 // TODO
-      }
-      await LocalScoreController.updateScore(localScoreResponse.localScore._id, score) // TODOS
+      let newScore = parseFloat(localScore.score) + parseFloat(rate)
+      await LocalScoreController.updateRate(localScore._id, rate)
+      console.log(`Updated rate = ${rate}`)
+      await LocalScoreController.updateScore(localScore._id, newScore)
+      console.log(`Updated score = ${newScore}`)
     }
   }
 }

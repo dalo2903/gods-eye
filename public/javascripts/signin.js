@@ -24,8 +24,10 @@ app.controller('SignInController', ['$scope', 'apiService', function ($scope, ap
     }
     apiService.signIn(json)
       .then(function (res) {
-        alert(res.data.message)
-        window.location.href = '/'
+        // document.getElementById('modal-sign-in').style.display = 'none'
+        // alert(res.data.message)
+        // window.location.href = '/'
+        location.reload()
       })
       .catch(function (res) {
         alert(res.data.message)

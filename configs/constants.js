@@ -16,9 +16,20 @@ const face = {
 //   FRIEND: 1
 // }
 
+const score = {
+  DECREASERATE: -4,
+  STRANGERRATE: 1.5,
+  FRIENDRATE: 0.75,
+  FAMILYRATE: 0.5,
+  STRANGERBASESCORE: 10,
+  FRIENDBASESCORE: 10,
+  FAMILYBASESCORE: 10
+
+}
 const relationshipEnum = {
   STRANGER: 0,
-  FRIEND: 1
+  FRIEND: 1,
+  FAMILY: 2
 }
 const adminInfo = {
   id: '5b86b4a8a96c6a000446705b'
@@ -35,5 +46,6 @@ module.exports = {
   name: name,
   adminInfo: adminInfo,
   relationshipEnum: relationshipEnum,
+  score: score,
   RELATIONSHIP_TYPE_ARRAY: RELATIONSHIP_TYPE_ARRAY
 }

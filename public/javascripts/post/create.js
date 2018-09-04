@@ -41,7 +41,7 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
       .then(function (res) {
         console.log(res)
         window.location.replace('/')
-        alert('Post created successfully')
+        //alert('Post created successfully')
       })
       .catch(function (res) {
         alert(res.data.message)

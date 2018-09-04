@@ -28,8 +28,8 @@ router.post('/add-face', async (req, res) => {
     const response = await PersonController.addDataForPerson(req.body._id, visualData._id)
     res.send(response)
     try {
-      const mspersonId = response.person.mspersonId
-      await FaceController.addFaceForPerson(Constants.face.known, mspersonId, url) // Add face to mspersonid
+      const msPersonId = response.person.msPersonId
+      await FaceController.addFaceForPerson(Constants.face.known, msPersonId, url) // Add face to mspersonid
     } catch (error) {
       console.log(error)
     }
@@ -49,12 +49,15 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       URL: url,
       isImage: true
     })
-    req.body.datas = [visualData._id]
-    const person = await PersonController.createPerson(req.body, userCreated)
+    var person = req.body
+    person.datas = [visualData._id]
+    person.isKnown = true
+    const createPersonRes = await PersonController.createPerson(person, userCreated)
     res.send() // Send response after upload image and create person in database
-    const personId = (await FaceController.createPersonInPersonGroup(Constants.face.known, { name: req.body.name })).personId
-    await FaceController.addFaceForPerson(Constants.face.known, personId, url) // Add face in face api
-    await PersonController.updateMicrosoftPersonId(person._id, personId) // Update MSid in DB
+    const msPersonId = (await FaceController.createPersonInPersonGroup(Constants.face.known, { name: createPersonRes.name })).personId
+    await FaceController.addFaceForPerson(Constants.face.known, msPersonId, url) // Add face in face api
+    await PersonController.updateMicrosoftPersonId(createPersonRes._id, msPersonId) // Update MSid in DB
+    FaceController.trainPersonGroup(Constants.face.known)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)

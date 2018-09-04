@@ -9,13 +9,19 @@ class RecordController extends BaseController {
   }
 
   async createRecord (obj, postId) {
-    let record = {
+    let _record = {
       postId: postId,
       personid: obj.personid,
       location: obj.location,
       data: obj.data
     }
-    record = await this.create(record)
+    const record = await this.create(_record)
+    console.log(`Created new record id = ${record._id}`)
+    return record
+  }
+
+  async getRecordsByLocation (locationId) {
+    const record = await Record.find({location: locationId})
     return record
   }
 }

@@ -9,6 +9,9 @@ const LocalScoreSchema = new Schema({
   score: {
     type: Number
   },
+  rate: {
+    type: Number
+  },
   personId: {
     type: Schema.Types.ObjectId,
     ref: 'Person'

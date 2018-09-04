@@ -249,7 +249,8 @@ class FaceController {
     }
     try {
       const res = await rpn(options)
-      console.log(res)
+      //console.log(res)
+      console.log(`Created MS person id = ${res.personId}`)
       return res
     } catch (error) {
       console.log(error)
@@ -258,7 +259,7 @@ class FaceController {
   }
 
   async addFaceForPerson (personGroupId, personId, faceURL, targetFace) {
-    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces' + targetFace ? '?' + targetFace : ''
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces' + (targetFace ? '?' + targetFace : '')
     var options = {
       url: url,
       method: 'POST',

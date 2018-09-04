@@ -10,33 +10,37 @@ class LocalScoreController extends BaseController {
   }
 
   async createLocalScore (obj) {
-    let LocalScore = {
-      personid: obj.personid,
+    let _localScore = {
+      personId: obj.personid,
       location: obj.location,
+      rate: obj.rate,
       score: obj.score
     }
-    LocalScore = await this.create(LocalScore)
-    return LocalScore
+    const localScore = await this.create(_localScore)
+    console.log(`Created new local score id = ${localScore._id}`)
+    return localScore
   }
   async updateScore (_id, score) {
     let localScore = await this.get(_id)
     localScore.score = score
     await localScore.save()
   }
+  async updateRate (_id, rate) {
+    let localScore = await this.get(_id)
+    localScore.rate = rate
+    await localScore.save()
+  }
   async getLocalScoreByPersonIdAndLocation (personId, location) {
-    const localScore = await LocalScore.find({personId: personId, location: location})
-    if (!localScore) return responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
-    else return responseStatus.Response(200, {localScore: localScore})
+    const localScore = await LocalScore.findOne({personId: personId, location: location})
+    return localScore
   }
   async getLocalScoreByPersonId (personId) {
-    const localScore = await LocalScore.find({personId: personId})
-    if (!localScore) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
-    else return responseStatus.Response(200, {localScore: localScore})
+    const localScore = await LocalScore.findOne({personId: personId})
+    return localScore
   }
   async getLocalScoreByLocation (location) {
-    const localScore = await LocalScore.find({location: location})
-    if (!localScore) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
-    else return responseStatus.Response(200, {localScore: localScore})
+    const localScore = await LocalScore.findOne({location: location})
+    return localScore
   }
 }
 
