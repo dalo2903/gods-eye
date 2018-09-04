@@ -6,10 +6,10 @@
     </div>
     <div ng-controller="PostByLocationController">
         <div class="row">
-            <div id='sidebar-container' class="col-lg-3">
+            <div id='sidebar-container' class="col-sm-3">
                 <% include ../share/sidebar.ejs -%>
             </div>
-            <div class="col-lg-6">
+            <div class="col-sm-6">
                 <h2>Posts at location: {{posts[0].location.address}}</h2>
                 <div infinite-scroll='loadMore()' id="postsContainer" class="postsContainer">
                     <div id="{{post._id}}" ng-repeat="post in posts">
@@ -27,6 +27,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3"></div>
+            <div class="col-sm-3"></div>
         </div>
     </div>
