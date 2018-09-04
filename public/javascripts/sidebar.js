@@ -8,11 +8,11 @@ app.controller('sideBarController', ['$scope', 'apiService', function ($scope, a
         .catch(function (res) {
             console.log(res)
         })
-    if ($(window).width() < 1024) {
-        $('#sidebar-container').removeClass('col-lg-3')
+    if ($(window).width() < 768) {
+        $('#sidebar-container').removeClass('col-sm-3')
     }
     else {
-        $('#sidebar-container').addClass('col-lg-3')
+        $('#sidebar-container').addClass('col-sm-3')
     }
 
     $scope.isActiveMobile = function (_id) {
