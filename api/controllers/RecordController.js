@@ -11,7 +11,7 @@ class RecordController extends BaseController {
   async createRecord (obj, postId) {
     let _record = {
       postId: postId,
-      personid: obj.personid,
+      personId: obj.personId,
       location: obj.location,
       data: obj.data
     }

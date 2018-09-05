@@ -15,6 +15,9 @@ const LocalScoreController = require('../controllers/LocalScoreController')
 //   }
 // })
 
+IdentifyController.probNormalize(parseFloat(1), parseFloat(0.5), parseFloat(0.65)).then(function (abc) {
+  console.log(abc)
+})
 /* Create Post */
 router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
@@ -34,7 +37,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     // console.log(post)
     const analyzeAndProcessResponse = await IdentifyController.analyzeAndProcessFaces(url, location, post._id, visualData._id)
     console.log(analyzeAndProcessResponse)
-    await VisualDataController.updyateIdentifyResult(visualData._id, analyzeAndProcessResponse)
+    await VisualDataController.updateIdentifyResult(visualData._id, analyzeAndProcessResponse)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
