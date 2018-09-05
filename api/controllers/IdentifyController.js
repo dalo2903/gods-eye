@@ -95,6 +95,19 @@ class IdentifyController {
     } else return responseStatus.Response(404, {}, 'DEO THAY MAT')
   }
 
+  async probNormalize (confidence, min, max) {
+    var norm = await this.normalize(confidence, min, max) * 8 // HARD CODE scale to -4 -> 4
+    console.log('v,min,max' + confidence + min + max)
+    console.log('norm:' + norm)
+
+    var sigmoid = Math.exp(norm) / (Math.exp(norm) + 1)
+    // var sigmoilNorm = this.normalize(sigmoid,min,max)
+    return sigmoid
+  }
+  async normalize (value, min, max) {
+    return (value - ((max + min) / 2)) / (max - min)
+  }
+
   async calculateScore (personId, location) {
     const localScore = await LocalScoreController.getLocalScoreByPersonIdAndLocation(personId, location)
     const relationship = await RelationshipController.getRelationship(personId, location)

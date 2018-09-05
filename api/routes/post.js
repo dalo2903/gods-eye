@@ -15,6 +15,9 @@ const LocalScoreController = require('../controllers/LocalScoreController')
 //   }
 // })
 
+IdentifyController.probNormalize(parseFloat(0.6), parseFloat(0.5), parseFloat(0.65)).then(function (abc) {
+  console.log(abc)
+})
 /* Create Post */
 router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
