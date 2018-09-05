@@ -195,6 +195,20 @@ class FaceController {
     }
   }
 
+  async resetPersonGroup (personGroupId) {
+    try {
+      await this.deletePersonGroup(personGroupId)
+      await this.createPersonGroup(personGroupId, {
+        name: personGroupId,
+        userData: personGroupId
+      })
+    } catch (err) {
+      await this.createPersonGroup(personGroupId, {
+        name: personGroupId,
+        userData: personGroupId
+      })
+    }
+  }
   async deletePersonInPersonGroup (personGroupId, personId) {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId
     var options = {
@@ -249,7 +263,7 @@ class FaceController {
     }
     try {
       const res = await rpn(options)
-      //console.log(res)
+      // console.log(res)
       console.log(`Created MS person id = ${res.personId}`)
       return res
     } catch (error) {
@@ -273,7 +287,7 @@ class FaceController {
     }
     try {
       const res = await rpn(options) // persistedFaceId
-      //console.log(res)
+      // console.log(res)
       return res
     } catch (error) {
       console.log(error)
@@ -311,7 +325,6 @@ class FaceController {
     }
     try {
       const res = await rpn(options) // persistedFaceId
-      console.log(res)
       return res
     } catch (error) {
       console.log(error)

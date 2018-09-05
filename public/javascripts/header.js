@@ -20,19 +20,19 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
     return out
   }
 
-  $scope.loadMoreNotification = async function () {
-    if (userId) {
-      $scope.block = true
-      last = $scope.notifications.length - 1
-      const newNotifications = (await apiService.getUserNotifications(userId, last + 1, 5)).data.notifications
-      $scope.notifications = $scope.notifications.concat(newNotifications)
-      $scope.notifications = unique($scope.notifications)
-      // console.log($scope.notifications.length)
-      $scope.block = false
-      $scope.$apply()
-      console.log('load more notification')
-    }
-  }
+  // $scope.loadMoreNotification = async function () {
+  //   if (userId) {
+  //     $scope.block = true
+  //     last = $scope.notifications.length - 1
+  //     const newNotifications = (await apiService.getUserNotifications(userId, last + 1, 5)).data.notifications
+  //     $scope.notifications = $scope.notifications.concat(newNotifications)
+  //     $scope.notifications = unique($scope.notifications)
+  //     // console.log($scope.notifications.length)
+  //     $scope.block = false
+  //     $scope.$apply()
+  //     console.log('load more notification')
+  //   }
+  // }
 
   // $scope.loadMore()
 }])
