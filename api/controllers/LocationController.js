@@ -17,10 +17,10 @@ class LocationController extends BaseController {
     const location = await this.get(locationId)
     return responseStatus.Response(200, { location: location })
   }
-
-  async updatePersonId (_id, personId) {
-    let location = await this.get(_id)
-    location.personIds.push(personId)
+  
+  async updateResident (locationId, userId) {
+    let location = await this.get(locationId)
+    location.userIds.push(userId)
     await location.save()
   }
 }
