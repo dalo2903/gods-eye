@@ -41,7 +41,7 @@ class IdentifyController {
             facerectangle: element.faceRectangle
           })
           let record = {
-            personId: person._id,
+            personid: person._id,
             location: location,
             postId: postId,
             data: visualDataId
@@ -97,17 +97,18 @@ class IdentifyController {
 
   async probNormalize (confidence, min, max) {
     var norm = await this.normalize(confidence, min, max) * 8 // HARD CODE scale to -4 -> 4
-    console.log('v,min,max' + confidence + min + max)
-    console.log('norm:' + norm)
-
-    var sigmoid = Math.exp(norm) / (Math.exp(norm) + 1)
+    // console.log('v,min,max' + confidence + min + max)
+    // console.log('norm:' + norm)
     // var sigmoilNorm = this.normalize(sigmoid,min,max)
-    return sigmoid
+    return this.sigmoid(norm)
   }
   async normalize (value, min, max) {
+    // Normalize value to [-0.5 ; 0.5]
     return (value - ((max + min) / 2)) / (max - min)
   }
-
+  async sigmoid (number) {
+    return Math.exp(number) / (Math.exp(number) + 1)
+  }
   async calculateScore (personId, location) {
     const localScore = await LocalScoreController.getLocalScoreByPersonIdAndLocation(personId, location)
     const relationship = await RelationshipController.getRelationship(personId, location)
