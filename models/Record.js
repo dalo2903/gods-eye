@@ -10,7 +10,7 @@ const RecordSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'VisualData'
   },
-  locationid: {
+  location: {
     type: Schema.Types.ObjectId,
     ref: 'Location'
   },

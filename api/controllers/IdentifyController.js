@@ -41,7 +41,7 @@ class IdentifyController {
             facerectangle: element.faceRectangle
           })
           let record = {
-            personid: person._id,
+            personId: person._id,
             location: location,
             postId: postId,
             data: visualDataId

@@ -34,7 +34,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     // console.log(post)
     const analyzeAndProcessResponse = await IdentifyController.analyzeAndProcessFaces(url, location, post._id, visualData._id)
     console.log(analyzeAndProcessResponse)
-    await VisualDataController.updyateIdentifyResult(visualData._id, analyzeAndProcessResponse)
+    await VisualDataController.updateIdentifyResult(visualData._id, analyzeAndProcessResponse)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)

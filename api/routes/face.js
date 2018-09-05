@@ -67,10 +67,10 @@ router.get('/persongroup/list/', async (req, res) => {
   }
 })
 
-router.get('/persongroup/delete/:id', async (req, res) => {
+router.get('/persongroup/reset/:id', async (req, res) => {
   try {
     const id = req.params.id
-    const response = await FaceController.deletePersonGroup(id)
+    const response = await FaceController.resetPersonGroup(id)
     console.log(response)
     return res.send(response)
   } catch (error) {
