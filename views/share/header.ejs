@@ -40,14 +40,13 @@
               <span class="glyphicon glyphicon-user"></span>
               <%- user_name %>
             </a>
-            <!-- <a href="#" class="dropdown-toggle" style="padding-left: 4px" data-toggle="dropdown"> -->
-            <!-- <i style="color: red" class="fa fa-circle" aria-hidden="true"></i> -->
-            <div class="dropdown" style="padding-top: 15px">
-              <a style="background-color: transparent !important" href="#notification" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="true">
+            <div class="dropdown" style="padding-top: 15px" id="notification-dropdown">
+              <a style="background-color: transparent !important" href="#notification" class="dropdown-toggle" id="notification-dropdown-menu"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <i style="color: red" class="fa fa-circle" aria-hidden="true"></i>
               </a>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <ul style="height: 135px; overflow-y: auto;" class="dropdown-menu" aria-labelledby="notification-dropdown-menu" infinite-scroll="loadMoreNotification()"
+                infinite-scroll-disabled="block" infinite-scroll-use-document-bottom="false" infinite-scroll-parent>
                 <li ng-repeat="notification in notifications">
                   <a href="{{ notification.URL }}">{{ notification.title }}</a>
                 </li>
@@ -175,5 +174,4 @@
         // ...
       })
     })
-
   </script>

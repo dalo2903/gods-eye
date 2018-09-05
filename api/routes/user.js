@@ -17,7 +17,9 @@ router.get('/:userId/posts', async (req, res) => {
 router.get('/:userId/notifications', async (req, res) => {
   try {
     const userId = req.params.userId
-    const response = await NotificationController.getUserNotifications(userId)
+    const skip = parseInt(req.query.skip || 0)
+    const limit = parseInt(req.query.limit || 10)
+    const response = await NotificationController.getUserNotifications(userId, skip, limit)
     return res.send(response)
   } catch (error) {
     console.log(error)
