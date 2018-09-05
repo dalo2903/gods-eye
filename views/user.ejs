@@ -45,6 +45,9 @@
                     <li>
                         <a href="#people" data-toggle="tab">People</a>
                     </li>
+                    <li>
+                        <a href="#notifications" data-toggle="tab">Notifications</a>
+                    </li>
                 </ul>
                 <!-- Nav pills content -->
                 <div class="tab-content clearfix">
@@ -93,7 +96,22 @@
                             </table>
                         </div>
                     </div>
-
+                    <!-- Notifications -->
+                    <div class="tab-pane" id="notifications">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Message</th>
+                                    <th>Created At</th>
+                                </tr>
+                            </thead>
+                            <tbody style='text-align: left' infinite-scroll="loadMoreNotification()">
+                                <tr ng-repeat="notification in notifications">
+                                    <td>{{ notification.title }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

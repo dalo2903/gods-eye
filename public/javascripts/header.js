@@ -5,7 +5,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
   $scope.notifications = []
   let last = 0
   $scope.block = false
-  function unique (a) {
+  function unique(a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -33,6 +33,15 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
       console.log('load more notification')
     }
   }
-
   // $scope.loadMore()
 }])
+
+if (md.mobile()) {
+  $('#notification-dropdown').hide()
+  $('#notification-mobile').show()
+}
+else{
+  $('#notification-dropdown').show()
+  $('#notification-mobile').hide()
+}
+
