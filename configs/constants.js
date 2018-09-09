@@ -42,6 +42,17 @@ const name = {
 }
 const RELATIONSHIP_TYPE_ARRAY = Object.keys(relationshipEnum).map(key => relationshipEnum[key])
 
+const RESOURCES = {
+  LOCATION: 'location'
+}
+
+const ACTIONS = {
+  CREATE: 0,
+  READ: 1,
+  UPDATE: 2,
+  DELETE: 3
+}
+
 module.exports = {
   index: index,
   face: face,
@@ -49,5 +60,7 @@ module.exports = {
   adminInfo: adminInfo,
   relationshipEnum: relationshipEnum,
   score: score,
-  RELATIONSHIP_TYPE_ARRAY: RELATIONSHIP_TYPE_ARRAY
+  RELATIONSHIP_TYPE_ARRAY: RELATIONSHIP_TYPE_ARRAY,
+  RESOURCES: RESOURCES,
+  ACTIONS: ACTIONS
 }
