@@ -34,28 +34,38 @@
         <div id="box-tmp" class="box"></div>
     </div> -->
 
-    <div class="row" ng-controller="detailController">
-        <div id='sidebar-container' class="col-sm-3">
-            <% include ../share/sidebar.ejs -%>
-        </div>
-        <div class=" col-sm-6">
-            <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
-            <span id="_id" class="hide"><%- _id %></span>
-            <div id="{{post._id}}" class="post">
-                <div>
-                    <h1>{{post.title}}</h1>
-                </div>
-                <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
-                <div class="address">{{ post.location.address }}</div>
-                <div class="data" ng-repeat="data in post.datas">
-                    <div class="wrapper">
-                        <img class="post" ng-src="{{data.URL}}">
-                        <div id="box-{{$index}}" class="box"></div>
+    <div ng-controller="detailController">
+        <div class="row">
+            <div id='sidebar-container' class="col-sm-3">
+                <% include ../share/sidebar.ejs -%>
+            </div>
+            <div class="col-sm-6">
+                <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+                <span id="_id" class="hide"><%- _id %></span>
+                <div id="{{post._id}}" class="post">
+                    <div>
+                        <h1>{{post.title}}</h1>
+                    </div>
+                    <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
+                    <div class="address">{{ post.location.address }}</div>
+                    <div class="data" ng-repeat="data in post.datas">
+                        <div class="wrapper">
+                            <img class="post" ng-src="{{data.URL}}">
+                            <div id="box-{{$index}}" class="box"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="fb-comments" data-href="http://godseye.ml/<%- _id %>" data-width="100%" data-numposts="2"></div>
-                <div class="line">
+            </div>
+            <div class="col-sm-3">
+                <div ng-repeat="person in post.datas[0].identifyResult.persons" class="text-left">
+                    <h1 style="margin-top: 90px">Identify result:</h1>
+                    <h5 style="font-size: 20px">Name: <em>{{ person.personId.name }}</em> <br> Confidence: <em>{{ person.confidence * 100 }}</em></h5>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="fb-comments" data-href="http://godseye.ml/<%- _id %>" data-width="100%" data-numposts="2"></div>
+            <div class="line">
             </div>
         </div>
     </div>
