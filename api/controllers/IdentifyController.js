@@ -9,7 +9,8 @@ var LocalScoreController = require('./LocalScoreController')
 var RelationshipController = require('./RelationshipController')
 var VisualDataController = require('./VisualDataController')
 var RecordController = require('./RecordController')
-// var RecordController = require('./RecordController')
+var NotificationController = require('./NotificationController')
+var LocationController = require('./LocationController')
 
 class IdentifyController {
   async analyzeAndProcessFaces (url, location, postId, visualDataId) {
@@ -30,29 +31,32 @@ class IdentifyController {
         face.faceRectangle = detectMap[face.faceId]
       })
       for (let element of identifyRes) {
-        if (element.candidates.length !== 0 && element.candidates[0].confidence >= 0.5) {
-          console.log(`Identified person MSId = ${element.candidates[0].personId}`)
-          var person = await PersonController.getPersonByMSPersonId(element.candidates[0].personId)
-          // console.log(person)
-          response.push({
-            faceId: element.faceId,
-            personId: person._id,
-            confidence: element.candidates[0].confidence,
-            facerectangle: element.faceRectangle
-          })
-          let record = {
-            personid: person._id,
-            location: location,
-            postId: postId,
-            data: visualDataId
-          }
-          const createRecordRes = await RecordController.createRecord(record)
-          this.calculateScore(person._id, location)
-          if (element.candidates[0].confidence >= constants.face.ADDPERSONTHRESHOLD) {
-            console.log(`Candidate has confidence >= ${constants.face.ADDPERSONTHRESHOLD}, add to the system`)
-            let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
-            await FaceController.addFaceForPerson(constants.face.known, element.candidates[0].personId, url, targetFace)
-            await PersonController.addDataForPerson(person._id, visualDataId)
+        if (element.candidates.length !== 0 && element.candidates[0].confidence >= constants.face.IDENTIFYTHRESHOLD) {
+          for (let candidate of element.candidates) {
+            console.log(`Identified person MSId = ${candidate.personId}`)
+            var person = await PersonController.getPersonByMSPersonId(candidate.personId)
+            // console.log(person)
+            response.push({
+              faceId: element.faceId,
+              personId: person._id,
+              confidence: candidate.confidence,
+              facerectangle: element.faceRectangle
+            })
+            let record = {
+              personId: person._id,
+              location: location,
+              postId: postId,
+              data: visualDataId
+            }
+            const createRecordRes = await RecordController.createRecord(record)
+            const normConfidence = await this.probNormalize(candidate.confidence, parseFloat(0.5), parseFloat(0.65))
+            this.calculateScore(person._id, location, normConfidence, url)
+            if (candidate.confidence >= constants.face.ADDPERSONTHRESHOLD) {
+              console.log(`Candidate has confidence >= ${constants.face.ADDPERSONTHRESHOLD}, add to the system`)
+              let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
+              await FaceController.addFaceForPerson(constants.face.known, candidate.personId, url, targetFace)
+              await PersonController.addDataForPerson(person._id, visualDataId)
+            }
           }
         } else {
           console.log(`Cannot identify person, creating new person`)
@@ -85,7 +89,7 @@ class IdentifyController {
             data: visualDataId
           }
           const createRecordRes = await RecordController.createRecord(record)
-          this.calculateScore(createPersonRes._id, location)
+          this.calculateScore(createPersonRes._id, location, undefined, url)
         }
       }
       FaceController.trainPersonGroup(constants.face.known)
@@ -98,18 +102,33 @@ class IdentifyController {
   async probNormalize (confidence, min, max) {
     var norm = await this.normalize(confidence, min, max) * 8 // HARD CODE scale to -4 -> 4
     // console.log('v,min,max' + confidence + min + max)
-    // console.log('norm:' + norm)
+    console.log('norm:' + norm)
+
+    var sigmoid = Math.exp(norm) / (Math.exp(norm) + 1)
     // var sigmoilNorm = this.normalize(sigmoid,min,max)
-    return this.sigmoid(norm)
+    return sigmoid
   }
   async normalize (value, min, max) {
-    // Normalize value to [-0.5 ; 0.5]
     return (value - ((max + min) / 2)) / (max - min)
   }
-  async sigmoid (number) {
-    return Math.exp(number) / (Math.exp(number) + 1)
+
+  async notifyUsers (location, personId, url) {
+    const locationRes = await LocationController.getLocation(location)
+    const personRes = await PersonController.getPerson(personId)
+    // console.log(personRes)
+    // console.log(locationRes)
+    // for (let userId in locationRes.location.userIds) {
+    let message = `WARNING: a person name: "${personRes.person.name}" is found suspicious near your location ${locationRes.location.address} `
+    console.log(message)
+    let notification = {
+      to: constants.adminInfo.id,
+      title: message
+    }
+    await NotificationController.createNotification(notification)
+    // }
   }
-  async calculateScore (personId, location) {
+  async calculateScore (personId, location, normConfidence, url) {
+    const _normConfidence = parseFloat(normConfidence || 1)
     const localScore = await LocalScoreController.getLocalScoreByPersonIdAndLocation(personId, location)
     const relationship = await RelationshipController.getRelationship(personId, location)
     // Nếu chưa tồn tại thì tạo mới không thì update
@@ -150,11 +169,16 @@ class IdentifyController {
           rate *= constants.score.STRANGERRATE // Todo:
           break
       }
-      let newScore = parseFloat(localScore.score) + parseFloat(rate)
-      await await LocalScoreController.updateRate(localScore._id, rate)
+      // rate *= parseFloat(_normConfidence)
+      console.log(_normConfidence)
+      let newScore = parseFloat(localScore.score) + (parseFloat(rate) * parseFloat(_normConfidence))
+      await LocalScoreController.updateRate(localScore._id, rate)
       console.log(`Updated rate = ${rate}`)
-      await await LocalScoreController.updateScore(localScore._id, newScore)
+      await LocalScoreController.updateScore(localScore._id, newScore)
       console.log(`Updated score = ${newScore}`)
+      if (parseFloat(newScore) < 0) {
+        this.notifyUsers(location, personId, url)
+      }
     }
   }
 }
