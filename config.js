@@ -1,4 +1,5 @@
 module.exports = {
+  uriMongo: 'mongodb://god:godseye1@ds127362.mlab.com:27362/godseye',
   google: {
     projectId: 'centering-dock-194606',
     cloudStorage: {
@@ -23,5 +24,9 @@ module.exports = {
   cookieOptions: { // Bo secure: true vi khong co HTTPS
     maxAge: 60 * 60 * 24 * 5 * 1000, // Set session expiration to 5 days.
     httpOnly: true
+  },
+  token: {
+    expiresIn: '365 days',
+    secret: 'cuoituancuoituan'
   }
 }

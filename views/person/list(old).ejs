@@ -1,0 +1,51 @@
+<% layout('../share/layout.ejs') -%>
+    <style>
+        .avatar {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+            float: right;
+        }
+
+        .avatar-header {
+            width: 80px;
+        }
+
+        .created-at-header {
+            width: 140px;
+        }
+
+        .button-header {
+            width: 140px;
+        }
+    </style>
+
+    <div class="container text-left" ng-controller="listController">
+        <div class="table-responsive">
+            <table class="table table-striped w-auto">
+                <thead>
+                    <tr>
+                        <th class="avatar-header"></th>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                        <th class="created-at-header">Created At</th>
+                        <th class="button-header"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="person in persons | orderBy:'-createdAt'">
+                        <td><img class="avatar" ng-src="{{ person.datas[0].URL }}"></td>
+                        <td>{{ person.name }}</td>
+                        <td>{{ person.score }}</td>
+                        <td>{{ person.status }}</td>
+                        <td>{{ person.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
+                        <td><a href="/person/face/add/{{person._id}}" class="btn btn-primary">Add photo</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/javascripts/person/list.js"></script>

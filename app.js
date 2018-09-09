@@ -6,17 +6,31 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var engine = require('ejs-locals')
 var fileUpload = require('express-fileupload')
+var session = require('express-session')
 
 var serveIndex = require('serve-index')
 
+const config = require('./config')
+
+require('./configs/loadModelsMongoose')
+
 var routeAuthAPI = require('./api/routes/auth')
 var routeFaceAPI = require('./api/routes/face')
+var locationRouteAPI = require('./api/routes/location')
 var routePersonAPI = require('./api/routes/person')
+var routeUserAPI = require('./api/routes/user')
+var postRouteAPI = require('./api/routes/post')
 var index = require('./routes/index')
-var users = require('./routes/users')
 
 var app = express()
 app.use(cookieParser())
+
+app.use(session({
+  httpOnly: true,
+  secret: config.token.secret,
+  resave: true,
+  saveUninitialized: false
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -26,8 +40,8 @@ app.engine('ejs', engine)
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json({limit: '10mb'}))
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -37,9 +51,12 @@ app.use(fileUpload())
 
 app.use('/api/auth/', routeAuthAPI)
 app.use('/api/face/', routeFaceAPI)
+app.use('/api/location/', locationRouteAPI)
 app.use('/api/person/', routePersonAPI)
+app.use('/api/post/', postRouteAPI)
+app.use('/api/user/', routeUserAPI)
+
 app.use('/', index)
-app.use('/users', users)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

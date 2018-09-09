@@ -1,0 +1,160 @@
+<style>
+    /* The Modal (background) */
+    .modal {
+        margin: 0px auto;
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+        padding-top: 60px;
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto 15% auto;
+        /* 5% from the top, 15% from the bottom and centered */
+        border: 1px solid #888;
+        width: 80%;
+        /* Could be more or less, depending on screen size */
+    }
+
+
+    .btn {
+        border-radius: 5px
+    }
+
+    .close {
+        font-size: 25px;
+        opacity: 0.5;
+        right: 5px;
+        position: absolute;
+    }
+
+
+
+    #modal-sign-in .input-group {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+
+    #modal-sign-up .input-group {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    @media only screen and (min-width:768px) {
+        #modal-sign-up form {
+            width: 50%
+        }
+        #modal-sign-in form {
+            width: 50%
+        }
+    }
+
+    @media only screen and (max-width:768px) {
+        #modal-sign-up form {
+            width: 100%
+        }
+        #modal-sign-in form {
+            width: 100%
+        }
+    }
+</style>
+<script src="/javascripts/signin.js"></script>
+<div ng-controller='SignInController'>
+    <div class="modal" id="modal-sign-in">
+        <!-- Sign In -->
+        <form class='modal-content' ref='signinForm' id='signinForm' style="height: 420px" ng-submit="signIn()">
+            <i class="fa fa-times close" onclick="document.getElementById('modal-sign-in').style.display='none'" title="Close Modal"></i>
+            <h1 class="text-center">SIGN IN</h1>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="email" class="form-control" placeholder="Email address" name="email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-key fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="password" class="form-control" placeholder="Password" name="password" required>
+                </div>
+            </div>
+
+            <button type="button" onclick="$('#modal-sign-in').hide();$('#modal-sign-up').show();" class="btn btn-primary my-btn">
+                <i class="fa fa-user-plus fa-lg" aria-hidden="true"></i> Sign up</button>
+            <button type="submit" class="btn btn-primary my-btn" ng-click="signIn()">
+                <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Sign in</button>
+            <hr>
+            <div class="text-center">Or connect with:</div>
+            <div class="text-center">
+                <button style="background-color:#395697" class="btn btn-primary my-btn" onclick="window.location.href='/auth/facebook'">
+                    <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i> Facebook</button>
+                <button style="background-color:#DD4B39; border-color:#DD4B39" class="btn btn-primary my-btn" onclick="window.location.href='/auth/google'">
+                    <i class="fa fa-google-plus-official fa-lg" aria-hidden="true"></i> Google+</button>
+            </div>
+        </form>
+
+
+    </div>
+    <div class="modal" id="modal-sign-up">
+        <!-- Sign up -->
+        <form class='modal-content' id="signupForm" style="height: 365px">
+            <i class="fa fa-times close" onclick="document.getElementById('modal-sign-up').style.display='none'" title="Close Modal"></i>
+            <h1 class="text-center">SIGN UP</h1>
+            <div class="form-group">
+                <label for="name">Full name</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-address-card fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Full name" name="name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="email" class="form-control" id="email" placeholder="Email address" name="email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-key fa-lg" aria-hidden="true"></i>
+                    </span>
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary my-btn" ng-click="signUp()">
+                <i class="fa fa-user-plus fa-lg" aria-hidden="true"></i> Sign up</button>
+        </form>
+    </div>
+</div>

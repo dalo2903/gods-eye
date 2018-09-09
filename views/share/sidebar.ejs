@@ -1,0 +1,76 @@
+<!-- sidebar laptop -->
+<style>
+    @media only screen and (max-width:767px) {
+        #sidebar-laptop {
+            display: none
+        }
+        #sidebar-mobile {
+            display: initial
+        }
+        .tabbar {
+            height: 48px;
+            background-color: #000;
+            display: -webkit-box;
+            display: -moz-box;
+            overflow-x: scroll;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: hidden;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+            position: relative;
+            padding: 0 4px;
+            z-index: 0;
+        }
+        .tabbar a.active {
+            font-weight: 700;
+            color: #fff;
+        }
+        .tabbar a {
+            display: block;
+            color: hsla(0, 0%, 100%, .4);
+            text-decoration: none;
+            line-height: 24px;
+            font-weight: 700;
+            padding: 12px;
+        }
+    }
+
+    @media only screen and (min-width:768px) {
+        #sidebar-laptop {
+            display: initial;
+            /* position: sticky;
+            top: 10%;
+            left: 0px */
+        }
+        #sidebar-mobile {
+            display: none
+        }
+        .popular-locations {
+            color: black;
+            background-color: lightgrey;
+            margin-top: 10px
+        }
+        #navMenu>li>a.active {
+            background: lightslategrey
+        }
+    }
+</style>
+<div id="sidebar-laptop" ng-controller='sideBarController'>
+    <h2>Popular locations</h2>
+    <ul id='navMenu' class="nav">
+        <li id="lap{{location._id}}" ng-repeat="location in locations">
+            <a class="popular-locations" ng-class="{'active': isActiveLaptop(location._id)}" href="/location/{{location._id}}">{{
+                location.address }}
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- sidebar mobile -->
+<div id='sidebar-mobile' ng-controller='sideBarController'>
+    <nav id='tabbar' class='tabbar'>
+        <a ng-repeat="location in locations" id="{{location._id}}" class="popular-locations" ng-class="{'active': isActiveMobile(location._id)}"
+            href="/location/{{location._id}}">
+            {{ location.address}}
+        </a>
+    </nav>
+</div>
+<script src="/javascripts/sidebar.js"></script>

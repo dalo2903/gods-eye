@@ -1,15 +1,23 @@
 <% layout('./share/layout.ejs') -%>
 
-  <form action='/identify' method='post' encType="multipart/form-data">
-    <div class="form-group">
-      <input class="hide" type="file" name="sampleFile" id="image" accept="image/*" required/>
-      <div class="row">
-        <% include ./share/logo.ejs %>
+  <div ng-controller="identifyController" class="container">
+    <form>
+      <div class="form-group">
+        <input class="hide" type="file" id="image" accept="image/*" required/>
+        <div class="row" id="result">
+          <% include ./share/logo.ejs %>
+            <table id="table" class="table">
+              <thead>
+                <td>Name</td>
+                <td>Student ID</td>
+              </thead>
+            </table>
+        </div>
+        <strong style="font-size: 30px">Click the eye to choose image.</strong>
       </div>
-      <strong style="font-size: 30px">Click the eye to choose image.</strong>
-    </div>
-    <button class="btn btn-primary" type="submit">IDENTIFY</button>
-  </form>
+      <button class="btn btn-primary" type="button" ng-click="identify()">IDENTIFY</button>
+    </form>
+  </div>
 
   <script>
     function readURL(input) {
@@ -30,3 +38,5 @@
       readURL(this)
     })
   </script>
+
+  <script src="javascripts/identify.js"></script>

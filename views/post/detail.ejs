@@ -1,0 +1,64 @@
+<% layout('../share/layout.ejs') -%>
+
+    <style>
+        /* https://stackoverflow.com/questions/9397104/javascript-for-draw-rectangle-over-a-image */
+        .wrapper {
+            position: relative;
+        }
+
+        .box {
+            position: absolute;
+            border: 2px solid #ffffff;
+            background-color: transparent;
+
+        }
+
+        #box-tmp {
+            top: 270px;
+            left: 434px;
+            width: 201px;
+            height: 201px;
+        }
+    </style>
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+    <!-- <div class="wrapper">
+        <img class="post" src="https://storage.googleapis.com/centering-dock-194606.appspot.com/WIN_20180829_16_02_12_Pro.jpg">
+        <div id="box-tmp" class="box"></div>
+    </div> -->
+
+    <div class="row" ng-controller="detailController">
+        <div id='sidebar-container' class="col-sm-3">
+            <% include ../share/sidebar.ejs -%>
+        </div>
+        <div class=" col-sm-6">
+            <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+            <span id="_id" class="hide"><%- _id %></span>
+            <div id="{{post._id}}" class="post">
+                <div>
+                    <h1>{{post.title}}</h1>
+                </div>
+                <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
+                <div class="address">{{ post.location.address }}</div>
+                <div class="data" ng-repeat="data in post.datas">
+                    <div class="wrapper">
+                        <img class="post" ng-src="{{data.URL}}">
+                        <div id="box-{{$index}}" class="box"></div>
+                    </div>
+                </div>
+                <div class="fb-comments" data-href="http://godseye.ml/<%- _id %>" data-width="100%" data-numposts="2"></div>
+                <div class="line">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/lib/facade.min.js"></script>
+    <script src="/javascripts/post/detail.js"></script>

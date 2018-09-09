@@ -1,0 +1,30 @@
+h1 {
+    color: black;
+    font-weight: bold;
+    text-align: left
+}
+.data{
+    text-align: left
+}
+.postsContainer{
+    
+}
+.author{
+    color:grey;
+    font-size: 15px;
+    text-align: left
+}
+.line{
+    margin-top: 20px;
+    border-top: solid 1px black 
+}
+img.post{
+    width: 100%
+}
+
+.address{
+    color:grey;
+    font-size: 13px;
+    text-align: left;
+    font-style: italic;
+}

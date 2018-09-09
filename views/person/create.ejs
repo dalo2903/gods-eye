@@ -1,0 +1,131 @@
+<% layout('../share/layout.ejs') -%>
+
+    <div class="text-left" ng-controller="personController">
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="wrapper col-sm-6">
+                <h1 class="form-header">Add new person </h1>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" ng-model="person.name" placeholder="Name" />
+                </div>
+                <div class="form-group">
+                    <label>Images</label>
+                    <img class="thumb" ng-src="{{ imgSrc }}" ng-repeat="imgSrc in person.images">
+                    <% include ./drag-and-drop.ejs %>
+                </div>
+
+
+                <div class="form-group">
+                    <input id='submit-create-person' type="submit" value="Create" ng-click="createPerson()" />
+                </div>
+                <div class="hide">
+                    <span id="user-id">
+                        <%- user_id %>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascripts/person/create.js"></script>
+
+    <style>
+        body {
+            /* font-size: 100%; */
+            /* background: #BDBDBD; */
+        }
+
+        .wrapper {
+            /* max-width: 500px;
+            height: 420px; */
+            margin-top: 1rem;
+            background: #eceff1;
+            padding: 0 0 1rem;
+            position: relative;
+        }
+
+        .form-header {
+            background: lightslategray;
+            text-align: center;
+            font-weight: 600;
+            color: #212121;
+            padding: 1rem;
+            margin: 0 0 1rem;
+            position: relative;
+        }
+
+        .form-header .close {
+            position: absolute;
+            right: 1rem;
+            top: 1.25rem;
+            color: #cfd6db;
+            cursor: pointer;
+            transition: color .2s ease;
+        }
+
+        .form-header .close:hover {
+            color: #212121;
+        }
+
+        .form-group {
+            margin: 0 2rem 1rem;
+        }
+
+        input[type="text"] {
+            padding: 0.75rem 0.875rem;
+            border-radius: 4px;
+            outline: 0;
+            color: #212121;
+            font-size: 1.5rem;
+            width: 100%;
+            border: 0.063rem solid #b0bec5;
+        }
+
+        input[type="submit"] {
+            padding: 0.75rem 1.5rem;
+            margin: .5rem 0 0;
+            outline: 0;
+            border: 0;
+            background: #2196f3;
+            border-radius: 4px;
+            color: #FFF;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: .25px;
+            transition: background .3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background: #39a1f4;
+        }
+
+        .thumb {
+            height: 230px;
+            border: 1px solid #323a44;
+            margin: 10px 5px 0 0;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        /* 
+        .form-group label {
+            display: block;
+            margin: 0 0 .5rem;
+            font-weight: 700;
+            letter-spacing: .2px;
+            font-size: 2rem;
+            color: #212121;
+        }
+
+        .form-group label.inline {
+            display: inline-block;
+            width: 100px;
+        }
+
+        .form-group label.inline.right {
+            text-align: right;
+            padding-right: .5rem;
+        }
+ */
+    </style>

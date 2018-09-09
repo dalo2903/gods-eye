@@ -1,6 +1,6 @@
 
     body {
-        font: 400 15px/1.8 Lato, sans-serif;
+        font:15px/1.8 Lato, sans-serif;
         color: #777;
     }
     h3, h4 {
@@ -18,20 +18,6 @@
     }
     .person:hover {
         border-color: #f1f1f1;
-    }
-    .carousel-inner img {
-        -webkit-filter: grayscale(90%);
-        filter: grayscale(90%); /* make all photos black and white */ 
-        width: 100%; /* Set width to 100% */
-        margin: auto;
-    }
-    .carousel-caption h3 {
-        color: #fff !important;
-    }
-    @media (max-width: 600px) {
-      .carousel-caption {
-        display: none; /* Hide the carousel text when the screen is less than 600 pixels wide */
-      }
     }
     .bg-1 {
         background: #2d2d30;
@@ -71,12 +57,6 @@
     .nav-tabs li a {
         color: #777;
     }
-    #googleMap {
-        width: 100%;
-        height: 400px;
-        -webkit-filter: grayscale(100%);
-        filter: grayscale(100%);
-    }  
     .navbar {
         font-family: Montserrat, sans-serif;
         margin-bottom: 0;
