@@ -4,7 +4,6 @@ const Person = mongoose.model('Person')
 // const rpn = require('request-promise-native')
 // var config = require('../../config')
 const responseStatus = require('../../configs/responseStatus')
-
 class PersonController extends BaseController {
   constructor () {
     super(Person)
