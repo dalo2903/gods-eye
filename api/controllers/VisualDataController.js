@@ -20,6 +20,7 @@ class VisualDataController extends BaseController {
   async updateIdentifyResult (_id, identifyResult) {
     let visualData = await this.get(_id)
     visualData.identifyResult['persons'] = identifyResult
+    console.log(`updateIdentifyResult : ${identifyResult}`)
     await visualData.save()
   }
 }

@@ -94,7 +94,7 @@ class IdentifyController {
       }
       FaceController.trainPersonGroup(constants.face.known)
       if (response.length !== 0) {
-        return responseStatus.Response(200, response)
+        return responseStatus.Response(200, {persons: response})
       } else return responseStatus.Response(404, {}, 'INTERNAL ERROR')
     } else return responseStatus.Response(404, {}, 'DEO THAY MAT')
   }
