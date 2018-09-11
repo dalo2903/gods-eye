@@ -5,7 +5,7 @@ const bucketName = config.google.cloudStorage.bucketName
 
 const storage = new Storage({
   projectId: config.google.projectId,
-  keyFilename: 'CC14-2fb6831eca13.json'
+  keyFilename: 'demo-856e4ac1d0d4.json' // 'CC14-2fb6831eca13.json'
 })
 
 const bucket = storage.bucket(bucketName)

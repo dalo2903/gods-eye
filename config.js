@@ -1,9 +1,9 @@
 module.exports = {
   uriMongo: 'mongodb://god:godseye1@ds127362.mlab.com:27362/godseye',
   google: {
-    projectId: 'centering-dock-194606',
+    projectId: 'august-ascent-216104', // 'centering-dock-194606',
     cloudStorage: {
-      bucketName: 'centering-dock-194606.appspot.com'
+      bucketName: 'demo-home-guard' // 'centering-dock-194606.appspot.com'
     }
   },
   microsoft: {

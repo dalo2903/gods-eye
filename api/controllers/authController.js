@@ -1,7 +1,7 @@
 // var firebase = require('./firebaseController')
 var responseStatus = require('../../configs/responseStatus')
 var config = require('../../config')
-var admin = require('./firebaseAdminController')
+// var admin = require('./firebaseAdminController')
 const UserController = require('../controllers/UserController')
 
 // Get a database reference to our posts

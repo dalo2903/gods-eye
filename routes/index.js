@@ -7,16 +7,16 @@ const Storage = require('@google-cloud/storage')
 var path = require('path')
 var request = require('request')
 var FaceController = require('../api/controllers/FaceController')
-var admin = require('../api/controllers/firebaseAdminController')
+// var admin = require('../api/controllers/firebaseAdminController')
 var authController = require('../api/controllers/authController')
 var responseStatus = require('../configs/responseStatus')
 const AuthService = require('../api/services/AuthService')
-var db = admin.database()
-var imageRef = db.ref('image')
-var userRef = db.ref('user')
-const storage = new Storage({
-  projectId: config.google.projectId
-})
+// var db = admin.database()
+// var imageRef = db.ref('image')
+// var userRef = db.ref('user')
+// const storage = new Storage({
+//   projectId: config.google.projectId
+// })
 
 // // The name for the new bucket
 // const bucketName = config.google.cloudStorage.bucketName
