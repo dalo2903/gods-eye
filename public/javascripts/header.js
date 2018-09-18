@@ -39,7 +39,7 @@ if (md.mobile()) {
   $('#notification-dropdown').hide()
   $('#notification-mobile').show()
 }
-else{
+else {
   $('#notification-dropdown').show()
   $('#notification-mobile').hide()
 }
