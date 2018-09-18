@@ -60,11 +60,11 @@
     .navbar {
         font-family: Montserrat, sans-serif;
         margin-bottom: 0;
-        background-color: #2d2d30;
+        background-color: #000000;
         border: 0;
         font-size: 11px !important;
         letter-spacing: 4px;
-        opacity: 0.9;
+        /*opacity: 0.9;*/
     }
     .navbar li a, .navbar .navbar-brand { 
         color: #d5d5d5 !important;
@@ -106,4 +106,13 @@
     }
     textarea {
         resize: none;
+    }
+    .navbar-collapse{
+        border-top: unset;
+    }
+    .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+        background-color: #000;
+    }
+    .navbar-default .navbar-toggle .icon-bar {
+        background-color: white;
     }
