@@ -96,7 +96,9 @@ class FaceController {
       },
       body: {
         faceIds: faceIds,
-        personGroupId: personGroupId
+        personGroupId: personGroupId,
+        maxNumOfCandidatesReturned: 5,
+        confidenceThreshold: 0.5
       },
       json: true
     }
