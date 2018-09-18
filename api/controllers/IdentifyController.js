@@ -14,7 +14,7 @@ var LocationController = require('./LocationController')
 
 class IdentifyController {
   async detectAndIdentifyFaces (url) {
-    console.log(`detectAndIdentifyFaces: url = ${url}, location = ${location}`)
+    console.log(`detectAndIdentifyFaces: url = ${url}`)
     var response = []
     const detectRes = await FaceController.detect(url)
     var identifyFaceIds = []
@@ -23,6 +23,8 @@ class IdentifyController {
     })
     if (identifyFaceIds.length !== 0) {
       var identifyRes = await FaceController.identify(identifyFaceIds, constants.face.known)
+      console.log("CANDIDATE"+JSON.stringify(identifyRes))
+
       var detectMap = {}
       detectRes.forEach(function (face) {
         detectMap[face.faceId] = face.faceRectangle
@@ -40,12 +42,13 @@ class IdentifyController {
               faceId: element.faceId,
               personId: person._id,
               confidence: candidate.confidence,
-              facerectangle: element.faceRectangle
+              facerectangle: element.faceRectangle,
+              url: person.datas[0].URL
             })
           }
         } else {
           console.log(`Cannot identify person`)
-          return responseStatus.Response(200, {}, 'CANNOT IDENTIFY PERSON')
+          return responseStatus.Response(200, {persons:[]}, 'CANNOT IDENTIFY PERSON')
         }
       }
       if (response.length !== 0) {
