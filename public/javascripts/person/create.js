@@ -32,6 +32,9 @@ app.controller('personController', ['$scope', 'apiService', function ($scope, ap
   })
 
   $scope.createPerson = function () {
+    //Check before create
+
+    //Create
     let formData = new FormData()
     formData.append('name', $scope.person.name)
     formData.append('file', files[0])
@@ -40,8 +43,11 @@ app.controller('personController', ['$scope', 'apiService', function ($scope, ap
     apiService.createPerson(formData)
       .then(function (res) {
         console.log(res)
-        alert('Person created successfully')
-        window.location.href = '/'
+        if (res.status == 201) {
+          $('#existed-modal').modal({ backdrop: true });
+          $("#submit-create-person").attr("disabled", false);
+          $scope.persons = res.data
+        }
       })
       .catch(function (res) {
         $("#submit-create-person").attr("disabled", false);
