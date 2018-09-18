@@ -211,4 +211,17 @@ router.get('/person', (req, res) => {
     user_name: req.session.user ? req.session.user.name : ''
   })
 })
+
+router.get('/admin', (req, res) => {
+  return res.render('admin', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: 'Admin Dashboard',
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
+  })
+})
+
 module.exports = router

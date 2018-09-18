@@ -33,7 +33,6 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
       console.log('load more notification')
     }
   }
-  // $scope.loadMore()
 }])
 
 if (md.mobile()) {

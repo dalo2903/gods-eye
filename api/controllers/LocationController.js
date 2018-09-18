@@ -18,10 +18,18 @@ class LocationController extends BaseController {
     return responseStatus.Response(200, { location: location })
   }
 
-  async updatePersonId (_id, personId) {
-    let location = await this.get(_id)
-    location.personIds.push(personId)
+  async updateResident (locationId, userId) {
+    let location = await this.get(locationId)
+    location.userIds.push(userId)
     await location.save()
+  }
+
+  async createLocation (obj) {
+    const location = {
+      address: obj.address
+    }
+    await this.create(location)
+    return responseStatus.Response(200, {}, responseStatus.CREATE_LOCATION_SUCCESSFULLY)
   }
 }
 
