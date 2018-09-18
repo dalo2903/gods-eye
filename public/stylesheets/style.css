@@ -113,6 +113,8 @@
     .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
         background-color: #000;
     }
-    .navbar-default .navbar-toggle .icon-bar {
-        background-color: white;
+
+    .nav>li>a:focus, .nav>li>a:hover {
+        text-decoration: none;
+        background-color: lightgrey;
     }
