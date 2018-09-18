@@ -24,10 +24,11 @@ app.controller('SignInController', ['$scope', 'apiService', function ($scope, ap
     }
     apiService.signIn(json)
       .then(function (res) {
-        // document.getElementById('modal-sign-in').style.display = 'none'
-        // alert(res.data.message)
-        // window.location.href = '/'
-        location.reload()
+        if (res.data.user.role > 900) {
+          window.location.href = '/admin'
+          return
+        }
+        window.location.href = '/'
       })
       .catch(function (res) {
         alert(res.data.message)
