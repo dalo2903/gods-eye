@@ -13,6 +13,46 @@ var NotificationController = require('./NotificationController')
 var LocationController = require('./LocationController')
 
 class IdentifyController {
+  async detectAndIdentifyFaces (url) {
+    console.log(`detectAndIdentifyFaces: url = ${url}, location = ${location}`)
+    var response = []
+    const detectRes = await FaceController.detect(url)
+    var identifyFaceIds = []
+    detectRes.forEach(element => {
+      identifyFaceIds.push(element.faceId)
+    })
+    if (identifyFaceIds.length !== 0) {
+      var identifyRes = await FaceController.identify(identifyFaceIds, constants.face.known)
+      var detectMap = {}
+      detectRes.forEach(function (face) {
+        detectMap[face.faceId] = face.faceRectangle
+      })
+      identifyRes.forEach(function (face) {
+        face.faceRectangle = detectMap[face.faceId]
+      })
+      for (let element of identifyRes) {
+        if (element.candidates.length !== 0 && element.candidates[0].confidence >= constants.face.IDENTIFYTHRESHOLD) {
+          for (let candidate of element.candidates) {
+            console.log(`Identified person MSId = ${candidate.personId}`)
+            var person = await PersonController.getPersonByMSPersonId(candidate.personId)
+            // console.log(person)
+            response.push({
+              faceId: element.faceId,
+              personId: person._id,
+              confidence: candidate.confidence,
+              facerectangle: element.faceRectangle
+            })
+          }
+        } else {
+          console.log(`Cannot identify person`)
+          return responseStatus.Response(200, {}, 'CANNOT IDENTIFY PERSON')
+        }
+      }
+      if (response.length !== 0) {
+        return responseStatus.Response(200, {persons: response})
+      } else return responseStatus.Response(404, {}, 'INTERNAL ERROR')
+    } else return responseStatus.Response(404, {}, 'DEO THAY MAT')
+  }
   async analyzeAndProcessFaces (url, location, postId, visualDataId) {
     console.log(`analyzeAndProcessFaces: url = ${url}, location = ${location}`)
     var response = []
