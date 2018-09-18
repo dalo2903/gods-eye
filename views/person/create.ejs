@@ -26,31 +26,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Existed Modal -->
-        <div id="existed-modal" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width:80%">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Existed people</h4>
-                    </div>
-                    <div class="modal-body" style="width:70%">
-                        <form ng-repeat='person in persons'>
-                            <label class="radio">
-                                <input type="radio" name="optradio"><img src="{{person.url}}" style="width:80%"></label>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
     </div>
-
 
     <script src="/javascripts/person/create.js"></script>
 

@@ -7,7 +7,6 @@ const PersonController = require('../controllers/PersonController')
 const FaceController = require('../controllers/FaceController')
 const UploadController = require('../controllers/UploadController')
 const VisualDataController = require('../controllers/VisualDataController')
-const IdentifyController = require('../controllers/IdentifyController')
 
 // const m = multer({
 //   storage: multer.memoryStorage(),
@@ -50,23 +49,15 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       URL: url,
       isImage: true
     })
-    const isExisted = await IdentifyController.detectAndIdentifyFaces(url)
-    if (isExisted.persons.length === 0) {
-      var person = req.body
-      person.datas = [visualData._id]
-      person.isKnown = true
-      const createPersonRes = await PersonController.createPerson(person, userCreated)
-      res.send() // Send response after upload image and create person in database
-      const msPersonId = (await FaceController.createPersonInPersonGroup(Constants.face.known, { name: createPersonRes.name })).personId
-      await FaceController.addFaceForPerson(Constants.face.known, msPersonId, url) // Add face in face api
-      await PersonController.updateMicrosoftPersonId(createPersonRes._id, msPersonId) // Update MSid in DB
-      FaceController.trainPersonGroup(Constants.face.known)
-    }
-    else {
-      res.status(201).json(isExisted.persons)
-    }
-
-
+    var person = req.body
+    person.datas = [visualData._id]
+    person.isKnown = true
+    const createPersonRes = await PersonController.createPerson(person, userCreated)
+    res.send() // Send response after upload image and create person in database
+    const msPersonId = (await FaceController.createPersonInPersonGroup(Constants.face.known, { name: createPersonRes.name })).personId
+    await FaceController.addFaceForPerson(Constants.face.known, msPersonId, url) // Add face in face api
+    await PersonController.updateMicrosoftPersonId(createPersonRes._id, msPersonId) // Update MSid in DB
+    FaceController.trainPersonGroup(Constants.face.known)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
