@@ -1,0 +1,159 @@
+<% layout('./share/layout.ejs') -%>
+    <style>
+        .actions {
+            color: black;
+            background-color: lightgrey;
+            margin-top: 10px
+        }
+
+        #navMenu>li>a.active {
+            background: lightslategrey
+        }
+
+        .nav-pills>li.active>a,
+        .nav-pills>li.active>a:focus,
+        .nav-pills>li.active>a:hover {
+            border-bottom: solid black 3px;
+            color: black;
+            font-weight: 650;
+            font-size: 30px;
+            background-color: #fff;
+        }
+
+        .nav-pills>li>a {
+            color: grey;
+            font-weight: 650;
+            font-size: 30px;
+            background-color: #fff;
+        }
+
+        .nav-pills>li>a:hover {
+            color: black;
+            background-color: #fff;
+        }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+    <script src="/javascripts/admin.js"></script>
+    <div ng-controller="AdminController">
+        <div class="row">
+            <div id="sidebar-container" class="col-sm-3">
+                <div>
+                    <h2>Actions</h2>
+                    <ul id="navMenu" class="nav">
+                        <li>
+                            <a href="#" class="actions">CREATE</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6" style="margin-top: 20px">
+                <span class="hide" id="user_id">
+                    <%- user_id -%>
+                </span>
+                <div>
+                    <img id='avatar' class="img-circle" ng-src="{{ user.avatar ||'https://accounts-cdn.9gag.com/media/avatar/21748854_100_1.jpg' }}"
+                        alt="Avatar">
+                </div>
+                <h2>
+                    <%- user_name -%>
+                </h2>
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a href="#locations" data-toggle="tab">Locations</a>
+                    </li>
+                    <!-- <li>
+                        <a href="#people" data-toggle="tab">People</a>
+                    </li> -->
+                </ul>
+                <!-- Nav pills content -->
+                <div class="tab-content clearfix">
+                    <!-- Locations -->
+                    <div class="tab-pane active" id="locations">
+                        <div class="table-responsive">
+                            <table class="table table-striped w-auto">
+                                <thead>
+                                    <tr>
+                                        <th>Address</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="location in locations | orderBy:'-createdAt'">
+                                        <td class="text-left">{{ location.address }}</td>
+                                        <td>{{ location.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- People -->
+                    <!-- <div class="tab-pane" id="people">
+                        <div class="table-responsive">
+                            <table class="table table-striped w-auto">
+                                <thead>
+                                    <tr>
+                                        <th class="avatar-header"></th>
+                                        <th>Name</th>
+                                        <th>Score</th>
+                                        <th>Status</th>
+                                        <th class="created-at-header">Created At</th>
+                                        <th class="button-header"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="person in persons | orderBy:'-createdAt'">
+                                        <td><img class="avatar" ng-src="{{ person.datas[0].URL }}"></td>
+                                        <td>{{ person.name }}</td>
+                                        <td>{{ person.score }}</td>
+                                        <td>{{ person.status }}</td>
+                                        <td>{{ person.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
+                                        <td><a href="/person/face/add/{{person._id}}" class="btn btn-primary">Add photo</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+
+        <div class="modal" id="create-tri-modal">
+            <form class="modal-content">
+                <i class="fa fa-times close" class="close" data-dismiss="modal"></i>
+                <h1 class="text-center">SIGN IN</h1>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
+                        </span>
+                        <input type="email" class="form-control" placeholder="Email address" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-key fa-lg" aria-hidden="true"></i>
+                        </span>
+                        <input type="password" class="form-control" placeholder="Password" name="password" required>
+                    </div>
+                </div>
+
+                <button type="button" onclick="$('#modal-sign-in').hide();$('#modal-sign-up').show();" class="btn btn-primary my-btn">
+                    <i class="fa fa-user-plus fa-lg" aria-hidden="true"></i> Sign up</button>
+                <button type="submit" class="btn btn-primary my-btn" ng-click="signIn()">
+                    <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Sign in</button>
+                <hr>
+                <div class="text-center">Or connect with:</div>
+                <div class="text-center">
+                    <button style="background-color:#395697" class="btn btn-primary my-btn" onclick="window.location.href='/auth/facebook'">
+                        <i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i> Facebook</button>
+                    <button style="background-color:#DD4B39; border-color:#DD4B39" class="btn btn-primary my-btn" onclick="window.location.href='/auth/google'">
+                        <i class="fa fa-google-plus-official fa-lg" aria-hidden="true"></i> Google+</button>
+                </div>
+            </form>
+        </div>
+    </div>
