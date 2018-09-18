@@ -29,21 +29,24 @@
 
         <!-- Existed Modal -->
         <div id="existed-modal" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width:80%">
+            <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class='text-center' class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Existed people</h4>
                     </div>
-                    <div class="modal-body" style="width:70%">
-                        <form ng-repeat='person in persons'>
-                            <label class="radio">
-                                <input type="radio" name="optradio"><img src="{{person.url}}" style="width:80%"></label>
+                    <div class='text-center' style="margin-top:10px" class="modal-body">
+                        <form>
+                            <label ng-repeat='person in persons'>
+                                <input type="radio" name="optradio"><img src="{{person.url}}" style="width:90%">
+                                <b>{{person.name}}</b>
+                            </label>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default">Add new photo to existed</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Add new person</button>
                     </div>
                 </div>
 

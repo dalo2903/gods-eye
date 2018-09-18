@@ -43,7 +43,8 @@ class IdentifyController {
               personId: person._id,
               confidence: candidate.confidence,
               facerectangle: element.faceRectangle,
-              url: person.datas[0].URL
+              url: person.datas[0].URL,
+              name: person.name
             })
           }
         } else {
