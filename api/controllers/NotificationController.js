@@ -17,6 +17,11 @@ class NotificationController extends BaseController {
     }
     await this.create(notification)
   }
+  async getNotification (_id) {
+    const notification = await Notification.findById(_id)
+    if (!notification) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
+    else return responseStatus.Response(200, { notification: notification })
+  }
 
   async getUserNotifications (userId, skip, limit) {
     const notifications = await Notification.find({ to: userId }).sort('-createdAt').skip(skip).limit(limit)

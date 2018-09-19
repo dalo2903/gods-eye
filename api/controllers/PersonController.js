@@ -13,7 +13,7 @@ class PersonController extends BaseController {
     let person = {
       // author: uuid,
       userCreated: userCreated,
-      name: obj.name,
+      name: obj.name || 'unknown',
       msPersonId: obj.msPersonId || '',
       status: 100,
       score: 100,

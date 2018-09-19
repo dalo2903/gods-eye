@@ -23,8 +23,6 @@ class IdentifyController {
     })
     if (identifyFaceIds.length !== 0) {
       var identifyRes = await FaceController.identify(identifyFaceIds, constants.face.known)
-      console.log("CANDIDATE"+JSON.stringify(identifyRes))
-
       var detectMap = {}
       detectRes.forEach(function (face) {
         detectMap[face.faceId] = face.faceRectangle
@@ -83,6 +81,7 @@ class IdentifyController {
             response.push({
               faceId: element.faceId,
               personId: person._id,
+              name: person.name,
               confidence: candidate.confidence,
               facerectangle: element.faceRectangle
             })
@@ -123,6 +122,7 @@ class IdentifyController {
           response.push({
             faceId: element.faceId,
             personId: createPersonRes._id,
+            name: createPersonRes.name,
             isNew: true,
             facerectangle: element.faceRectangle
           })
@@ -166,6 +166,7 @@ class IdentifyController {
     console.log(message)
     let notification = {
       to: constants.adminInfo.id,
+      URL: url,
       title: message
     }
     await NotificationController.createNotification(notification)

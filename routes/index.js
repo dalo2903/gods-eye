@@ -84,6 +84,20 @@ router.get('/post/:id', (req, res) => {
     _id: req.params.id
   })
 })
+
+router.get('/notification/:id', (req, res) => {
+  res.render('notification/detail', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+    _id: req.params.id
+  })
+})
+
 router.get('/about', function (req, res, next) {
   return res.render('about', {
     image: constants.index.image,

@@ -20,6 +20,7 @@ var locationRouteAPI = require('./api/routes/location')
 var routePersonAPI = require('./api/routes/person')
 var routeUserAPI = require('./api/routes/user')
 var postRouteAPI = require('./api/routes/post')
+var routeNotificationAPI = require('./api/routes/notification')
 var index = require('./routes/index')
 
 var app = express()
@@ -55,7 +56,7 @@ app.use('/api/location/', locationRouteAPI)
 app.use('/api/person/', routePersonAPI)
 app.use('/api/post/', postRouteAPI)
 app.use('/api/user/', routeUserAPI)
-
+app.use('/api/notification/', routeNotificationAPI)
 app.use('/', index)
 
 // catch 404 and forward to error handler

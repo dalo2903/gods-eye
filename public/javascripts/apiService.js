@@ -40,6 +40,7 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
       return $http(req)
     },
     addDataForPerson: function (formData) {
+
       var req = {
         method: 'POST',
         url: '/api/person/face/add',
@@ -67,6 +68,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     },
     getLocation: function (_id) {
       return $http.get(`/api/location/${_id}`)
+    },
+    getNotification: function (_id) {
+      return $http.get(`/api/notification/${_id}`)
     },
     addFace: function (formData) {
       var req = {

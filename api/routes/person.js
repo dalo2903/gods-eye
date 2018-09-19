@@ -16,7 +16,7 @@ const IdentifyController = require('../controllers/IdentifyController')
 //   }
 // })
 
-router.post('/add-face', async (req, res) => {
+router.post('/face/add', async (req, res) => {
   try {
     // const session = AuthService.getSessionFromRequest(req)
     // await AuthService.isLoggedIn(session)
