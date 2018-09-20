@@ -4,7 +4,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
 
   $scope.notifications = []
   let last = 0
-  $scope.block = false
+  $scope.block = true
   function unique(a) {
     var seen = {}
     var out = []
