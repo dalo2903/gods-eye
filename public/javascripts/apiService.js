@@ -89,8 +89,14 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     signIn: function (json) {
       return $http.post('/api/auth/sign-in', json)
     },
-    getUserNotifications: function (userId, skip, limit) {
-      return $http.get(`/api/user/${userId}/notifications?skip=${skip}&limit=${limit}`)
+    getUnseenUserNotifications: function (userId, skip, limit) {
+      return $http.get(`/api/user/${userId}/unseenNotifications?skip=${skip}&limit=${limit}`)
+    },
+    getAllUserNotifications: function (userId, skip, limit) {
+      return $http.get(`/api/user/${userId}/allNotifications?skip=${skip}&limit=${limit}`)
+    },
+    setSeenNotification: function (_id) {
+      return $http.get(`/api/notification/setSeen/${_id}`)
     },
     getPosts: function (skip, limit) {
       return $http.get(`/api/post?skip=${skip}&limit=${limit}`)

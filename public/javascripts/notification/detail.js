@@ -6,16 +6,7 @@ app.controller('detailController', ['$scope', 'apiService', function ($scope, ap
     .then(function (res) {
       console.log(res)
       $scope.notification = res.data.notification
-
-      // $scope.post.datas.forEach(function (data, index) {
-      //   if (data.identifyResult && data.identifyResult.persons.length) {
-      //     const facerectangle = data.identifyResult.persons[0].facerectangle
-      //     $('#box-' + index).css({
-      //       top: facerectangle.top + 'px',
-      //       left: facerectangle.left + 'px'
-      //     })
-      //   }
-      // })
+      apiService.setSeenNotification(_id)
     })
     .catch(function (res) {
       console.log(res)

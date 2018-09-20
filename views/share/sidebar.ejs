@@ -4,9 +4,11 @@
         #sidebar-laptop {
             display: none
         }
+
         #sidebar-mobile {
             display: initial
         }
+
         .tabbar {
             height: 48px;
             background-color: #000;
@@ -20,10 +22,12 @@
             padding: 0 4px;
             z-index: 0;
         }
+
         .tabbar a.active {
             font-weight: 700;
             color: #fff;
         }
+
         .tabbar a {
             display: block;
             color: hsla(0, 0%, 100%, .4);
@@ -41,14 +45,17 @@
             top: 10%;
             left: 0px */
         }
+
         #sidebar-mobile {
             display: none
         }
+
         .popular-locations {
             color: black;
             background-color: whitesmoke;
             margin-top: 10px
         }
+
         #navMenu>li>a.active {
             background: lightslategrey
         }
@@ -58,8 +65,8 @@
     <h2>Popular locations</h2>
     <ul id='navMenu' class="nav">
         <li id="lap{{location._id}}" ng-repeat="location in locations">
-            <a class="popular-locations" ng-class="{'active': isActiveLaptop(location._id)}" href="/location/{{location._id}}">{{
-                location.address }}
+            <a class="popular-locations" ng-class="{'active': isActiveLaptop(location._id)}" href="/location/{{location._id}}">
+                <i class="fa fa-map-marked" style="color:crimson"></i>{{ location.address }}
             </a>
         </li>
     </ul>

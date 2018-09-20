@@ -24,7 +24,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
     if (userId) {
       $scope.block = true
       last = $scope.notifications.length - 1
-      const newNotifications = (await apiService.getUserNotifications(userId, last + 1, 5)).data.notifications
+      const newNotifications = (await apiService.getUnseenUserNotifications(userId, last + 1, 5)).data.notifications
       $scope.notifications = $scope.notifications.concat(newNotifications)
       $scope.notifications = unique($scope.notifications)
       // console.log($scope.notifications.length)

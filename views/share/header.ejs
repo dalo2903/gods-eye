@@ -6,87 +6,93 @@
           <span style='color:orangered' class="fa fa-bell" aria-hidden="true"></span>
         </a>
       </div>
-      <button id='nav-button' style='z-index: 3;' type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <button id='nav-button' style='z-index: 3;' type="button" class="navbar-toggle" data-toggle="collapse"
+        data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Security</a>
+      <style>
+          @import url('https://fonts.googleapis.com/css?family=Amatic+SC&subset=vietnamese');
+          </style>
+      <a class="navbar-brand" href="/" style="font-size: 150%"><i style='color:white' class="fa fa-shield-alt" aria-hidden="true"></i>
+        <span style="font-family: 'Amatic SC', cursive; ">Hẻm   Security </span></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
         <% if (user_id !== '') { %>
-          <li class="hide">
-            <a href="/person">PERSON LIST</a>
-          </li>
-          <li>
-            <a href="/person/create">ADD PERSON</a>
-          </li>
-          <li class="hide">
-            <a href="/upload">UPLOAD</a>
-          </li>
-          <li class="hide">
-            <a href="/identify">IDENTIFY</a>
-          </li>
-          <li class="hide">
-            <a onclick="train()">TRAIN</a>
-          </li>
-          <li class="hide">
-            <a href="/newsfeed">NEWS FEED</a>
-          </li>
-          <li>
-            <a href="/post/create">CREATE POST</a>
-          </li>
-          <li>
-            <a href="/about">ABOUT US</a>
-          </li>
-          <li>
-            <a href="/user/<%- user_id %>" style="padding-right: 0">
-              <span class="glyphicon glyphicon-user"></span>
-              <%- user_name %>
-            </a>
+        <li class="hide">
+          <a href="/person">PERSON LIST</a>
+        </li>
+        <li>
+          <a href="/person/create">ADD PERSON</a>
+        </li>
+        <li class="hide">
+          <a href="/upload">UPLOAD</a>
+        </li>
+        <li class="hide">
+          <a href="/identify">IDENTIFY</a>
+        </li>
+        <li class="hide">
+          <a onclick="train()">TRAIN</a>
+        </li>
+        <li class="hide">
+          <a href="/newsfeed">NEWS FEED</a>
+        </li>
+        <li>
+          <a href="/post/create">CREATE POST</a>
+        </li>
+        <li>
+          <a href="/about">ABOUT US</a>
+        </li>
+        <li>
+          <a href="/user/<%- user_id %>" style="padding-right: 0">
+            <span class="glyphicon glyphicon-user"></span>
+            <%- user_name %>
+          </a>
 
-            <!-- </a> -->
-          </li>
-          <style>
-            .noti-container {
-              overflow-y: scroll;
-              height: 200px;
-              width: 500px
-            }
+          <!-- </a> -->
+        </li>
+        <style>
+          .noti-container {
+            overflow-y: scroll;
+            height: 200px;
+            width: 500px
+          }
 
-            .noti-container>ul>li>a {
-              text-decoration: none
-            }
-          </style>
-          <li>
-            <div class="dropdown" style="padding:30%;font-size: 15px" id="notification-dropdown">
-              <a style="background-color: transparent !important" href="#notification" class="dropdown-toggle" id="notification-dropdown-menu"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click='block=false'>
-                <span style='color:orangered' class="fa fa-bell" aria-hidden="true"></span>
-              </a>
-              <div class="noti-container dropdown-menu" aria-labelledby="notification-dropdown-menu">
-                <ul infinite-scroll="loadMoreNotification()" infinite-scroll-disabled='block'>
-                  <li ng-repeat="notification in notifications">
-                    <a href="{{ notification.URL }}">{{ notification.title }}</a>
-                  </li>
-                </ul>
-              </div>
+          .noti-container>ul>li>a {
+            text-decoration: none
+          }
+        </style>
+        <li style="padding-right: 50px">
+          <a style="background-color: transparent !important;" href="#notification" class=" dropdown dropdown-toggle"
+            id="notification-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click='block=false'>
+
+            <i style='color:orangered; font-size: 120%' class="fa fa-bell" aria-hidden="true"></i>
+
+            <div class="noti-container dropdown-menu" aria-labelledby="notification-dropdown-menu">
+              <ul infinite-scroll="loadMoreNotification()" infinite-scroll-disabled='block'>
+                <li ng-repeat="notification in notifications">
+                  <a href="/notification/{{ notification._id }}">{{ notification.title }}</a>
+                </li>
+              </ul>
             </div>
-          </li>
-          <li>
-            <a href="/api/auth/sign-out">
-              <span class="glyphicon glyphicon-log-in"></span> Sign Out</a>
-          </li>
-          <% } else { %>
-            <li>
-              <a href="/about">ABOUT US</a>
-            </li>
-            <li>
-              <a href="#" onclick="document.getElementById('modal-sign-in').style.display='block'">
-                <span class="glyphicon glyphicon-log-in"></span> Sign In</a>
-            </li>
-            <% } %>
+          </a>
+
+        </li style="margin-right: 50px">
+        <li>
+          <a href="/api/auth/sign-out">
+            <span class="glyphicon glyphicon-log-in"></span> Sign Out</a>
+        </li>
+        <% } else { %>
+        <li>
+          <a href="/about">ABOUT US</a>
+        </li>
+        <li>
+          <a href="#" onclick="document.getElementById('modal-sign-in').style.display='block'">
+            <span class="glyphicon glyphicon-log-in"></span> Sign In</a>
+        </li>
+        <% } %>
       </ul>
     </div>
   </div>
@@ -96,102 +102,102 @@
 </nav>
 <% include ./signin.ejs %>
 
-  <script src="/javascripts/header.js"></script>
+<script src="/javascripts/header.js"></script>
 
-  <script>
-    // Get the modal
-    var modal = document.getElementById('id01');
+<script>
+  // Get the modal
+  var modal = document.getElementById('id01');
 
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+
+<script>
+  function train() {
+    $.ajax({
+      url: '/person-groups/test-faces/train',
+      success: function (res) {
+        alert('Train successfully')
+      },
+      error: function (res) {
+        alert(res.responseJSON.error.message)
       }
-    }
-  </script>
+    })
+  }
+</script>
 
-  <script>
-    function train() {
-      $.ajax({
-        url: '/person-groups/test-faces/train',
-        success: function (res) {
-          alert('Train successfully')
-        },
-        error: function (res) {
-          alert(res.responseJSON.error.message)
+<script>
+  var provider = new firebase.auth.GoogleAuthProvider()
+
+  function signIn() {
+    firebase.auth().signInWithRedirect(provider)
+  }
+
+  $(document).ready(function () {
+    firebase.auth().getRedirectResult().then(function (result) {
+      if (result.credential) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken
+        // ...
+      }
+      // The signed-in user info.
+      var user = result.user
+      if (user) {
+        var ref = firebase.database().ref().child("user");
+        var data = {
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+          studentID: ''
         }
-      })
-    }
-  </script>
 
-  <script>
-    var provider = new firebase.auth.GoogleAuthProvider()
-
-    function signIn() {
-      firebase.auth().signInWithRedirect(provider)
-    }
-
-    $(document).ready(function () {
-      firebase.auth().getRedirectResult().then(function (result) {
-        if (result.credential) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = result.credential.accessToken
-          // ...
-        }
-        // The signed-in user info.
-        var user = result.user
-        if (user) {
-          var ref = firebase.database().ref().child("user");
-          var data = {
-            email: user.email,
-            name: user.displayName,
-            photoURL: user.photoURL,
-            studentID: ''
-          }
-
-          if (result.additionalUserInfo.isNewUser) {
-            ref.child(user.uid).set(data).then(function (ref) {
-              //use 'child' and 'set' combination to save data in your own generated key
-              $.post('/api/person/', {
-                name: user.displayName,
-                userData: user.uid
-              },
-                function (data, status) {
-                  console.log(data)
-                })
-            }, function (error) {
-              console.log(error)
-            })
-          }
-
-
-          user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
-            // Send token to your backend via HTTP
-            // ...
-            $.post('/api/auth',
-              {
-                idToken: idToken
-              },
+        if (result.additionalUserInfo.isNewUser) {
+          ref.child(user.uid).set(data).then(function (ref) {
+            //use 'child' and 'set' combination to save data in your own generated key
+            $.post('/api/person/', {
+              name: user.displayName,
+              userData: user.uid
+            },
               function (data, status) {
-                if (result.additionalUserInfo.isNewUser) {
-                  return window.location.href = '/my-profile'
-                } else {
-                  return window.location.href = '/'
-                }
+                console.log(data)
               })
-          }).catch(function (error) {
-
+          }, function (error) {
+            console.log(error)
           })
         }
-      }).catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code
-        var errorMessage = error.message
-        // The email of the user's account used.
-        var email = error.email
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential
-        // ...
-      })
+
+
+        user.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+          // Send token to your backend via HTTP
+          // ...
+          $.post('/api/auth',
+            {
+              idToken: idToken
+            },
+            function (data, status) {
+              if (result.additionalUserInfo.isNewUser) {
+                return window.location.href = '/my-profile'
+              } else {
+                return window.location.href = '/'
+              }
+            })
+        }).catch(function (error) {
+
+        })
+      }
+    }).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code
+      var errorMessage = error.message
+      // The email of the user's account used.
+      var email = error.email
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential
+      // ...
     })
-  </script>
+  })
+</script>
