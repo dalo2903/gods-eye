@@ -6,7 +6,7 @@
             <div id='sidebar-container' class="col-sm-3">
                 <% include ./share/sidebar.ejs -%>
             </div>
-            <div class="col-lg-6">
+            <div class="col-sm-6">
                 <div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block" infinite-scroll-distance='1' class="postsContainer">
                     <div id="{{post._id}}" ng-repeat="post in scrollData">
                         <a href="/post/{{post._id}}" style="text-decoration:none">
