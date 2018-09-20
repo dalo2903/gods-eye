@@ -1,6 +1,6 @@
 
-    body {
-        font:15px/1.8 Lato, sans-serif;
+    body,html {
+   /*     font-family: "Montserrat", sans-serif;*/
         color: #777;
     }
     h3, h4 {
@@ -58,7 +58,7 @@
         color: #777;
     }
     .navbar {
-        font-family: Montserrat, sans-serif;
+        /*font-family: "Montserrat", sans-serif;*/
         margin-bottom: 0;
         background-color: #000000;
         border: 0;
@@ -116,5 +116,5 @@
 
     .nav>li>a:focus, .nav>li>a:hover {
         text-decoration: none;
-        background-color: lightgrey;
+        background-color: whitesmoke;
     }
