@@ -1,10 +1,9 @@
 var app = angular.module('GodsEye')
 app.controller('headerController', ['$scope', 'apiService', function ($scope, apiService) {
   const userId = $('#user_id').text().trim()
-
   $scope.notifications = []
   let last = 0
-  $scope.block = true
+  $scope.block = false
   function unique(a) {
     var seen = {}
     var out = []
