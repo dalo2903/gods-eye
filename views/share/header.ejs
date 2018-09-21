@@ -1,12 +1,16 @@
 <nav class="navbar navbar-default navbar-fixed-top" ng-controller="headerController">
   <div class="container-fluid">
     <div class="navbar-header">
+      <% if (user_id !== '') { %>
       <div style="padding:4%;font-size: 15px;display: inline-block;left: 15%;position: relative;" id="notification-mobile">
         <a style="background-color: transparent !important" href="#notification">
           <span style='color:orangered' class="fa fa-bell" aria-hidden="true"></span>
         </a>
       </div>
-      <button id='nav-button' style='z-index: 3;' type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <% } %>
+
+      <button id='nav-button' style='z-index: 3;' type="button" class="navbar-toggle" data-toggle="collapse"
+        data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -14,86 +18,86 @@
       <style>
         @import url('https://fonts.googleapis.com/css?family=Amatic+SC&subset=vietnamese');
       </style>
-      <a class="navbar-brand" href="/" style="font-size: 150%"><i style='color:white' class="fa fa-shield-alt" aria-hidden="true"></i>
+      <a class="navbar-brand" href="/" style="font-size: 150%"><i style='color:white' class="fa fa-shield-alt"
+          aria-hidden="true"></i>
         <span style="font-family: 'Amatic SC', cursive; ">Hẻm Security </span></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
         <% if (user_id !== '') { %>
-          <li class="hide">
-            <a href="/person">PERSON LIST</a>
-          </li>
-          <li>
-            <a href="/person/create">ADD PERSON</a>
-          </li>
-          <li class="hide">
-            <a href="/upload">UPLOAD</a>
-          </li>
-          <li class="hide">
-            <a href="/identify">IDENTIFY</a>
-          </li>
-          <li class="hide">
-            <a onclick="train()">TRAIN</a>
-          </li>
-          <li class="hide">
-            <a href="/newsfeed">NEWS FEED</a>
-          </li>
-          <li>
-            <a href="/post/create">CREATE POST</a>
-          </li>
-          <li>
-            <a href="/about">ABOUT US</a>
-          </li>
-          <li>
-            <a href="/user/<%- user_id %>" style="padding-right: 0">
-              <span class="glyphicon glyphicon-user"></span>
-              <%- user_name %>
-            </a>
+        <li class="hide">
+          <a href="/person">PERSON LIST</a>
+        </li>
+        <li>
+          <a href="/person/create">ADD PERSON</a>
+        </li>
+        <li class="hide">
+          <a href="/upload">UPLOAD</a>
+        </li>
+        <li class="hide">
+          <a href="/identify">IDENTIFY</a>
+        </li>
+        <li class="hide">
+          <a onclick="train()">TRAIN</a>
+        </li>
+        <li class="hide">
+          <a href="/newsfeed">NEWS FEED</a>
+        </li>
+        <li>
+          <a href="/post/create">CREATE POST</a>
+        </li>
+        <li>
+          <a href="/about">ABOUT US</a>
+        </li>
+        <li>
+          <a href="/user/<%- user_id %>" style="padding-right: 0">
+            <span class="glyphicon glyphicon-user"></span>
+            <%- user_name %>
+          </a>
+        </li>
+        <style>
+          .noti-container {
+            overflow-y: scroll;
+            height: 200px;
+            width: 500px
+          }
 
-            <!-- </a> -->
-          </li>
-          <style>
-            .noti-container {
-              overflow-y: scroll;
-              height: 200px;
-              width: 500px
-            }
-
-            .noti-container>ul>li>a {
-              text-decoration: none
-            }
-          </style>
-          <li style="padding-right: 50px">
-            <a style="background-color: transparent !important;" href="#notification" class=" dropdown dropdown-toggle" id="notification-dropdown-menu"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click='block=false'>
-
-              <i style='color:orangered; font-size: 120%' class="fa fa-bell" aria-hidden="true"></i>
-
-              <div class="noti-container dropdown-menu" aria-labelledby="notification-dropdown-menu">
-                <ul infinite-scroll="loadMoreNotification()" infinite-scroll-disabled='block'>
-                  <li ng-repeat="notification in notifications">
-                    <a href="/notification/{{ notification._id }}">{{ notification.title }}</a>
-                  </li>
-                </ul>
-              </div>
-          </li>
-          <li>
-            <a href="/api/auth/sign-out">
-              <span class="glyphicon glyphicon-log-in"></span> SIGN OUT</a>
-          </li>
-          <% } else { %>
-            <li>
-              <a href="/about">ABOUT US</a>
-            </li>
-            <li>
-              <a href="#" onclick="document.getElementById('modal-sign-in').style.display='block'">
-                <span class="glyphicon glyphicon-log-in"></span> SIGN IN</a>
-            </li>
-            <li>
-              <a href="/sign-up">
-                <i class="fa fa-user-plus" aria-hidden="true"></i> SIGN UP</a>
-            </li>
-            <% } %>
+          .noti-container>ul>li>a {
+            text-decoration: none
+          }
+        </style>
+        <li style="padding-right: 50px">
+          <a style="background-color: transparent !important;" href="#notification" class=" dropdown dropdown-toggle"
+            id="notification-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click='block=false'>
+            <i style='color:orangered; font-size: 120%' class="fa fa-bell" aria-hidden="true"></i>
+            <div class="noti-container dropdown-menu" aria-labelledby="notification-dropdown-menu">
+              <ul style='list-style: none;padding-inline-start: 20px' infinite-scroll="loadMoreNotification()"
+                infinite-scroll-disabled='block'>
+                <li ng-repeat="notification in notifications">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <a href="/notification/{{ notification._id }}">{{
+                    notification.title }}</a>
+                </li>
+              </ul>
+            </div>
+        </li>
+        <li>
+          <a href="/api/auth/sign-out">
+            <span class="glyphicon glyphicon-log-in"></span> SIGN OUT</a>
+        </li>
+        <% } else { %>
+        <li>
+          <a href="/about">ABOUT US</a>
+        </li>
+        <li>
+          <a href="#" onclick="document.getElementById('modal-sign-in').style.display='block'">
+            <span class="glyphicon glyphicon-log-in"></span> SIGN IN</a>
+        </li>
+        <li>
+          <a href="/sign-up">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> SIGN UP</a>
+        </li>
+        <% } %>
       </ul>
     </div>
   </div>
