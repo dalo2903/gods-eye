@@ -118,3 +118,6 @@
         text-decoration: none;
         background-color: whitesmoke;
     }
+    #sidebar-laptop #navMenu {
+        text-align: left;
+    }
