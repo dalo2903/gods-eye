@@ -41,6 +41,11 @@ const UserSchema = new Schema({
   role: {
     type: Number,
     default: 0
+  },
+  address: {
+    type: Schema.Types.ObjectId,
+    ref: 'Location',
+    sparse: true
   }
 }, { usePushEach: true, timestamps: true })
 
