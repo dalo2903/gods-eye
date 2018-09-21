@@ -44,7 +44,7 @@ class NotificationController extends BaseController {
   }
   async getAllUserNotifications (userId, skip, limit) {
     const allNotifications = await Notification.find({ to: userId }).sort('-createdAt')
-    const isSeen = (!!allNotifications.filter(e => e.seen).length) || false
+    const isSeen = (!!allNotifications.filter(e => !e.seen).length) || false
     const notifications = allNotifications.splice(skip, limit)
     return responseStatus.Response(200, { notifications: notifications, isSeen: isSeen })
   }
