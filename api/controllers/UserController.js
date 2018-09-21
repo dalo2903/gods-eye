@@ -1,6 +1,7 @@
 const BaseController = require('./BaseController')
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
+const Location = mongoose.model('Location')
 const responseStatus = require('../../configs/responseStatus')
 const common = require('../common')
 const bcrypt = require('bcrypt')
@@ -36,6 +37,26 @@ class UserController extends BaseController {
     if (!obj.name) throw responseStatus.Response(400, {}, responseStatus.EMAIL_REQUIRED)
     let user = await this.getUserByEmail(obj.email)
     if (!user) {
+      let location = await Location.findOne().near('location', {
+        center: obj.place.location,
+        maxDistance: 100000
+      })
+
+      /* }){ location: {
+        $nearSphere: {
+          $geometry: {
+            type: obj.place.location.type,
+            coordinates: obj.place.location.coordinates
+          },
+          $minDistance: 10
+        }
+      }}) */
+
+      if (!location) {
+        location = await Location.create(obj.place)
+      }
+      obj.address = location._id
+
       user = await this.create(obj)
       bcrypt.hash(user.password, 10, function (err, hash) {
         if (err) return err
