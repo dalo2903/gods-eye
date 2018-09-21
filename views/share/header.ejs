@@ -58,27 +58,38 @@
         <style>
           .noti-container {
             overflow-y: scroll;
+            width: 500px;
             height: 200px;
-            width: 500px
           }
 
           .noti-container>ul>li>a {
             text-decoration: none
           }
         </style>
+        <!-- Don't close dropdown when click -->
+        <script>
+          $(document).on('click', '.dropdown-menu', function (e) {
+            e.stopPropagation();
+          });
+        </script>
         <li style="padding-right: 50px">
           <a style="background-color: transparent !important;" href="#notification" class=" dropdown dropdown-toggle"
             id="notification-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <i style='color:orangered; font-size: 120%' class="fa fa-bell" aria-hidden="true"></i>
-            <div class="noti-container dropdown-menu" aria-labelledby="notification-dropdown-menu">
-              <ul style='list-style: none;padding-inline-start: 20px' infinite-scroll="loadMoreNotification()"
-                infinite-scroll-disabled='block'>
-                <li ng-repeat="notification in notifications">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  <a href="/notification/{{ notification._id }}">{{
-                    notification.title }}</a>
-                </li>
-              </ul>
+            <div id='noti-dropdown' class="dropdown-menu" style="height:290px" aria-labelledby="notification-dropdown-menu">
+              <div class='noti-container'>
+                <ul style='list-style: none;padding-inline-start: 20px'>
+                  <li ng-repeat="notification in notifications">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <a href="/notification/{{ notification._id }}">{{
+                      notification.title }}</a>
+                  </li>
+                </ul>
+              </div>
+              <hr>
+              <div class="text-center">
+                <p ng-click='loadMoreNotification()' style='color:#337ab7 !important;cursor:pointer'>Load more</p>
+              </div>
             </div>
         </li>
         <li>
