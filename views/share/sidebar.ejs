@@ -66,7 +66,7 @@
     <ul id='navMenu' class="nav">
         <li id="lap{{location._id}}" ng-repeat="location in locations">
             <a class="popular-locations" ng-class="{'active': isActiveLaptop(location._id)}" href="/location/{{location._id}}">
-                <i  class="fas fa-tag"></i>&nbsp&nbsp{{ location.address }}
+                <i  class="fas fa-tag " style="color: #a94442"></i>&nbsp&nbsp{{ location.address }}
             </a>
         </li>
     </ul>
