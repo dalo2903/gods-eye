@@ -58,7 +58,7 @@
         <style>
           .noti-container {
             overflow-y: scroll;
-            width: 500px;
+            width: 700px;
             height: 200px;
           }
 
@@ -82,7 +82,9 @@
                   <li ng-repeat="notification in notifications">
                     <i class="fas fa-exclamation-triangle"></i>
                     <a style='font-size: 18px' href="/notification/{{ notification._id }}">{{
-                      notification.title }}</a>
+                      notification.title }}</a><br>
+                    {{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}
+                    <hr>
                   </li>
                 </ul>
               </div>
