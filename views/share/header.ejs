@@ -81,14 +81,14 @@
                 <ul style='list-style: none;padding-inline-start: 20px'>
                   <li ng-repeat="notification in notifications">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <a href="/notification/{{ notification._id }}">{{
+                    <a style='font-size: 18px' href="/notification/{{ notification._id }}">{{
                       notification.title }}</a>
                   </li>
                 </ul>
               </div>
               <hr>
-              <div class="text-center">
-                <p ng-click='loadMoreNotification()' style='color:#337ab7 !important;cursor:pointer'>Load more</p>
+              <div ng-click='loadMoreNotification()' class="text-center">
+                <p style='color:#337ab7 !important;cursor:pointer'>Load more</p>
               </div>
             </div>
         </li>
