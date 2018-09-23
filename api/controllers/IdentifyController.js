@@ -11,6 +11,7 @@ var VisualDataController = require('./VisualDataController')
 var RecordController = require('./RecordController')
 var NotificationController = require('./NotificationController')
 var LocationController = require('./LocationController')
+var UserController = require('./UserController')
 
 class IdentifyController {
   async detectAndIdentifyFaces (url) {
@@ -47,7 +48,7 @@ class IdentifyController {
           }
         } else {
           console.log(`Cannot identify person`)
-          return responseStatus.Response(200, {persons:[]}, 'CANNOT IDENTIFY PERSON')
+          return responseStatus.Response(200, {persons: []}, 'CANNOT IDENTIFY PERSON')
         }
       }
       if (response.length !== 0) {
@@ -158,23 +159,26 @@ class IdentifyController {
     return (value - ((max + min) / 2)) / (max - min)
   }
   async notifyUsers (location, url, identifyResult) {
-    // const locationRes = await LocationController.getLocation(location)
-    // const personRes = await PersonController.getPerson(personId)
-    // console.log(personRes)
-    // console.log(locationRes)
-    // for (let userId in locationRes.location.userIds) {
-    let message = `WARNING: a suspicious behaviour `
-    console.log(message)
-    console.log(identifyResult)
-
-    let notification = {
-      to: constants.adminInfo.id,
-      URL: url,
-      title: message,
-      identifyResult: identifyResult,
-      location: location
+    let locations = await LocationController.getNearbyLocations(location, 100)
+    let users = []
+    for (let _location of locations) {
+      let userList = await UserController.getUsersByLocation(_location._id)
+      users = users.concat(userList)
     }
-    await NotificationController.createNotification(notification)
+    let message = `WARNING: a suspicious behaviour `
+    for (let user of users) {
+      let notification = {
+        to: user._id,
+        URL: url,
+        title: message,
+        identifyResult: identifyResult,
+        location: location
+      }
+      console.log(`send notificaiton to ${user._id}`)
+      await NotificationController.createNotification(notification)
+    }
+    // console.log(identifyResult)
+
     // }
   }
   async calculateScore (personId, location, normConfidence, url, identifyResult) {

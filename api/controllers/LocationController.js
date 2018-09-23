@@ -24,6 +24,22 @@ class LocationController extends BaseController {
     await location.save()
   }
 
+  async existNearbyLocation (location, maxDistance) {
+    let _location = await Location.findOne().near('location', {
+      center: location,
+      maxDistance: maxDistance
+    })
+    return _location
+  }
+
+  async getNearbyLocations (_id, maxDistance) {
+    let thisLocation = await this.get(_id)
+    let locations = await Location.find().near('location', {
+      center: thisLocation.location,
+      maxDistance: maxDistance
+    })
+    return locations
+  }
   async createLocation (obj) {
     const location = {
       address: obj.address

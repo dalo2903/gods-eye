@@ -2,6 +2,7 @@ const BaseController = require('./BaseController')
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Location = mongoose.model('Location')
+const LocationController = require('./LocationController')
 const responseStatus = require('../../configs/responseStatus')
 const common = require('../common')
 const bcrypt = require('bcrypt')
@@ -18,7 +19,9 @@ class UserController extends BaseController {
   async getUserByEmail (email) {
     return User.findOne({ email: email })
   }
-
+  async getUsersByLocation (location) {
+    return User.find({address: location})
+  }
   async createUser (obj) {
     const uuid = obj.uuid || ''
     let user = await this.getUserByUUID(uuid)
@@ -37,11 +40,11 @@ class UserController extends BaseController {
     if (!obj.name) throw responseStatus.Response(400, {}, responseStatus.EMAIL_REQUIRED)
     let user = await this.getUserByEmail(obj.email)
     if (!user) {
-      let location = await Location.findOne().near('location', {
-        center: obj.place.location,
-        maxDistance: 100000
-      })
-
+      // let location = await Location.findOne().near('location', {
+      //   center: obj.place.location,
+      //   maxDistance: 10
+      // })
+      let location = await LocationController.existNearbyLocation(obj.place.location, 10)
       /* }){ location: {
         $nearSphere: {
           $geometry: {
@@ -55,6 +58,7 @@ class UserController extends BaseController {
       if (!location) {
         location = await Location.create(obj.place)
       }
+
       obj.address = location._id
 
       user = await this.create(obj)

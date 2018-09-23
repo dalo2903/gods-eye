@@ -4,7 +4,7 @@
       <% if (user_id !== '') { %>
       <div style="padding:4%;font-size: 15px;display: inline-block;left: 15%;position: relative;" id="notification-mobile">
         <a style="background-color: transparent !important" href="#notification">
-          <span style='color:orangered' class="fa fa-bell" aria-hidden="true"></span>
+          <span class="fa fa-bell bell-notification" aria-hidden="true"></span>
         </a>
       </div>
       <% } %>
@@ -58,7 +58,7 @@
         <style>
           .noti-container {
             overflow-y: scroll;
-            width: 500px;
+            width: 700px;
             height: 200px;
           }
 
@@ -75,14 +75,16 @@
         <li style="padding-right: 50px">
           <a style="background-color: transparent !important;" href="#notification" class=" dropdown dropdown-toggle"
             id="notification-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i style='color:orangered; font-size: 120%' class="fa fa-bell" aria-hidden="true"></i>
+            <i style="font-size: 120%" class="fa fa-bell bell-notification" aria-hidden="true"></i>
             <div id='noti-dropdown' class="dropdown-menu" style="height:290px" aria-labelledby="notification-dropdown-menu">
               <div class='noti-container'>
                 <ul style='list-style: none;padding-inline-start: 20px'>
                   <li ng-repeat="notification in notifications">
                     <i class="fas fa-exclamation-triangle"></i>
                     <a style='font-size: 18px' href="/notification/{{ notification._id }}">{{
-                      notification.title }}</a>
+                      notification.title }}</a><br>
+                    {{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}
+                    <hr>
                   </li>
                 </ul>
               </div>
