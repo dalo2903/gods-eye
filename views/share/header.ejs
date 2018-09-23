@@ -1,5 +1,10 @@
+<style>
+  .navbar-default{
+    background-color:#1A1A1D
+  }
+</style>
 <nav class="navbar navbar-default navbar-fixed-top" ng-controller="headerController">
-  <div class="container-fluid">
+  <div class="container-fluid" style="width: 1196px">
     <div class="navbar-header">
       <% if (user_id !== '') { %>
       <div style="padding:4%;font-size: 15px;display: inline-block;left: 15%;position: relative;" id="notification-mobile">
@@ -29,6 +34,9 @@
           <a href="/person">PERSON LIST</a>
         </li>
         <li>
+          <a href="/label">LABEL VIDEOS</a>
+        </li>
+        <li>
           <a href="/person/create">ADD PERSON</a>
         </li>
         <li class="hide">
@@ -36,9 +44,6 @@
         </li>
         <li class="hide">
           <a href="/identify">IDENTIFY</a>
-        </li>
-        <li class="hide">
-          <a onclick="train()">TRAIN</a>
         </li>
         <li class="hide">
           <a href="/newsfeed">NEWS FEED</a>
@@ -132,20 +137,6 @@
     if (event.target == modal) {
       modal.style.display = "none";
     }
-  }
-</script>
-
-<script>
-  function train() {
-    $.ajax({
-      url: '/person-groups/test-faces/train',
-      success: function (res) {
-        alert('Train successfully')
-      },
-      error: function (res) {
-        alert(res.responseJSON.error.message)
-      }
-    })
   }
 </script>
 

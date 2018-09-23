@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Oswald&subset=vietnamese');
 h1 {
     color: black;
     font-weight: bold;
@@ -6,12 +7,22 @@ h1 {
 .data{
     text-align: left
 }
+.sidebar-container{
+    text-align: left
+}
 .postsContainer{
     
 }
+.posts-container .post-title{
+    font-size: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-stretch: 120%
+}
 .author{
     color:grey;
-    font-size: 15px;
+    font-size: 12px;
+    font-family: 'Lato', sans-serif;
     text-align: left
 }
 .line{

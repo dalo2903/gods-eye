@@ -10,6 +10,15 @@ const VisualDataSchema = new Schema({
     type: String,
     required: true
   },
+  labels: [{
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    label: {
+      type: String
+    }
+  }],
   identifyResult: {
     persons: [
       {

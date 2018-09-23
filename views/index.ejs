@@ -3,15 +3,15 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
     <div ng-controller="NewsFeedController">
         <div class="row">
-            <div id='sidebar-container' class="col-sm-3">
+            <div id='sidebar-container' class="col-sm-3 sidebar-container">
                 <% include ./share/sidebar.ejs -%>
             </div>
             <div class="col-sm-6">
-                <div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block" infinite-scroll-distance='1' class="postsContainer">
+                <div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block" infinite-scroll-distance='1' class="posts-container">
                     <div id="{{post._id}}" ng-repeat="post in scrollData">
                         <a href="/post/{{post._id}}" style="text-decoration:none">
                             <div>
-                                <h1>{{post.title}}</h1>
+                                <h1 class="post-title">{{post.title}}</h1>
                             </div>
                             <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
                             <div class="address">{{ post.location.address }}</div>
