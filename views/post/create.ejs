@@ -12,7 +12,9 @@
 
             <div class="form-group">
                 <label>Images</label>
-                <img class="thumb" ng-src="{{ imgSrc }}" ng-repeat="imgSrc in post.images">
+                <div ng-repeat="visualData in post.images" >
+                    <img class="thumb" ng-src="{{ imgSrc }}" >
+                </div>
                 <% include ./drag-and-drop.ejs %>
             </div>
 

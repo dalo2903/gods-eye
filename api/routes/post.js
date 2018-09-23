@@ -26,9 +26,10 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     const userCreated = (await AuthService.isLoggedIn(req)).user._id
     const url = await UploadController.uploadFile(req)
     const location = req.body.location
+    const isImage = req.files.file.mimetype.startsWith('image')
     const visualData = await VisualDataController.createVisualData({
       URL: url,
-      isImage: true,
+      isImage: isImage,
       location: location
     })
     req.body.datas = [visualData._id]

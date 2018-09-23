@@ -5,10 +5,8 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
     title: '',
     images: []
   }
-
   let files = []
-
-  function readURL(input) {
+  function readURL (input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader()
       reader.onload = function (e) {
@@ -36,16 +34,16 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
     formData.append('title', $scope.post.title)
     formData.append('location', $('#location').val())
     formData.append('file', files[0])
-    $("#submit-create-post").attr("disabled", true);
+    $('#submit-create-post').attr('disabled', true)
     apiService.createPost(formData)
       .then(function (res) {
         console.log(res)
         window.location.replace('/')
-        //alert('Post created successfully')
+        // alert('Post created successfully')
       })
       .catch(function (res) {
         alert(res.data.message)
-        $("#submit-create-post").attr("disabled", false);
+        $('#submit-create-post').attr('disabled', false)
         console.log(res)
       })
   }
