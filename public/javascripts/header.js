@@ -28,7 +28,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
       $scope.notifications = $scope.notifications.concat(newNotifications)
       $scope.notifications = unique($scope.notifications)
       // console.log($scope.notifications.length)
-      if (!response.data.isSeen) $('.bell-notification').css({ 'color': 'orangered' })
+      if (response.data.haveUnseenNotification) $('.bell-notification').css({ 'color': 'orangered' })
       else $('.bell-notification').css({ 'color': 'unset' })
       $scope.block = false
       $scope.$apply()
