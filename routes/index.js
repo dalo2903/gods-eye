@@ -1,15 +1,15 @@
 var express = require('express')
-var async = require('async')
+// var async = require('async')
 var router = express.Router()
-var config = require('../config')
+// var config = require('../config')
 var constants = require('../configs/constants')
-const Storage = require('@google-cloud/storage')
-var path = require('path')
-var request = require('request')
-var FaceController = require('../api/controllers/FaceController')
+// const Storage = require('@google-cloud/storage')
+// var path = require('path')
+// var request = require('request')
+// var FaceController = require('../api/controllers/FaceController')
 // var admin = require('../api/controllers/firebaseAdminController')
-var authController = require('../api/controllers/authController')
-var responseStatus = require('../configs/responseStatus')
+// var authController = require('../api/controllers/authController')
+// var responseStatus = require('../configs/responseStatus')
 const AuthService = require('../api/services/AuthService')
 // var db = admin.database()
 // var imageRef = db.ref('image')
@@ -35,58 +35,8 @@ router.get('/', function (req, res, next) {
   })
 })
 
-router.get('/post/create', (req, res) => {
-  res.render('post/create', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
-  })
-})
-
-router.get('/person/create', (req, res) => {
-  res.render('person/create', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
-  })
-})
-
-router.get('/person/face/add/:id', (req, res) => {
-  res.render('person/add-face', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : '',
-    _id: req.params.id
-  })
-})
-
 router.get('/post/:id', (req, res) => {
   res.render('post/detail', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : '',
-    _id: req.params.id
-  })
-})
-
-router.get('/notification/:id', (req, res) => {
-  res.render('notification/detail', {
     image: constants.index.image,
     description: constants.index.description,
     title: constants.index.title,
@@ -143,6 +93,56 @@ router.get('/*', async (req, res, next) => {
   } catch (error) {
     return res.redirect('/')
   }
+})
+
+router.get('/post/create', (req, res) => {
+  res.render('post/create', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
+  })
+})
+
+router.get('/person/create', (req, res) => {
+  res.render('person/create', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
+  })
+})
+
+router.get('/person/face/add/:id', (req, res) => {
+  res.render('person/add-face', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+    _id: req.params.id
+  })
+})
+
+router.get('/notification/:id', (req, res) => {
+  res.render('notification/detail', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+    _id: req.params.id
+  })
 })
 
 router.get('/my-profile', (req, res) => {
@@ -232,6 +232,18 @@ router.get('/person', (req, res) => {
     image: constants.index.image,
     description: constants.index.description,
     title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
+  })
+})
+
+router.get('/label', (req, res) => {
+  return res.render('post/video-labeling', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: 'Video Labeling',
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
