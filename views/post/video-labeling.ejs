@@ -68,12 +68,12 @@
                         <div class="col-sm-4">
 
                             <ul id='navMenu' class="nav" style='font-size: 200%'>
-                                <li id="lap{{location._id}}">
+                                <li id="{{location._id}}">
                                     <a class="popular-locations">
-                                        <i class="fas fa-exclamation-triangle " style="color: #a94442"></i>&nbsp&nbsp Suspicious
+                                        <i class="fas fa-exclamation-triangle " ng-onclick="setLabel({{video._id}},'suspicious')" style="color: #a94442"></i>&nbsp&nbsp Suspicious
                                     </a>
                                     <a class="popular-locations">
-                                        <i class="fas fa-check " style="color: greenyellow"></i>&nbsp&nbsp Delicious
+                                        <i class="fas fa-check "  ng-onclick="setLabel({{video._id}},'not-suspicious')" style="color: greenyellow"></i>&nbsp&nbsp Delicious
                                     </a>
                                 </li>
                             </ul>

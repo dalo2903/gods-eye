@@ -31,5 +31,17 @@ app.controller('VideoLabelingController', ['$scope', 'apiService', '$http', func
     $scope.block = false
     $scope.$apply()
   }
+  $scope.setLabel = async function (visualData, label) {
+    const json = {
+      visualData: visualData,
+      label: label
+    }
+    apiService.setLabelVisualData(json).then(function (res) {
+      $(visualData).hide()
+    }).catch(function (res) {
+      alert(res.data.message)
+    })
+  }
 }
+
 ])

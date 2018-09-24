@@ -3,8 +3,25 @@
     background-color:#1A1A1D
   }
 </style>
+<style>
+  @media only screen and (max-width:767px) {
+      .fixed-width{
+          width: auto;
+      }
+  }
+  @media only screen and (min-width:768px) {
+      .fixed-width{
+          width: 1196px;
+      }
+  }
+  @import url('https://fonts.googleapis.com/css?family=Dosis');
+  .nav li>a{
+    font-family: 'Dosis',sans-serif;
+    font-weight: bold;
+  }
+  </style>
 <nav class="navbar navbar-default navbar-fixed-top" ng-controller="headerController">
-  <div class="container-fluid" style="width: 1196px">
+  <div class="container-fluid fixed-width" >
     <div class="navbar-header">
       <% if (user_id !== '') { %>
       <div style="padding:4%;font-size: 15px;display: inline-block;left: 15%;position: relative;" id="notification-mobile">

@@ -27,9 +27,9 @@ class VisualDataController extends BaseController {
   async getAllVideoNotLabeledByUser (userId, skip, limit) {
     let visualDatas = await VisualData.find(
       {
-        'labels.user': {$ne: userId},
+        'labels.user': { $ne: userId },
         isImage: false
-      }).sort('-createdAt').skip(skip).limit(limit).exec()
+      }).populate('location', 'name address').sort('-createdAt').skip(skip).limit(limit).exec()
     return responseStatus.Response(200, { visualDatas: visualDatas })
   }
   async updateLabel (_id, userId, label) {
@@ -41,7 +41,6 @@ class VisualDataController extends BaseController {
     visualData.labels.push(newLabel)
     await visualData.save()
     return responseStatus.Response(200)
-
   }
 }
 

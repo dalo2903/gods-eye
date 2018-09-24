@@ -100,6 +100,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     getVisualDataForLabel: function (skip, limit) {
       return $http.get(`/api/visualdata/label?skip=${skip}&limit=${limit}`)
     },
+    setLabelVisualData: function (json) {
+      return $http.post('/api/visualdata/label', json)
+    },
     getPosts: function (skip, limit) {
       return $http.get(`/api/post?skip=${skip}&limit=${limit}`)
     }
