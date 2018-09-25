@@ -1,7 +1,7 @@
 const Storage = require('@google-cloud/storage')
 const config = require('../../config')
 const tinify = require('tinify')
-
+const fs = require('fs')
 const bucketName = config.google.cloudStorage.bucketName
 tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 
@@ -20,13 +20,19 @@ tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 //   promise?: PromiseLibrary<any>;
 // }
 var storage
+var obj
 if (process.env.GOOGLE_PRIVATE_KEY) {
+  fs.readFile('demo-856e4ac1d0d4.json', 'utf8', function readFileCallback (err, data) {
+    if (err) {
+      console.log(err)
+    } else {
+      obj = JSON.parse(data) // now it an object
+      obj['private_key'] = process.env.GOOGLE_PRIVATE_KEY  // add some data
+      var json = JSON.stringify(obj) // convert it back to json
+      fs.writeFile('demo-856e4ac1d0d4.json', json, 'utf8') // write it back
+    }
+  })
   storage = new Storage({
-    projectId: config.google.projectId,
-    credentials: {
-      client_email: 'demo-355@august-ascent-216104.iam.gserviceaccount.com',
-      private_key: process.env.GOOGLE_PRIVATE_KEY
-    },
     keyFilename: 'demo-856e4ac1d0d4.json' // 'CC14-2fb6831eca13.json'
   })
 } else {
