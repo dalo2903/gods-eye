@@ -5,10 +5,36 @@ const tinify = require('tinify')
 const bucketName = config.google.cloudStorage.bucketName
 tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 
-const storage = new Storage({
-  projectId: config.google.projectId,
-  keyFilename: 'demo-856e4ac1d0d4.json' // 'CC14-2fb6831eca13.json'
-})
+// interface Credentials {
+//   client_email?: string;
+//   private_key?: string;
+// }
+
+// interface ConfigurationObject {
+//   autoRetry?: boolean;
+//   credentials?: Credentials;
+//   email?: string;
+//   keyFilename?: string;
+//   maxRetries?: number;
+//   projectId?: string;
+//   promise?: PromiseLibrary<any>;
+// }
+var storage
+if (process.env.GOOGLE_PRIVATE_KEY) {
+  storage = new Storage({
+    projectId: config.google.projectId,
+    credentials: {
+      client_email: 'demo-355@august-ascent-216104.iam.gserviceaccount.com',
+      private_key: process.env.GOOGLE_PRIVATE_KEY
+    },
+    keyFilename: 'demo-856e4ac1d0d4.json' // 'CC14-2fb6831eca13.json'
+  })
+} else {
+  storage = new Storage({
+    projectId: config.google.projectId,
+    keyFilename: 'demo-856e4ac1d0d4_bk.json' // 'CC14-2fb6831eca13.json'
+  })
+}
 
 const bucket = storage.bucket(bucketName)
 
