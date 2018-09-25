@@ -29,6 +29,7 @@ if (process.env.GOOGLE_PRIVATE_KEY) {
       var obj = JSON.parse(data) // now it an object
       obj['private_key'] = process.env.GOOGLE_PRIVATE_KEY  // add some data
       var json = JSON.stringify(obj) // convert it back to json
+      console.log(json)
       fs.writeFile('demo-856e4ac1d0d4.json', json, 'utf8') // write it back
     }
   })
