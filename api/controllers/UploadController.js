@@ -94,8 +94,7 @@ function uploadFileV2 (req) {
     }
 
     const data = req.files.file.data
-
-    const resultData = await tinify.fromBuffer(data).toBuffer()
+    const resultData = req.files.file.mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
 
     // Create a new blob in the bucket and upload the file data.
     const blob = bucket.file(req.files.file.name)
