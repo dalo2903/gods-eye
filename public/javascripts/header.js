@@ -19,7 +19,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
     return out
   }
 
-  $scope.loadMoreNotification = async function () {
+  $scope.loadMoreNotification = async function (firstTime) {
     if (userId) {
       $scope.block = true
       last = $scope.notifications.length - 1
@@ -30,12 +30,19 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
       // console.log($scope.notifications.length)
       if (response.data.haveUnseenNotification) $('.bell-notification').css({ 'color': 'orangered' })
       else $('.bell-notification').css({ 'color': 'unset' })
+
+      if (!firstTime) $scope.seenAllNotifications()
       $scope.block = false
       $scope.$apply()
       console.log('load more notification')
     }
   }
-  $scope.loadMoreNotification()
+  $scope.loadMoreNotification(true)
+
+  $scope.seenAllNotifications = async function () {
+    await apiService.seenAllNotifications(userId)
+    return $('.bell-notification').css({ 'color': 'unset' })
+  }
 }])
 
 if (md.mobile()) {
