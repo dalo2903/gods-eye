@@ -18,23 +18,27 @@ class VisualDataController extends BaseController {
     const visualData = await this.create(_visualData)
     return visualData
   }
+
   async updateIdentifyResult (_id, identifyResult) {
     let visualData = await this.get(_id)
     visualData.identifyResult['persons'] = identifyResult
     // console.log(`updateIdentifyResult : ${identifyResult}`)
     await visualData.save()
   }
+
   async getAllVideoNotLabeledByUser (userId, skip, limit) {
-    let visualDatas = await VisualData.find(
-      {
+    let visualDatas =
+      await VisualData.find({
         'labels.user': { $ne: userId },
         isImage: false
       }).populate('location', 'name address').sort('-createdAt').skip(skip).limit(limit).exec()
     return responseStatus.Response(200, { visualDatas: visualDatas })
   }
+
   async updateLabel (_id, userId, label) {
-    let visualData = await this.get(_id)
-    let newLabel = {
+    const visualData = await VisualData.findById(_id).where('labels.user').ne(userId)
+    if (!visualData) throw responseStatus.Response(404)
+    const newLabel = {
       user: userId,
       label: label
     }

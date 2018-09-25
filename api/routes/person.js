@@ -61,12 +61,9 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       await FaceController.addFaceForPerson(Constants.face.known, msPersonId, url) // Add face in face api
       await PersonController.updateMicrosoftPersonId(createPersonRes._id, msPersonId) // Update MSid in DB
       FaceController.trainPersonGroup(Constants.face.known)
-    }
-    else {
+    } else {
       res.status(201).json(isExisted.persons)
     }
-
-
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)

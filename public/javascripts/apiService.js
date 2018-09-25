@@ -98,10 +98,10 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
       return $http.get(`/api/notification/setSeen/${_id}`)
     },
     getVisualDataForLabel: function (skip, limit) {
-      return $http.get(`/api/visualdata/label?skip=${skip}&limit=${limit}`)
+      return $http.get(`/api/visual-data/label?skip=${skip}&limit=${limit}`)
     },
     setLabelVisualData: function (json) {
-      return $http.post('/api/visualdata/label', json)
+      return $http.post('/api/visual-data/label', json)
     },
     getPosts: function (skip, limit) {
       return $http.get(`/api/post?skip=${skip}&limit=${limit}`)

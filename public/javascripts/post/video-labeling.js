@@ -18,30 +18,27 @@ app.controller('VideoLabelingController', ['$scope', 'apiService', '$http', func
     }
     return out
   }
+
   $scope.loadMore = async function () {
     $scope.block = true
     last = $scope.scrollData.length - 1
     const videos = (await apiService.getVisualDataForLabel(last + 1, 5)).data.visualDatas
-    // for (var i = last + 1; i < last + 3; i++) {
-    //   $scope.scrollData.push(posts[i])
-    // }
-
     $scope.scrollData = $scope.scrollData.concat(videos)
     $scope.scrollData = unique($scope.scrollData)
     $scope.block = false
     $scope.$apply()
   }
-  $scope.setLabel = async function (visualData, label) {
+
+  $scope.setLabel = async function (visualData, label, $index) {
     const json = {
       visualData: visualData,
       label: label
     }
-    apiService.setLabelVisualData(json).then(function (res) {
-      $(visualData).hide()
-    }).catch(function (res) {
-      alert(res.data.message)
-    })
+    apiService.setLabelVisualData(json)
+      .then(function (res) {
+        $scope.scrollData.splice($index, 1)
+      }).catch(function (res) {
+        alert(res.data.message)
+      })
   }
-}
-
-])
+}])
