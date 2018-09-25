@@ -37,13 +37,18 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
       console.log('load more notification')
     }
   }
+  $scope.loadMoreNotification(true)
   $scope.notiDetail = function (notiId) {
+    apiService.setSeenNotification(notiId)
     window.location.replace('/notification/' + notiId)
-    $scope.loadMoreNotification(true)
   }
 
   $scope.seenAllNotifications = async function () {
     await apiService.seenAllNotifications(userId)
+    $scope.notifications.forEach(element => {
+      element.seen = true
+    });
+    $scope.$apply()
     return $('.bell-notification').css({ 'color': 'unset' })
   }
 }])

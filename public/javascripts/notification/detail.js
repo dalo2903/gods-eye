@@ -6,7 +6,6 @@ app.controller('detailController', ['$scope', 'apiService', function ($scope, ap
     .then(function (res) {
       console.log(res)
       $scope.notification = res.data.notification
-      apiService.setSeenNotification(_id)
     })
     .catch(function (res) {
       console.log(res)
