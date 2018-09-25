@@ -1,0 +1,11 @@
+{
+  "type": "service_account",
+  "project_id": "august-ascent-216104",
+  "private_key_id": "856e4ac1d0d49925c6ef534222078bd2787411e9",
+  "client_email": "demo-355@august-ascent-216104.iam.gserviceaccount.com",
+  "client_id": "105988276782708970617",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/demo-355%40august-ascent-216104.iam.gserviceaccount.com"
+}

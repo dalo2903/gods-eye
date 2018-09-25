@@ -26,7 +26,7 @@
     <div class="navbar-header">
       <% if (user_id !== '') { %>
       <div style="padding:4%;font-size: 15px;display: inline-block;left: 15%;position: relative;" id="notification-mobile">
-        <a style="background-color: transparent !important" href="#notification">
+        <a style="background-color: transparent !important" href="#notification" ng-click="seenAllNotifications()">
           <span class="fa fa-bell bell-notification" aria-hidden="true"></span>
         </a>
       </div>

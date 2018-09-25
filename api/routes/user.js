@@ -2,11 +2,23 @@ const express = require('express')
 let router = express.Router()
 const PostController = require('../controllers/PostController')
 const NotificationController = require('../controllers/NotificationController')
+const AuthService = require('../services/AuthService')
 
 router.get('/:userId/posts', async (req, res) => {
   try {
     const userId = req.params.userId
     const response = await PostController.getPostsSameUserCreated(userId)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
+router.get('/:userId/notifications/seen', async (req, res) => {
+  try {
+    const userId = (await AuthService.isLoggedIn(req)).user._id
+    const response = await NotificationController.seenAllNotifications(userId)
     return res.send(response)
   } catch (error) {
     console.log(error)
