@@ -22,7 +22,7 @@
   }
   </style>
 <nav class="navbar navbar-default navbar-fixed-top" ng-controller="headerController">
-  <div class="container-fluid fixed-width" >
+  <div class="container-fluid fixed-width">
     <div class="navbar-header">
       <% if (user_id !== '') { %>
       <div style="padding:4%;font-size: 15px;display: inline-block;left: 15%;position: relative;" id="notification-mobile">
@@ -88,6 +88,17 @@
           .noti-container>ul>li>a {
             text-decoration: none
           }
+
+          .noti-line {
+            padding-top: 10px;
+            padding-inline-start: 20px;
+            cursor: pointer;
+            color: black;
+          }
+
+          .noti-line-not-seen {
+            background-color: lightgrey
+          }
         </style>
         <!-- Don't close dropdown when click -->
         <script>
@@ -96,26 +107,30 @@
           });
         </script>
         <li style="padding-right: 50px">
-          <a style="background-color: transparent !important;" href="#notification" class=" dropdown dropdown-toggle"
-            id="notification-dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <i style="font-size: 120%" class="fa fa-bell bell-notification" aria-hidden="true"></i>
-            <div id='noti-dropdown' class="dropdown-menu" style="height:290px" aria-labelledby="notification-dropdown-menu">
-              <div class='noti-container'>
-                <ul style='list-style: none;padding-inline-start: 20px'>
-                  <li ng-repeat="notification in notifications">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <a style='font-size: 18px' href="/notification/{{ notification._id }}">{{
-                      notification.title }}</a><br>
-                    {{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}
-                    <hr>
-                  </li>
-                </ul>
-              </div>
-              <hr>
-              <div ng-click='loadMoreNotification()' class="text-center">
-                <p style='color:#337ab7 !important;cursor:pointer'>Load more</p>
-              </div>
+          <a style="background-color: transparent !important;" class="dropdown-toggle" id="notification-dropdown-menu"
+            data-toggle="dropdown">
+            <i style="font-size: 120%" class="fa fa-bell bell-notification"></i>
+          </a>
+          <div id='noti-dropdown' class="dropdown-menu" style="height:290px" aria-labelledby="notification-dropdown-menu">
+            <div class='noti-container'>
+              <ul style='list-style: none;padding-inline-start: 0px;'>
+                <li class="noti-line" ng-repeat="notification in notifications" ng-click='notiDetail(notification._id)'
+                  ng-class="notification.seen ? '' : 'noti-line-not-seen'">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  {{notification.title}} <br>
+                  {{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}
+                  <hr>
+                </li>
+              </ul>
             </div>
+            <hr>
+            <div ng-click='loadMoreNotification()' class="text-center" style="width: 50%; float:left;border-right: 1px solid lightgrey">
+              <p style='color:#337ab7 !important;cursor:pointer'>Load more</p>
+            </div>
+            <div ng-click='loadMoreNotification()' class="text-center" style="width: 50%; float:right">
+              <p style='color:#337ab7 !important;cursor:pointer'>Mark all as "Seen"</p>
+            </div>
+          </div>
         </li>
         <li>
           <a href="/api/auth/sign-out">

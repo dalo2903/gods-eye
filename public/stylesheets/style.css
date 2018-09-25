@@ -88,6 +88,7 @@
     }
     .dropdown-menu li a:hover {
         background-color:dodgerblue !important;
+        color: initial !important
     }
     footer {
         background-color: #2d2d30;

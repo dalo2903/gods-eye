@@ -4,7 +4,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
   $scope.notifications = []
   let last = 0
   $scope.block = false
-  function unique (a) {
+  function unique(a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -36,6 +36,9 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
     }
   }
   $scope.loadMoreNotification()
+  $scope.notiDetail = function (notiId) {
+    window.location.replace('/notification/' + notiId)
+  }
 }])
 
 if (md.mobile()) {
