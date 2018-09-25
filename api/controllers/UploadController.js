@@ -20,6 +20,7 @@ tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 //   promise?: PromiseLibrary<any>;
 // }
 var storage
+var bucket
 console.log(process.env.GOOGLE_PRIVATE_KEY)
 if (process.env.GOOGLE_PRIVATE_KEY) {
   fs.readFile('demo-856e4ac1d0d4.json', 'utf8', function readFileCallback (err, data) {
@@ -36,6 +37,7 @@ if (process.env.GOOGLE_PRIVATE_KEY) {
           projectId: config.google.projectId,
           keyFilename: 'demo-856e4ac1d0d4.json' // 'CC14-2fb6831eca13.json'
         })
+        bucket = storage.bucket(bucketName)
       }) // write it back
     }
   })
@@ -44,9 +46,8 @@ if (process.env.GOOGLE_PRIVATE_KEY) {
     projectId: config.google.projectId,
     keyFilename: 'demo-856e4ac1d0d4_bk.json' // 'CC14-2fb6831eca13.json'
   })
+  bucket = storage.bucket(bucketName)
 }
-
-const bucket = storage.bucket(bucketName)
 
 // async function uploadFile (file) {
 // console.log(file)
