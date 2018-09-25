@@ -20,19 +20,20 @@ tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 //   promise?: PromiseLibrary<any>;
 // }
 var storage
-var obj
+console.log(process.env.GOOGLE_PRIVATE_KEY)
 if (process.env.GOOGLE_PRIVATE_KEY) {
   fs.readFile('demo-856e4ac1d0d4.json', 'utf8', function readFileCallback (err, data) {
     if (err) {
       console.log(err)
     } else {
-      obj = JSON.parse(data) // now it an object
+      var obj = JSON.parse(data) // now it an object
       obj['private_key'] = process.env.GOOGLE_PRIVATE_KEY  // add some data
       var json = JSON.stringify(obj) // convert it back to json
       fs.writeFile('demo-856e4ac1d0d4.json', json, 'utf8') // write it back
     }
   })
   storage = new Storage({
+    projectId: config.google.projectId,
     keyFilename: 'demo-856e4ac1d0d4.json' // 'CC14-2fb6831eca13.json'
   })
 } else {
