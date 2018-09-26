@@ -25,6 +25,14 @@ class VisualDataController extends BaseController {
     // console.log(`updateIdentifyResult : ${identifyResult}`)
     await visualData.save()
   }
+  async getAllVideoWithLabel (minLabel) {
+    let index = `labels.${minLabel}`
+    let visualDatas = await VisualData.find({
+      [index]: {$exists: true},
+      isImage: false
+    })
+    return visualDatas
+  }
 
   async getAllVideoNotLabeledByUser (userId, skip, limit) {
     let visualDatas =

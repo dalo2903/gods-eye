@@ -2,6 +2,7 @@ const express = require('express')
 let router = express.Router()
 const VisualDataController = require('../controllers/VisualDataController')
 const AuthService = require('../services/AuthService')
+const DatasetCollector = require('../controllers/DatasetCollector')
 
 router.get('/label', async (req, res) => {
   try {
@@ -29,4 +30,13 @@ router.post('/label', async (req, res) => {
   }
 })
 
+router.get('/createDataset', async (req, res) => {
+  try {
+    const response = await DatasetCollector.downloadDataset()
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
 module.exports = router

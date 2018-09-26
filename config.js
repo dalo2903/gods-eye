@@ -28,5 +28,6 @@ module.exports = {
   token: {
     expiresIn: '365 days',
     secret: 'cuoituancuoituan'
-  }
+  },
+  datasetDir: 'dataset'
 }
