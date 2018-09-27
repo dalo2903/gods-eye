@@ -8,6 +8,8 @@ var engine = require('ejs-locals')
 var fileUpload = require('express-fileupload')
 var session = require('express-session')
 
+require('dotenv').config()
+
 var serveIndex = require('serve-index')
 
 const config = require('./config')
