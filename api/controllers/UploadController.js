@@ -48,6 +48,20 @@ console.log(process.env.GOOGLE_PRIVATE_KEY)
 console.log(process.env.GOOGLE_CLIENT_EMAIL)
 console.log(process.env.GOOGLE_PROJECT_ID)
 
+storage
+  .getBuckets()
+  .then((results) => {
+    const buckets = results[0]
+
+    console.log('Buckets:')
+    buckets.forEach((bucket) => {
+      console.log(bucket.name)
+    })
+  })
+  .catch((err) => {
+    console.error('ERROR:', err)
+  })
+
 const bucket = storage.bucket(bucketName)
 
 // async function uploadFile (file) {
