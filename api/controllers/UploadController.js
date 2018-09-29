@@ -54,7 +54,7 @@ const bucket = storage.bucket(bucketName)
 // return url
 // }
 
-function uploadFile (req) {
+function uploadFile(req) {
   return new Promise((resolve, reject) => {
     if (!req.files) {
       throw reject(new Error('No file uploaded.')) // res.status(400).send('No file uploaded.')
@@ -89,42 +89,74 @@ function uploadFile (req) {
   })
 }
 
-function uploadFileV2 (req) {
+function uploadFileV2(req) {
   return new Promise(async (resolve, reject) => {
     if (!req.files) {
       throw reject(new Error('No file uploaded.')) // res.status(400).send('No file uploaded.')
     }
-
-    const data = req.files.file.data
-    const resultData = req.files.file.mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
-
-    // Create a new blob in the bucket and upload the file data.
-    const blob = bucket.file(req.files.file.name)
-
-    // Make sure to set the contentType metadata for the browser to be able
-    // to render the image instead of downloading the file (default behavior)
-    const blobStream = blob.createWriteStream({
-      metadata: {
-        contentType: req.files.file.mimetype
-      }
-    })
-
-    blobStream.on('error', err => {
-      console.log(err)
-      reject(err)
-    })
-
-    blobStream.on('finish', () => {
-      // The public URL can be used to directly access the file via HTTP.
-      const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`
-      // Make the image public to the web (since we'll be displaying it in browser)
-      blob.makePublic().then(() => {
-        // return publicUrl
-        return resolve(publicUrl)
+    console.log(req.files)
+    for (var i = 0; i < req.files.files.length; i++) {
+      const data = req.files.files[i].data
+      const resultData = req.files.files[i].mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
+  
+      // Create a new blob in the bucket and upload the file data.
+      const blob = bucket.file(req.files.files[i].name)
+  
+      // Make sure to set the contentType metadata for the browser to be able
+      // to render the image instead of downloading the file (default behavior)
+      const blobStream = blob.createWriteStream({
+        metadata: {
+          contentType: req.files.files[i].mimetype
+        }
       })
-    })
+  
+      blobStream.on('error', err => {
+        console.log(err)
+        reject(err)
+      })
+  
+      // blobStream.on('finish', () => {
+      //   // The public URL can be used to directly access the file via HTTP.
+      //   const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`
+      //   // Make the image public to the web (since we'll be displaying it in browser)
+      //   blob.makePublic().then(() => {
+      //     // return publicUrl
+      //     return resolve(publicUrl)
+      //   })
+      // })
+  
+      blobStream.end(resultData)
+    }
+    // const data = req.files.file.data
+    // const resultData = req.files.file.mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
 
-    blobStream.end(resultData)
+    // // Create a new blob in the bucket and upload the file data.
+    // const blob = bucket.file(req.files.file.name)
+
+    // // Make sure to set the contentType metadata for the browser to be able
+    // // to render the image instead of downloading the file (default behavior)
+    // const blobStream = blob.createWriteStream({
+    //   metadata: {
+    //     contentType: req.files.file.mimetype
+    //   }
+    // })
+
+    // blobStream.on('error', err => {
+    //   console.log(err)
+    //   reject(err)
+    // })
+
+    // blobStream.on('finish', () => {
+    //   // The public URL can be used to directly access the file via HTTP.
+    //   const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`
+    //   // Make the image public to the web (since we'll be displaying it in browser)
+    //   blob.makePublic().then(() => {
+    //     // return publicUrl
+    //     return resolve(publicUrl)
+    //   })
+    // })
+
+    // blobStream.end(resultData)
   })
 }
 

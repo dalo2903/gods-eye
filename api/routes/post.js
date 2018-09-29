@@ -25,6 +25,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
     // const session = AuthService.getSessionFromRequest(req)
     // const uuid = await AuthService.isLoggedIn(session)
+    console.log(req.body)
     const userCreated = (await AuthService.isLoggedIn(req)).user._id
     const url = await UploadController.uploadFileV2(req)
     const location = req.body.location

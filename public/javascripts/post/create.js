@@ -6,7 +6,7 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
     images: []
   }
   let files = []
-  function readURL (input) {
+  function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader()
       reader.onload = function (e) {
@@ -33,7 +33,13 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
     let formData = new FormData()
     formData.append('title', $scope.post.title)
     formData.append('location', $('#location').val())
-    formData.append('file', files[0])
+    for (var x = 0; x < files.length; x++) {
+      formData.append("files", files[x]);
+    }
+    // formData.append('file', files[0])
+    // for (var value of formData.entries()) {
+    //   console.log(value[0]+value[1]);
+    // }
     $('#submit-create-post').attr('disabled', true)
     apiService.createPost(formData)
       .then(function (res) {

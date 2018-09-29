@@ -18,6 +18,7 @@ class PostController extends BaseController {
       datas: obj.datas,
       location: obj.location
     }
+    console.log(obj.datas)
     const post = await this.create(_post)
     return post
   }
