@@ -73,6 +73,19 @@ router.get('/location/:id', function (req, res, next) {
   })
 })
 
+router.get('/post/:id', (req, res) => {
+  res.render('post/detail', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+    _id: req.params.id
+  })
+})
+
 router.get('/*', async (req, res, next) => {
   try {
     const token = AuthService.getTokenFromRequest(req)
@@ -92,19 +105,6 @@ router.get('/post/create', (req, res) => {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : ''
-  })
-})
-
-router.get('/post/:id', (req, res) => {
-  res.render('post/detail', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : '',
-    _id: req.params.id
   })
 })
 
