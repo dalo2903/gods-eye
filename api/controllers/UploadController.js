@@ -92,7 +92,7 @@ function uploadFile (req) {
   })
 }
 
-function uploadFileV2 (req) {
+function uploadFileV2 (req, fileName) {
   return new Promise(async (resolve, reject) => {
     if (!req.files) {
       throw reject(new Error('No file uploaded.')) // res.status(400).send('No file uploaded.')
@@ -102,7 +102,10 @@ function uploadFileV2 (req) {
     const resultData = req.files.file.mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
 
     // Create a new blob in the bucket and upload the file data.
-    const blob = bucket.file(req.files.file.name)
+    // req.files.file.name
+    const fileExt = req.files.file.name.split('.').pop()
+    fileName += '.' + fileExt
+    const blob = bucket.file(fileName)
 
     // Make sure to set the contentType metadata for the browser to be able
     // to render the image instead of downloading the file (default behavior)

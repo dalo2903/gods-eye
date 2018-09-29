@@ -24,14 +24,16 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
     // const session = AuthService.getSessionFromRequest(req)
     // const uuid = await AuthService.isLoggedIn(session)
     const userCreated = (await AuthService.isLoggedIn(req)).user._id
-    const url = await UploadController.uploadFileV2(req)
     const location = req.body.location
     const isImage = req.files.file.mimetype.startsWith('image')
     const visualData = await VisualDataController.createVisualData({
-      URL: url,
+      URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
       isImage: isImage,
       location: location
     })
+    const url = await UploadController.uploadFileV2(req, visualData._id)
+    visualData.URL = url
+    await visualData.save()
     req.body.datas = [visualData._id]
     const post = await PostController.createPost(req.body, userCreated)
     res.send()

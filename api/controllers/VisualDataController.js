@@ -25,6 +25,11 @@ class VisualDataController extends BaseController {
     // console.log(`updateIdentifyResult : ${identifyResult}`)
     await visualData.save()
   }
+  async updateUrl (_id, URL) {
+    let visualData = await this.get(_id)
+    visualData.URL = URL
+    await visualData.save()
+  }
   async getAllVideoWithLabel (minLabel) {
     let index = `labels.${minLabel}`
     let visualDatas = await VisualData.find({
