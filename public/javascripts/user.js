@@ -51,5 +51,14 @@ app.controller('UserController', ['$scope', 'apiService', function ($scope, apiS
   }
   $scope.goToEditPage = function (id) {
     window.location.replace('/post/edit/' + id)
+
+  $scope.deletePost = function (_id, $index) {
+    apiService.deletePost(_id)
+      .then(function (res) {
+        $scope.posts.splice($index, 1)
+      })
+      .catch(function (res) {
+        alert(res.data.message)
+      })
   }
 }])
