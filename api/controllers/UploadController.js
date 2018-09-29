@@ -19,6 +19,7 @@ tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 //   projectId?: string;
 //   promise?: PromiseLibrary<any>;
 // }
+<<<<<<< HEAD
 var storage
 var bucket
 console.log(process.env.GOOGLE_PRIVATE_KEY)
@@ -40,14 +41,48 @@ if (process.env.GOOGLE_PRIVATE_KEY) {
         bucket = storage.bucket(bucketName)
       }) // write it back
     }
+=======
+// var storage
+// if (process.env.GOOGLE_PRIVATE_KEY) {
+//   storage = new Storage({
+//     projectId: config.google.projectId,
+//     credentials: {
+//       client_email: 'demo-355@august-ascent-216104.iam.gserviceaccount.com',
+//       private_key: process.env.GOOGLE_PRIVATE_KEY
+//     },
+//     keyFilename: 'demo-856e4ac1d0d4.json' // 'CC14-2fb6831eca13.json'
+//   })
+// } else {
+//   storage = new Storage({
+//     projectId: config.google.projectId,
+//     keyFilename: 'demo-856e4ac1d0d4_bk.json' // 'CC14-2fb6831eca13.json'
+//   })
+// }
+
+const storage = new Storage({
+  projectId: process.env.GOOGLE_PROJECT_ID,
+  credentials: {
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')
+  }
+})
+
+storage
+  .getBuckets()
+  .then((results) => {
+    const buckets = results[0]
+
+    console.log('Buckets:')
+    buckets.forEach((bucket) => {
+      console.log(bucket.name)
+    })
+>>>>>>> 8de64c784607fe13404b4b110f4b1040ddff14f8
   })
-} else {
-  storage = new Storage({
-    projectId: config.google.projectId,
-    keyFilename: 'demo-856e4ac1d0d4_bk.json' // 'CC14-2fb6831eca13.json'
+  .catch((err) => {
+    console.error('ERROR:', err)
   })
-  bucket = storage.bucket(bucketName)
-}
+
+const bucket = storage.bucket(bucketName)
 
 // async function uploadFile (file) {
 // console.log(file)
