@@ -95,7 +95,18 @@ router.get('/*', async (req, res, next) => {
     return res.redirect('/')
   }
 })
-
+router.get('/post/edit/:id', (req, res) => {
+  return res.render('post/edit', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+    _id: req.params.id
+  })
+})
 router.get('/post/create', (req, res) => {
   res.render('post/create', {
     image: constants.index.image,
