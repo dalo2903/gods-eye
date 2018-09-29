@@ -44,20 +44,6 @@ const storage = new Storage({
   }
 })
 
-storage
-  .getBuckets()
-  .then((results) => {
-    const buckets = results[0]
-
-    console.log('Buckets:')
-    buckets.forEach((bucket) => {
-      console.log(bucket.name)
-    })
-  })
-  .catch((err) => {
-    console.error('ERROR:', err)
-  })
-
 const bucket = storage.bucket(bucketName)
 
 // async function uploadFile (file) {
