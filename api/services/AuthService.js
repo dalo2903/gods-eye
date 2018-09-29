@@ -55,7 +55,7 @@ async function checkPermission (obj) {
     if (obj.owner && parseInt(role[obj.resource].owner.padStart(4, '0')[obj.action]) === 1) {
       return
     }
-    if (obj.owner && parseInt(role[obj.resource].others.padStart(4, '0')[obj.action]) === 1) {
+    if (!obj.owner && parseInt(role[obj.resource].others.padStart(4, '0')[obj.action]) === 1) {
       return
     }
   }

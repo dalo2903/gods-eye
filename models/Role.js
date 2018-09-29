@@ -19,6 +19,16 @@ const RoleSchema = new Schema({ // CRUD owner
       type: String,
       default: ''
     }
+  },
+  post: {
+    owner: {
+      type: String,
+      default: ''
+    },
+    others: {
+      type: String,
+      default: ''
+    }
   }
 }, { usePushEach: true, timestamps: true })
 

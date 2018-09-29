@@ -108,6 +108,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     },
     seenAllNotifications: function (userId) {
       return $http.get(`/api/user/${userId}/notifications/seen`)
+    },
+    deletePost: function (_id) {
+      return $http.delete('/api/post/' + _id)
     }
   }
 }])
