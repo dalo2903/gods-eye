@@ -44,10 +44,6 @@ const storage = new Storage({
   }
 })
 
-console.log(process.env.GOOGLE_PRIVATE_KEY)
-console.log(process.env.GOOGLE_CLIENT_EMAIL)
-console.log(process.env.GOOGLE_PROJECT_ID)
-
 storage
   .getBuckets()
   .then((results) => {
