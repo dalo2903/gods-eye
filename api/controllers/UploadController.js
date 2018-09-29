@@ -19,30 +19,6 @@ tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 //   projectId?: string;
 //   promise?: PromiseLibrary<any>;
 // }
-<<<<<<< HEAD
-var storage
-var bucket
-console.log(process.env.GOOGLE_PRIVATE_KEY)
-if (process.env.GOOGLE_PRIVATE_KEY) {
-  fs.readFile('demo-856e4ac1d0d4.json', 'utf8', function readFileCallback (err, data) {
-    if (err) {
-      console.log(err)
-    } else {
-      var obj = JSON.parse(data) // now it an object
-      obj['private_key'] = process.env.GOOGLE_PRIVATE_KEY || 'abcxyz' // add some data
-      var json = JSON.stringify(obj) // convert it back to json
-      console.log(json)
-      fs.writeFile('demo-856e4ac1d0d4.json', json, 'utf8', function (err) {
-        err && console.log(err)
-        storage = new Storage({
-          projectId: config.google.projectId,
-          keyFilename: 'demo-856e4ac1d0d4.json' // 'CC14-2fb6831eca13.json'
-        })
-        bucket = storage.bucket(bucketName)
-      }) // write it back
-    }
-=======
-// var storage
 // if (process.env.GOOGLE_PRIVATE_KEY) {
 //   storage = new Storage({
 //     projectId: config.google.projectId,
@@ -76,7 +52,6 @@ storage
     buckets.forEach((bucket) => {
       console.log(bucket.name)
     })
->>>>>>> 8de64c784607fe13404b4b110f4b1040ddff14f8
   })
   .catch((err) => {
     console.error('ERROR:', err)
