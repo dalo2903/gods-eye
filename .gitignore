@@ -2,3 +2,4 @@ node_modules/
 public/images/
 .idea/
 demo-856e4ac1d0d4_bk.json
+.env
