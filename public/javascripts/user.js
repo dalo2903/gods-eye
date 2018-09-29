@@ -17,11 +17,11 @@ app.controller('UserController', ['$scope', 'apiService', function ($scope, apiS
     .catch(function (res) {
       console.log(res)
     })
-    // Get noti
+  // Get noti
   $scope.notifications = []
   let last = 0
   $scope.block = false
-  function unique (a) {
+  function unique(a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -48,5 +48,8 @@ app.controller('UserController', ['$scope', 'apiService', function ($scope, apiS
       $scope.$apply()
       console.log('load more notification')
     }
+  }
+  $scope.goToEditPage = function (id) {
+    window.location.replace('/post/edit/' + id)
   }
 }])

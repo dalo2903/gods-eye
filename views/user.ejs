@@ -65,8 +65,10 @@
                                 <div class="data" ng-repeat="data in post.datas">
                                     <img class='post' ng-src="{{data.URL}}">
                                 </div>
+
                                 <hr>
                             </a>
+                            <button class="btn btn-primary" ng-click="goToEditPage(post._id)">Edit</button>
                         </div>
                     </div>
                 </div>
