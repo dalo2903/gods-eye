@@ -14,7 +14,7 @@
                                 <h1 class="post-title">{{post.title}}</h1>
                             </div>
                             <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
-                            <div class="address">{{ post.location.address }}</div>
+                            <div class="address">{{ post.location.name || post.location.address }}</div>
                             <div class="data" ng-repeat="data in post.datas">
                                 <img class='post' ng-if="data.isImage" ng-src="{{data.URL}}">
                                 <video class='post'  ng-if="!data.isImage" controls>
