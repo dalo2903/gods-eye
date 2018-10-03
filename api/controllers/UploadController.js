@@ -53,7 +53,7 @@ const bucket = storage.bucket(bucketName)
 // return url
 // }
 
-function uploadFile (req) {
+function uploadFile(req) {
   return new Promise((resolve, reject) => {
     if (!req.files) {
       throw reject(new Error('No file uploaded.')) // res.status(400).send('No file uploaded.')
@@ -88,18 +88,18 @@ function uploadFile (req) {
   })
 }
 
-function uploadFileV2 (req, fileName) {
+function uploadFileV2(file, fileName) {
   return new Promise(async (resolve, reject) => {
-    if (!req.files) {
+    if (!file) {
       throw reject(new Error('No file uploaded.')) // res.status(400).send('No file uploaded.')
     }
 
-    const data = req.files.file.data
-    const resultData = req.files.file.mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
+    const data = file.data
+    const resultData = file.mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
 
     // Create a new blob in the bucket and upload the file data.
     // req.files.file.name
-    const fileExt = req.files.file.name.split('.').pop()
+    const fileExt = file.name.split('.').pop()
     fileName += '.' + fileExt
     const blob = bucket.file(fileName)
 
@@ -107,7 +107,7 @@ function uploadFileV2 (req, fileName) {
     // to render the image instead of downloading the file (default behavior)
     const blobStream = blob.createWriteStream({
       metadata: {
-        contentType: req.files.file.mimetype
+        contentType: file.mimetype
       }
     })
 
