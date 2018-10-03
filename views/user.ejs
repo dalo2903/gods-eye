@@ -60,13 +60,17 @@
                                     <h1>{{post.title}}</h1>
                                 </div>
                                 <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm
-                                    dd/MM/yyyy"}}</div>
+                                    dd/MM/yyyy"}}
+                                </div>
                                 <div class="address">{{ post.location.address }}</div>
                                 <div class="data" ng-repeat="data in post.datas">
                                     <img class='post' ng-src="{{data.URL}}">
                                 </div>
-                                <hr>
                             </a>
+                            <br>
+                            <button class="btn btn-primary" ng-click="deletePost(post._id, $index)">Delete</button>
+                            <button class="btn btn-primary" ng-click="goToEditPage(post._id)">Edit</button>
+                            <hr>
                         </div>
                     </div>
                 </div>

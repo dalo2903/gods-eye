@@ -18,15 +18,18 @@ class PostController extends BaseController {
       datas: obj.datas,
       location: obj.location
     }
+    console.log(obj.datas)
     const post = await this.create(_post)
     return post
   }
 
   async getPost (_id) {
-    const post = await Post.findById(_id).populate({ path: 'userCreated', select: 'name avatar' })
+    const post = await Post.findById(_id)
+      .populate({ path: 'userCreated', select: 'name avatar' })
+      .populate({ path: 'location', select: 'name address' })
       .populate({
-        path: 'datas location',
-        select: 'URL address identifyResult',
+        path: 'datas',
+        select: 'URL identifyResult',
         model: 'VisualData',
         populate: {
           path: 'identifyResult.persons.personId',
@@ -44,7 +47,7 @@ class PostController extends BaseController {
   }
 
   async getPostsPopulateAuthor (skip, limit) {
-    const posts = await Post.find().sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address isImage' }).exec()
+    const posts = await Post.find().sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).exec()
     return responseStatus.Response(200, { posts: posts })
   }
 
@@ -54,7 +57,7 @@ class PostController extends BaseController {
   }
 
   async getPostsByLocation (location) {
-    const posts = await Post.find({ location: location }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address' }).sort('-createdAt')
+    const posts = await Post.find({ location: location }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name' }).sort('-createdAt')
     return responseStatus.Response(200, { posts: posts })
   }
 }

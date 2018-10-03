@@ -73,28 +73,6 @@ router.get('/location/:id', function (req, res, next) {
   })
 })
 
-router.get('/*', async (req, res, next) => {
-  try {
-    const token = AuthService.getTokenFromRequest(req)
-    await AuthService.verifyJWTToken(token)
-    return next()
-  } catch (error) {
-    return res.redirect('/')
-  }
-})
-
-router.get('/post/create', (req, res) => {
-  res.render('post/create', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
-  })
-})
-
 router.get('/post/:id', (req, res) => {
   res.render('post/detail', {
     image: constants.index.image,
@@ -105,6 +83,39 @@ router.get('/post/:id', (req, res) => {
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
     _id: req.params.id
+  })
+})
+
+router.get('/*', async (req, res, next) => {
+  try {
+    const token = AuthService.getTokenFromRequest(req)
+    await AuthService.verifyJWTToken(token)
+    return next()
+  } catch (error) {
+    return res.redirect('/')
+  }
+})
+router.get('/post/edit/:id', (req, res) => {
+  return res.render('post/edit', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+    _id: req.params.id
+  })
+})
+router.get('/post/create', (req, res) => {
+  res.render('post/create', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
   })
 })
 

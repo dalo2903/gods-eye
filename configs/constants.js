@@ -43,7 +43,8 @@ const name = {
 const RELATIONSHIP_TYPE_ARRAY = Object.keys(relationshipEnum).map(key => relationshipEnum[key])
 
 const RESOURCES = {
-  LOCATION: 'location'
+  LOCATION: 'location',
+  POST: 'post'
 }
 
 const ACTIONS = {

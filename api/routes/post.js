@@ -8,6 +8,8 @@ const VisualDataController = require('../controllers/VisualDataController')
 const IdentifyController = require('../controllers/IdentifyController')
 const RecordController = require('../controllers/RecordController')
 const LocalScoreController = require('../controllers/LocalScoreController')
+const constants = require('../../configs/constants')
+
 // const m = multer({
 //   storage: multer.memoryStorage(),
 //   limits: {
@@ -23,6 +25,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
     // const session = AuthService.getSessionFromRequest(req)
     // const uuid = await AuthService.isLoggedIn(session)
+    console.log(req.body)
     const userCreated = (await AuthService.isLoggedIn(req)).user._id
     const location = req.body.location
     const isImage = req.files.file.mimetype.startsWith('image')
@@ -63,6 +66,26 @@ router.get('/', async (req, res) => {
     const skip = parseInt(req.query.skip || 0)
     const limit = parseInt(req.query.limit || 10)
     const response = await PostController.getPostsPopulateAuthor(skip, limit)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
+router.delete('/:id', async (req, res) => { // Xoa post
+  try {
+    const user = (await AuthService.isLoggedIn(req)).user
+    const id = req.params.id
+    const post = await PostController.get(id)
+    const obj = {
+      role: user.role,
+      resource: constants.RESOURCES.POST,
+      action: constants.ACTIONS.DELETE,
+      owner: post.userCreated.toString() === user._id.toString()
+    }
+    await AuthService.checkPermission(obj)
+    const response = await PostController.delete(id)
     return res.send(response)
   } catch (error) {
     console.log(error)
