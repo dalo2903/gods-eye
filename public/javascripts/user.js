@@ -21,7 +21,8 @@ app.controller('UserController', ['$scope', 'apiService', function ($scope, apiS
   $scope.notifications = []
   let last = 0
   $scope.block = false
-  function unique(a) {
+
+  function unique (a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -49,9 +50,11 @@ app.controller('UserController', ['$scope', 'apiService', function ($scope, apiS
       console.log('load more notification')
     }
   }
+
   $scope.goToEditPage = function (id) {
     window.location.replace('/post/edit/' + id)
   }
+
   $scope.deletePost = function (_id, $index) {
     apiService.deletePost(_id)
       .then(function (res) {
