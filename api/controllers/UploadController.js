@@ -19,7 +19,6 @@ tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 //   projectId?: string;
 //   promise?: PromiseLibrary<any>;
 // }
-// var storage
 // if (process.env.GOOGLE_PRIVATE_KEY) {
 //   storage = new Storage({
 //     projectId: config.google.projectId,
@@ -89,32 +88,48 @@ function uploadFile(req) {
   })
 }
 
-function uploadFileV2(req) {
+function uploadFileV2(file, fileName) {
   return new Promise(async (resolve, reject) => {
-    if (!req.files) {
+    if (!file) {
       throw reject(new Error('No file uploaded.')) // res.status(400).send('No file uploaded.')
     }
-    console.log(req.files)
-    for (var i = 0; i < req.files.files.length; i++) {
-      const data = req.files.files[i].data
-      const resultData = req.files.files[i].mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
-  
-      // Create a new blob in the bucket and upload the file data.
-      const blob = bucket.file(req.files.files[i].name)
-  
-      // Make sure to set the contentType metadata for the browser to be able
-      // to render the image instead of downloading the file (default behavior)
-      const blobStream = blob.createWriteStream({
-        metadata: {
-          contentType: req.files.files[i].mimetype
-        }
+
+    const data = file.data
+    const resultData = file.mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
+
+    // Create a new blob in the bucket and upload the file data.
+    // req.files.file.name
+    const fileExt = file.name.split('.').pop()
+    fileName += '.' + fileExt
+    const blob = bucket.file(fileName)
+
+    // Make sure to set the contentType metadata for the browser to be able
+    // to render the image instead of downloading the file (default behavior)
+    const blobStream = blob.createWriteStream({
+      metadata: {
+        contentType: file.mimetype
+      }
+    })
+
+    blobStream.on('error', err => {
+      console.log(err)
+      reject(err)
+    })
+
+    blobStream.on('finish', () => {
+      // The public URL can be used to directly access the file via HTTP.
+      const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`
+      // Make the image public to the web (since we'll be displaying it in browser)
+      blob.makePublic().then(() => {
+        // return publicUrl
+        return resolve(publicUrl)
       })
-  
+
       blobStream.on('error', err => {
         console.log(err)
         reject(err)
       })
-  
+
       // blobStream.on('finish', () => {
       //   // The public URL can be used to directly access the file via HTTP.
       //   const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`
@@ -124,9 +139,9 @@ function uploadFileV2(req) {
       //     return resolve(publicUrl)
       //   })
       // })
-  
+
       blobStream.end(resultData)
-    }
+    })
     // const data = req.files.file.data
     // const resultData = req.files.file.mimetype.startsWith('image') ? await tinify.fromBuffer(data).toBuffer() : data
 

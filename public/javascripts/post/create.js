@@ -40,7 +40,7 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
     // for (var value of formData.entries()) {
     //   console.log(value[0]+value[1]);
     // }
-    $('#submit-create-post').attr('disabled', true)
+    //$('#submit-create-post').attr('disabled', true)
     apiService.createPost(formData)
       .then(function (res) {
         console.log(res)
