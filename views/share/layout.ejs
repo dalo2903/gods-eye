@@ -16,32 +16,17 @@
     <meta property="og:url" content="<%= url %>" />
 
 </head>
-<style>
-    @media only screen and (max-width:767px) {
-        .fixed-width {
-            width: auto;
-        }
-    }
 
-    @media only screen and (min-width:768px) {
-        .fixed-width {
-            width: 1196px;
-        }
-    }
-</style>
 
 <body>
     <div class="text-center">
         <div class="header containter">
-            <% include ./header.ejs %>
+           <% include ./header.ejs %> 
         </div>
-        <div class="content text-center container-fluid fixed-width" style="        margin-top:65px
-        ">
+        <div class="content text-center fixed-width" > <!-- container-fluid -->
             <%- body %>
         </div>
-        <div class="footer text-center " style="margin-top:20px">
-            <% include ./footer.ejs %>
-        </div>
+       
     </div>
 </body>
 
