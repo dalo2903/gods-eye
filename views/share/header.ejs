@@ -7,12 +7,12 @@
 <style>
   @media only screen and (max-width:767px) {
       .fixed-width{
-          width: auto;
+          /* width: auto; */
       }
   }
   @media only screen and (min-width:768px) {
-      .fixed-width{
-          width: 1196px;
+      .fixed-width {
+          /* width: 1196px; */
       }
   }
   @import url('https://fonts.googleapis.com/css?family=Anton&subset=vietnamese');
@@ -21,144 +21,49 @@
       font-weight: 600;
   }
   </style>
-<nav class="navbar navbar-default navbar-fixed-top" ng-controller="headerController">
-  <div class="container-fluid fixed-width">
-    <div class="navbar-header">
-      <% if (user_id !== '') { %>
-      <div style="padding:4%;font-size: 15px;display: inline-block;left: 15%;position: relative;" id="notification-mobile">
-        <a style="background-color: transparent !important" href="#notification" ng-click="seenAllNotifications()">
-          <span class="fa fa-bell bell-notification" aria-hidden="true"></span>
-        </a>
+
+<nav class="navbar navbar-default navbar-transparent navbar-fixed-top navbar-color-on-scroll" color-on-scroll=" " id="sectionsNav">
+  <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+    </button>
+    
+        <a class="navbar-brand" href="/">
+        <i style="color:white" class="fa fa-shield-alt" aria-hidden="true"></i>Hẻm Security</a>
       </div>
-      <% } %>
 
-      <button id='nav-button' style='z-index: 3;' type="button" class="navbar-toggle" data-toggle="collapse"
-        data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <style>
-        @import url('https://fonts.googleapis.com/css?family=Amatic+SC&subset=vietnamese');
-      </style>
-      <a class="navbar-brand" href="/" style="font-size: 26px"><i style='color:white' class="fa fa-shield-alt"
-          aria-hidden="true"></i>
-        <span style="font-family: 'Amatic SC', cursive; ">Hẻm Security </span></a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <% if (user_id !== '') { %>
-        <li class="hide">
-          <a href="/person">PERSON LIST</a>
-        </li>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
         <li>
-          <a href="/label">LABEL VIDEOS</a>
-        </li>
-        <li>
-          <a href="/person/create">ADD PERSON</a>
-        </li>
-        <li class="hide">
-          <a href="/upload">UPLOAD</a>
-        </li>
-        <li class="hide">
-          <a href="/identify">IDENTIFY</a>
-        </li>
-        <li class="hide">
-          <a href="/newsfeed">NEWS FEED</a>
-        </li>
-        <li>
-          <a href="/post/create">CREATE POST</a>
-        </li>
-        <li>
-          <a href="/about">ABOUT US</a>
-        </li>
-        <li>
-          <a href="/user/<%- user_id %>" style="padding-right: 0">
-            <span class="glyphicon glyphicon-user"></span>
-            <%- user_name %>
-          </a>
-        </li>
-        <style>
-          .noti-container {
-            overflow-y: scroll;
-            width: 700px;
-            height: 200px;
-          }
+        <a href="index.html">
+          <i class="material-icons">apps</i> About us
+        </a>
+      </li>
 
-          .noti-container>ul>li>a {
-            text-decoration: none
-          }
+      <li>
+        <a href="/sign-in">
+          <i class="material-icons">account_circle</i> Sign in
+        </a>
+      </li>
 
-          .noti-line {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-inline-start: 20px;
-            cursor: pointer;
-            color: black;
-            border-bottom: grey 1px solid;
-          }
-
-          .noti-line-not-seen {
-            background-color: lightgrey
-          }
-        </style>
-        <!-- Don't close dropdown when click -->
-        <script>
-          $(document).on('click', '.dropdown-menu', function (e) {
-            e.stopPropagation();
-          });
-        </script>
-        <li style="padding-right: 50px">
-          <a style="background-color: transparent !important;" class="dropdown-toggle" id="notification-dropdown-menu"
-            data-toggle="dropdown">
-            <i style="font-size: 120%" class="fa fa-bell bell-notification"></i>
-          </a>
-          <div id='noti-dropdown' class="dropdown-menu" style="height:290px" aria-labelledby="notification-dropdown-menu">
-            <div class='noti-container'>
-              <ul style='list-style: none;padding-inline-start: 0px;'>
-                <li class="noti-line" ng-repeat="notification in notifications" ng-click='notiDetail(notification._id)'
-                  ng-class="notification.seen ? '' : 'noti-line-not-seen'">
-                  <i class="fas fa-exclamation-triangle"></i>
-                  {{notification.title}} <br>
-                  {{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}
-                </li>
-              </ul>
-            </div>
-            <hr>
-            <div ng-click='loadMoreNotification()' class="text-center" style="width: 50%; float:left;border-right: 1px solid lightgrey">
-              <p style='color:#337ab7 !important;cursor:pointer'>Load more</p>
-            </div>
-            <div ng-click='seenAllNotifications()' class="text-center" style="width: 50%; float:right">
-              <p style='color:#337ab7 !important;cursor:pointer'>Mark all as "Seen"</p>
-            </div>
-          </div>
-        </li>
-        <li>
-          <a href="/api/auth/sign-out">
-            <span class="glyphicon glyphicon-log-in"></span> SIGN OUT</a>
-        </li>
-        <% } else { %>
-        <li>
-          <a href="/about">ABOUT US</a>
-        </li>
-        <li>
-          <a data-toggle="modal" href="#modal-sign-in">
-            <span class="glyphicon glyphicon-log-in"></span> SIGN IN</a>
-        </li>
-        <li>
-          <a href="/sign-up">
-            <i class="fa fa-user-plus" aria-hidden="true"></i> SIGN UP</a>
-        </li>
-        <% } %>
-      </ul>
-    </div>
+      <li class="button-container">
+        <a href="/sign-up" target="_blank" class="btn btn-rose btn-round">
+           Sign up
+        </a>
+      </li>
+        </ul>
+      </div>
   </div>
-  <span class="hide" id="user_id">
-    <%- user_id -%>
-  </span>
 </nav>
 
-<% include ./signin.ejs %>
+
+
+
 
 <script src="/javascripts/header.js"></script>
 

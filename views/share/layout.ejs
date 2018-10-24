@@ -16,33 +16,39 @@
     <meta property="og:url" content="<%= url %>" />
 
 </head>
-<style>
-    @media only screen and (max-width:767px) {
-        .fixed-width {
-            width: auto;
-        }
-    }
 
-    @media only screen and (min-width:768px) {
-        .fixed-width {
-            width: 1196px;
-        }
-    }
-</style>
 
 <body>
     <div class="text-center">
         <div class="header containter">
-            <% include ./header.ejs %>
+           <% include ./header.ejs %> 
+           <div class="page-header header-filter clear-filter" id="page-header-index" data-parallax="true" style="background-image: url('lib/assets/img/bg000.jpg');">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                  <!-- <div class="brand">
+                    <h1>Hẻm
+                      <div class="pro-badge">
+                        Security
+                      </div>
+                    </h1>
+            
+                    <!-- <h3 class="title">All Components</h3> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            
         </div>
-        <div class="content text-center container-fluid fixed-width" style="        margin-top:65px
-        ">
+        <div class="content text-center fixed-width" > <!-- container-fluid -->
             <%- body %>
         </div>
-        <div class="footer text-center " style="margin-top:20px">
-            <% include ./footer.ejs %>
-        </div>
+       
     </div>
 </body>
-
+<style>
+    #page-header-index{
+        height:65vh;
+    }
+</style>
 </html>
