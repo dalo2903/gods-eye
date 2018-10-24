@@ -53,7 +53,7 @@ const bucket = storage.bucket(bucketName)
 // return url
 // }
 
-function uploadFile(req) {
+function uploadFile (req) {
   return new Promise((resolve, reject) => {
     if (!req.files) {
       throw reject(new Error('No file uploaded.')) // res.status(400).send('No file uploaded.')
@@ -88,7 +88,7 @@ function uploadFile(req) {
   })
 }
 
-function uploadFileV2(file, fileName) {
+function uploadFileV2 (file, fileName) {
   return new Promise(async (resolve, reject) => {
     if (!file) {
       throw reject(new Error('No file uploaded.')) // res.status(400).send('No file uploaded.')
@@ -175,7 +175,34 @@ function uploadFileV2(file, fileName) {
   })
 }
 
+function uploadFileV3 (_file, fileName) {
+  return new Promise((resolve, reject) => {
+    const imageBuffer = Buffer.from(_file.data, 'base64')
+
+    // Instantiate the GCP Storage instance
+
+    // Upload the image to the bucket
+    const fileExt = _file.name.split('.').pop()
+    fileName += '.' + fileExt
+    const file = bucket.file(fileName)
+
+    file.save(imageBuffer, {
+      metadata: { contentType: _file.type },
+      public: true,
+      validation: 'md5'
+    }, function (error) {
+      if (error) {
+      // return res.serverError('Unable to upload the image.')
+        return reject(error)
+      }
+      const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`
+      return resolve(publicUrl)
+    })
+  })
+}
+
 module.exports = {
   uploadFile: uploadFile,
-  uploadFileV2: uploadFileV2
+  uploadFileV2: uploadFileV2,
+  uploadFileV3: uploadFileV3
 }
