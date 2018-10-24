@@ -1,10 +1,10 @@
 var app = angular.module('GodsEye')
 
-app.controller('NewsFeedController', ['$scope', 'apiService', '$http', function ($scope, apiService, $http) {
+app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window', function ($scope, apiService, $http, $window) {
   $scope.scrollData = []
   let last = 0
   $scope.block = false
-  function unique (a) {
+  function unique(a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -29,6 +29,9 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', function 
     $scope.scrollData = unique($scope.scrollData)
     $scope.block = false
     $scope.$apply()
+  }
+  $scope.postDetail = function (id) {
+    $window.location.href = '/post/' + id;
   }
 }
 ])
