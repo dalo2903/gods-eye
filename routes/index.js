@@ -47,6 +47,18 @@ router.get('/about', function (req, res, next) {
   })
 })
 
+router.get('/sign-in', (req, res) => {
+  return res.render('share/sign-in', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: constants.index.title,
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+  })
+})
+
 router.get('/sign-up', (req, res) => {
   return res.render('share/sign-up', {
     image: constants.index.image,

@@ -1,0 +1,52 @@
+<% layout('./share/layout.ejs') -%>
+<script src="/javascripts/post/newsfeed.js"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+<div ng-controller="NewsFeedController">
+    <div class="row">
+        <div id='sidebar-container' class="col-sm-3 sidebar-container">
+            <% include ./share/sidebar.ejs -%>
+        </div>
+        <div class="col-sm-6">
+            <div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block"
+                infinite-scroll-distance='1' class="posts-container">
+                <div id="{{post._id}}" ng-repeat="post in scrollData">
+                    <div ng-click="postDetail(post._id)" style="cursor:pointer">
+                        <div>
+                            <h1 class="post-title">{{post.title}}</h1>
+                        </div>
+                        <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm
+                            dd/MM/yyyy"}}</div>
+                        <div class="address">{{ post.location.name || post.location.address }}</div>
+                    </div>
+                    <!-- Carousel -->
+                    <div id="carousel{{post._id}}" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel{{post._id}}" data-slide-to="{{$index}}" ng-class='{active:$first}'
+                                ng-repeat="data in post.datas"></li>
+                        </ol>
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <div class="item" ng-repeat="data in post.datas" ng-class='{active:$first}'>
+                                <img class="post" ng-src="{{data.URL}}" ng-if="data.isImage">
+                                <video class='post' ng-if="!data.isImage" controls>
+                                    <source ng-src="{{data.URL}}" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#carousel{{post._id}}" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel{{post._id}}" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+
+            </div>
+        </div>
+    </div>

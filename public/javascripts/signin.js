@@ -10,7 +10,7 @@ app.controller('SignInController', ['$scope', 'apiService', function ($scope, ap
     apiService.signUp(json)
       .then(function (res) {
         alert(res.data.message)
-        window.location.href = '/'
+        //window.location.href = '/'
       })
       .catch(function (res) {
         alert(res.data.message)
@@ -22,6 +22,7 @@ app.controller('SignInController', ['$scope', 'apiService', function ($scope, ap
       email: $('#signinForm input[name=email]').val().trim(),
       password: $('#signinForm input[name=password]').val().trim()
     }
+    console.log(json)
     apiService.signIn(json)
       .then(function (res) {
         if (res.data.user.role > 900) {
