@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const dataTables = require('mongoose-datatables')
 const Schema = mongoose.Schema
 
 const VisualDataSchema = new Schema({
@@ -60,5 +61,7 @@ const VisualDataSchema = new Schema({
     ref: 'Location'
   }
 }, { usePushEach: true, timestamps: true })
+
+VisualDataSchema.plugin(dataTables)
 
 mongoose.model('VisualData', VisualDataSchema)

@@ -33,7 +33,7 @@ class VisualDataController extends BaseController {
   async getAllVideoWithLabel (minLabel) {
     let index = `labels.${minLabel}`
     let visualDatas = await VisualData.find({
-      [index]: {$exists: true},
+      [index]: { $exists: true },
       isImage: false
     })
     return visualDatas
@@ -58,6 +58,28 @@ class VisualDataController extends BaseController {
     visualData.labels.push(newLabel)
     await visualData.save()
     return responseStatus.Response(200)
+  }
+
+  async getUsingDatatable (req, res) {
+    VisualData.dataTables({
+      limit: req.query.length,
+      skip: req.query.start,
+      populate: ({
+        path: 'datas',
+        select: 'URL identifyResult',
+        model: 'VisualData',
+        populate: {
+          path: 'identifyResult.persons.personId',
+          model: 'Person',
+          select: 'name'
+        } })
+    }).then((table) => {
+      console.log(table)
+      res.json(table)
+    }).catch((err) => {
+      console.log(err)
+      res.json([])
+    })
   }
 }
 

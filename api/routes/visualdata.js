@@ -39,4 +39,14 @@ router.get('/createDataset', async (req, res) => {
     return res.status(error.status || 500).send(error)
   }
 })
+
+router.get('/', async (req, res) => {
+  try {
+    return VisualDataController.getUsingDatatable(req, res)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 module.exports = router
