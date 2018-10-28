@@ -1,9 +1,9 @@
 <% layout('./share/layout.ejs') -%>
-<script src=""></script>
+<script src="/javascripts/manager.js"></script>
 <div class="main main-raised">
     <div class="section section-basic">
         <div class="container">
-            <div>
+            <div ng-controller="managerController">
                 <div class="row">
                     <div class="col-sm-3">
                         <% include ./share/sidebar.ejs -%>
@@ -16,6 +16,7 @@
                                     <th>Location</th>
                                     <th>Time</th>
                                     <th>Identified people</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </table>
