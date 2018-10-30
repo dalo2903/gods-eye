@@ -3,6 +3,7 @@ let router = express.Router()
 const VisualDataController = require('../controllers/VisualDataController')
 const AuthService = require('../services/AuthService')
 const DatasetCollector = require('../controllers/DatasetCollector')
+const UploadController = require('../controllers/UploadController')
 
 router.get('/label', async (req, res) => {
   try {
@@ -43,6 +44,24 @@ router.get('/createDataset', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     return VisualDataController.getUsingDatatable(req, res)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
+router.post('/', async (req, res) => {
+  try {
+    const file = req.body.file
+    const isImage = file.type.startsWith('image')
+    const visualData = await VisualDataController.createVisualData({
+      URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
+      isImage: isImage
+    })
+    const url = await UploadController.uploadFileV3(file, visualData._id)
+    visualData.URL = url
+    await visualData.save()
+    return res.send()
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
