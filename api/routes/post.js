@@ -28,6 +28,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
     const userCreated = (await AuthService.isLoggedIn(req)).user._id
     const location = req.body.location
+    // console.log(req.body)
     var analyzeData = []
     let files = req.body.filepond
     req.body.datas = []
@@ -44,6 +45,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
         location: location
       })
       const url = await UploadController.uploadFileV3(file, visualData._id)
+      console.log('urlllllllllllllllllll:', url)
       visualData.URL = url
       await visualData.save()
       req.body.datas.push(visualData._id)
@@ -52,12 +54,13 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
         id: visualData._id
       })
     }
+    console.log('analyzeFace:', analyzeData)
     const post = await PostController.createPost(req.body, userCreated)
     res.send()
-    for (let i = 0; i <= analyzeData.length; i++) {
-      const analyzeAndProcessResponse = await IdentifyController.analyzeAndProcessFaces(analyzeData[i].url, location, post._id, analyzeData[i].id)
+    for (let data of analyzeData) {
+      const analyzeAndProcessResponse = await IdentifyController.analyzeAndProcessFaces(data.url, location, post._id, data.id)
       console.log(analyzeAndProcessResponse.persons)
-      await VisualDataController.updateIdentifyResult(analyzeData[i].id, analyzeAndProcessResponse.persons)
+      await VisualDataController.updateIdentifyResult(data.id, analyzeAndProcessResponse.persons)
     }
   } catch (error) {
     console.log(error)
