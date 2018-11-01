@@ -29,5 +29,8 @@ module.exports = {
     expiresIn: '365 days',
     secret: 'cuoituancuoituan'
   },
-  datasetDir: 'dataset'
+  datasetDir: 'dataset',
+  deep: {
+    domain: 'http://35.221.250.98'
+  }
 }
