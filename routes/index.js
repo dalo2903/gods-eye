@@ -275,7 +275,16 @@ router.get('/label', (req, res) => {
     user_name: req.session.user ? req.session.user.name : ''
   })
 })
-
+//Admin
+router.get('/*', async (req, res, next) => {
+  try {
+    const token = AuthService.getTokenFromRequest(req)
+    await AuthService.verifyJWTToken(token)
+    return next()
+  } catch (error) {
+    return res.redirect('/')
+  }
+})
 router.get('/admin', (req, res) => {
   return res.render('admin', {
     image: constants.index.image,
