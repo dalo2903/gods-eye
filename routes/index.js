@@ -109,19 +109,6 @@ router.get('/post/:id', (req, res) => {
     _id: req.params.id
   })
 })
-
-router.get('/manager', (req, res) => {
-  res.render('manager', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : '',
-    _id: req.params.id
-  })
-})
 //Truoc code nay ko can dang nhap
 router.get('/*', async (req, res, next) => {
   try {
