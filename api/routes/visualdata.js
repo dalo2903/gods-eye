@@ -52,18 +52,26 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const file = req.body.file
-    const isImage = file.type.startsWith('image')
-    const visualData = await VisualDataController.createVisualData({
-      URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
-      isImage: isImage
-    })
-    const url = await UploadController.uploadFileV3(file, visualData._id)
-    visualData.URL = url
-    await visualData.save()
-    return res.send()
+
+    console.log(req.body)
+    // const file = req.body.file
+    for (let i in req.files) {
+      console.log(i)
+      // const isImage = req.files[i].type.startsWith('image')
+      // console.log(isImage)
+      var visualData = await VisualDataController.createVisualData({
+        URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
+        isImage: true
+      })
+      console.log(visualData._id)
+      const url = await UploadController.uploadFileV3(req.files[i], visualData._id)
+      visualData.URL = url
+      await visualData.save()
+    }
+
+    return res.sendStatus(200)
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     return res.status(error.status || 500).send(error)
   }
 })

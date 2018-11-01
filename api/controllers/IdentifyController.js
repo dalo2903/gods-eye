@@ -93,9 +93,9 @@ class IdentifyController {
               postId: postId,
               data: visualDataId
             }
-            const createRecordRes = await RecordController.createRecord(record)
-            const normConfidence = await this.probNormalize(candidate.confidence, parseFloat(0.5), parseFloat(0.65))
-            this.calculateScore(person._id, location, normConfidence, url, newResult)
+            const createRecordRes = RecordController.createRecord(record)
+            // const normConfidence = await this.probNormalize(candidate.confidence, parseFloat(0.5), parseFloat(0.65))
+            // this.calculateScore(person._id, location, normConfidence, url, newResult)
             if (candidate.confidence >= constants.face.ADDPERSONTHRESHOLD) {
               console.log(`Candidate has confidence >= ${constants.face.ADDPERSONTHRESHOLD}, add to the system`)
               let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
@@ -135,8 +135,8 @@ class IdentifyController {
             postId: postId,
             data: visualDataId
           }
-          const createRecordRes = await RecordController.createRecord(record)
-          this.calculateScore(createPersonRes._id, location, undefined, url, newResult)
+          const createRecordRes = RecordController.createRecord(record)
+          // this.calculateScore(createPersonRes._id, location, undefined, url, newResult)
         }
       }
       FaceController.trainPersonGroup(constants.face.known)

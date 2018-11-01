@@ -62,9 +62,9 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
       console.log(res)
     })
 
-  $(document).ready(function () {
+ /*  $(document).ready(function () {
     $('#location').select2()
-  })
+  }) */
 }])
 
 $(function () {
