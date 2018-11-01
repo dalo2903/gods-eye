@@ -24,6 +24,31 @@ class RecordController extends BaseController {
     const record = await Record.find({location: locationId})
     return record
   }
+
+  async getUsingDatatable (req, res) {
+    Record.dataTables({
+      limit: req.query.length,
+      skip: req.query.start,
+      populate:
+        [
+          {
+            path: 'data'
+          },
+          {
+            path: 'location'
+          },
+          {
+            path: 'person'
+          }
+        ]
+    }).then((table) => {
+      console.log(table)
+      res.json(table)
+    }).catch((err) => {
+      console.log(err)
+      res.json([])
+    })
+  }
 }
 
 module.exports = new RecordController()

@@ -24,6 +24,7 @@ var routeUserAPI = require('./api/routes/user')
 var postRouteAPI = require('./api/routes/post')
 var visualDataRouteAPI = require('./api/routes/visualdata')
 var routeNotificationAPI = require('./api/routes/notification')
+var routeRecordAPI = require('./api/routes/record')
 var index = require('./routes/index')
 
 var app = express()
@@ -61,6 +62,7 @@ app.use('/api/post/', postRouteAPI)
 app.use('/api/visual-data/', visualDataRouteAPI)
 app.use('/api/user/', routeUserAPI)
 app.use('/api/notification/', routeNotificationAPI)
+app.use('/api/record/', routeRecordAPI)
 app.use('/', index)
 
 // catch 404 and forward to error handler
