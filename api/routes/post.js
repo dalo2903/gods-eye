@@ -11,6 +11,8 @@ const LocalScoreController = require('../controllers/LocalScoreController')
 const constants = require('../../configs/constants')
 const common = require('../common')
 var _ = require('lodash')
+const rpn = require('request-promise-native')
+var config = require('../../config')
 
 // const m = multer({
 //   storage: multer.memoryStorage(),
@@ -47,6 +49,19 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       const url = await UploadController.uploadFileV3(file, visualData._id)
       // console.log('urlllllllllllllllllll:', url)
       visualData.URL = url
+      if (!isImage) {
+        var options = {
+          url: config.deep.domain + '/classify?url=' + url,
+          method: 'GET',
+          json: true
+        }
+        try {
+          const res = await rpn(options)
+          console.log(res)
+        } catch (error) {
+          console.log(error)
+        }
+      }
       await visualData.save()
       req.body.datas.push(visualData._id)
       analyzeData.push({
