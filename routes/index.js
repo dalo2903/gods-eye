@@ -55,7 +55,7 @@ router.get('/sign-in', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : '',
+    user_name: req.session.user ? req.session.user.name : ''
   })
 })
 
@@ -109,7 +109,8 @@ router.get('/post/:id', (req, res) => {
     _id: req.params.id
   })
 })
-//Truoc code nay ko can dang nhap
+
+// Truoc code nay ko can dang nhap
 router.get('/*', async (req, res, next) => {
   try {
     const token = AuthService.getTokenFromRequest(req)
@@ -119,6 +120,7 @@ router.get('/*', async (req, res, next) => {
     return res.redirect('/')
   }
 })
+
 router.get('/post/edit/:id', (req, res) => {
   return res.render('post/edit', {
     image: constants.index.image,
@@ -274,6 +276,20 @@ router.get('/label', (req, res) => {
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : ''
   })
+})
+
+// Sau code nay la cua admin
+router.get('/*', async (req, res, next) => {
+  try {
+    const token = AuthService.getTokenFromRequest(req)
+    const resolve = await AuthService.verifyJWTToken(token)
+    if (resolve.user.role === 999) {
+      return next()
+    }
+    return res.redirect('/')
+  } catch (error) {
+    return res.redirect('/')
+  }
 })
 
 router.get('/admin', (req, res) => {
