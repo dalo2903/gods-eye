@@ -22,4 +22,17 @@ app.controller('AdminController', ['$scope', 'apiService', function ($scope, api
       $('td', row).eq(0).html('<a style="color:blue" href="' + data.URL + '"> <img src="' + data.URL + '"></a>');
     }
   });
+  //Record
+  $('#recordTable').DataTable({
+    "ajax": '/api/record',
+    "columns": [
+      { "data": "URL" },
+      { "data": "location.name" },
+      { "data": "createdAt" },
+      { "data": "identifyResult.persons[<br>].personId.name" }
+    ],
+    fnCreatedRow: function (row, data, index) {
+      $('td', row).eq(0).html('<a style="color:blue" href="' + data.URL + '"> <img src="' + data.URL + '"></a>');
+    }
+  });
 }])

@@ -38,7 +38,7 @@ class RecordController extends BaseController {
             path: 'location'
           },
           {
-            path: 'person'
+            path: 'personId'
           }
         ]
     }).then((table) => {
