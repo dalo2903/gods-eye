@@ -45,7 +45,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
         location: location
       })
       const url = await UploadController.uploadFileV3(file, visualData._id)
-      console.log('urlllllllllllllllllll:', url)
+      // console.log('urlllllllllllllllllll:', url)
       visualData.URL = url
       await visualData.save()
       req.body.datas.push(visualData._id)
