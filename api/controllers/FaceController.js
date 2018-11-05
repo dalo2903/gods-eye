@@ -34,6 +34,27 @@ var Person = require('../../models/Person')
 //   })
 // }
 class FaceController {
+  async detectFile (file) {
+    const binary = Buffer.from(file)
+
+    var url = config.microsoft.face + '/detect?returnFaceId=true'
+    var options = {
+      url: url,
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1,
+        'Content-Type': 'application/octet-stream'
+      },
+      body: binary
+    }
+    try {
+      const res = await rpn(options)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when detect face')
+    }
+  }
   async detect (urlImage) {
     var url = config.microsoft.face + '/detect?returnFaceId=true'
     var options = {

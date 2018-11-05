@@ -51,10 +51,11 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       visualData.URL = url
       if (!isImage) {
         var options = {
-          url: config.deep.domain + '/classify?url=' + url,
+          url: config.deep.domain + '/classify?url=' + url + '&secret=' + config.deep.secret,
           method: 'GET',
           json: true
         }
+
         try {
           const res = await rpn(options)
           console.log(res)
@@ -62,12 +63,15 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
           console.log(error)
         }
       }
+      if (isImage) {
+        analyzeData.push({
+          url: url,
+          id: visualData._id
+        })
+      }
       await visualData.save()
       req.body.datas.push(visualData._id)
-      analyzeData.push({
-        url: url,
-        id: visualData._id
-      })
+      
     }
     console.log('analyzeFace:', analyzeData)
     const post = await PostController.createPost(req.body, userCreated)
