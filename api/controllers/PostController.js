@@ -29,7 +29,7 @@ class PostController extends BaseController {
       .populate({ path: 'location', select: 'name address' })
       .populate({
         path: 'datas',
-        select: 'URL identifyResult',
+        select: 'URL isImage identifyResult',
         model: 'VisualData',
         populate: {
           path: 'identifyResult.persons.personId',
