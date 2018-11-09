@@ -31,7 +31,7 @@ var big_image;
 
      //    Activate bootstrap-select
      if($(".selectpicker").length != 0){
-         $(".selectpicker").selectpicker();
+        //  $(".selectpicker").selectpicker();
      }
 
      // Activate Popovers
