@@ -5,6 +5,9 @@
   "scripts": {
     "start": "node ./bin/www"
   },
+  "engines": {
+    "node": "8.11.1"
+  },
   "dependencies": {
     "@google-cloud/storage": "^1.6.0",
     "async": "^2.6.0",
