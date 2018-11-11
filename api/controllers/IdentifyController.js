@@ -3,7 +3,6 @@ var responseStatus = require('../../configs/responseStatus')
 // var Person = require('../../models/Person')
 var constants = require('../../configs/constants')
 var FaceController = require('./FaceController')
-// var RecordController = require('./RecordController')
 var PersonController = require('./PersonController')
 var LocalScoreController = require('./LocalScoreController')
 var RelationshipController = require('./RelationshipController')
@@ -12,6 +11,7 @@ var RecordController = require('./RecordController')
 var NotificationController = require('./NotificationController')
 var LocationController = require('./LocationController')
 var UserController = require('./UserController')
+var UploadController = require('./UploadController')
 
 class IdentifyController {
   async detectAndIdentifyFaces (url) {
@@ -56,6 +56,144 @@ class IdentifyController {
       } else return responseStatus.Response(404, {}, 'INTERNAL ERROR')
     } else return responseStatus.Response(404, {}, 'DEO THAY MAT')
   }
+  async detectAndIdentifyFacesFile (file) {
+    console.log(`detectAndIdentifyFacesFile`)
+    var response = []
+    const detectRes = await FaceController.detectFile(file)
+    var identifyFaceIds = []
+    detectRes.forEach(element => {
+      identifyFaceIds.push(element.faceId)
+    })
+    if (identifyFaceIds.length !== 0) {
+      var identifyRes = await FaceController.identify(identifyFaceIds, constants.face.known)
+      var detectMap = {}
+      detectRes.forEach(function (face) {
+        detectMap[face.faceId] = face.faceRectangle
+      })
+      identifyRes.forEach(function (face) {
+        face.faceRectangle = detectMap[face.faceId]
+      })
+      for (let element of identifyRes) {
+        if (element.candidates.length !== 0 && element.candidates[0].confidence >= constants.face.IDENTIFYTHRESHOLD) {
+          for (let candidate of element.candidates) {
+            console.log(`Identified person MSId = ${candidate.personId}`)
+            var person = await PersonController.getPersonByMSPersonId(candidate.personId)
+            // console.log(person)
+            response.push({
+              faceId: element.faceId,
+              personId: person._id,
+              confidence: candidate.confidence,
+              facerectangle: element.faceRectangle,
+              url: person.datas[0].URL,
+              name: person.name
+            })
+          }
+        } else {
+          console.log(`Cannot identify person`)
+          return responseStatus.Response(200, {persons: []}, 'CANNOT IDENTIFY PERSON')
+        }
+      }
+      if (response.length !== 0) {
+        return responseStatus.Response(200, {persons: response})
+      } else return responseStatus.Response(404, {}, 'INTERNAL ERROR')
+    } else return responseStatus.Response(404, {}, 'DEO THAY MAT')
+  }
+  async analyzeAndProcessFacesFile (file, location, visualDataId) {
+    console.log(`analyzeAndProcessFacesFile, location = ${location}`)
+    var response = []
+    const detectRes = await FaceController.detectFile(file)
+    var identifyFaceIds = []
+    detectRes.forEach(element => {
+      identifyFaceIds.push(element.faceId)
+    })
+    if (identifyFaceIds.length !== 0) {
+      var identifyRes = await FaceController.identify(identifyFaceIds, constants.face.known)
+      var detectMap = {}
+      detectRes.forEach(function (face) {
+        detectMap[face.faceId] = face.faceRectangle
+      })
+      identifyRes.forEach(function (face) {
+        face.faceRectangle = detectMap[face.faceId]
+      })
+      for (let element of identifyRes) {
+        if (element.candidates.length !== 0 && element.candidates[0].confidence >= constants.face.IDENTIFYTHRESHOLD) {
+          for (let candidate of element.candidates) {
+            console.log(`Identified person MSId = ${candidate.personId}`)
+            var person = await PersonController.getPersonByMSPersonId(candidate.personId)
+            // console.log(person)
+            let newResult = {
+              faceId: element.faceId,
+              personId: person._id,
+              name: person.name,
+              confidence: candidate.confidence,
+              facerectangle: element.faceRectangle
+            }
+            response.push(newResult)
+            // let record = {
+            //   personId: person._id,
+            //   location: location,
+            //   data: visualDataId
+            // }
+            // RecordController.createRecord(record)
+            // const normConfidence = await this.probNormalize(candidate.confidence, parseFloat(0.5), parseFloat(0.65))
+            // this.calculateScore(person._id, location, normConfidence, url, newResult)
+            // if (candidate.confidence >= constants.face.ADDPERSONTHRESHOLD) {
+            //   console.log(`Candidate has confidence >= ${constants.face.ADDPERSONTHRESHOLD}, add to the system`)
+            //   let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
+            //   await FaceController.addFaceForPerson(constants.face.known, candidate.personId, url, targetFace)
+            //   await PersonController.addDataForPerson(person._id, visualDataId)
+            // }
+          }
+        } else {
+          console.log(`Cannot identify person, creating new person`)
+          // Create new person
+          let newMSPerson = {
+            name: constants.name.unknown,
+            userData: constants.name.unknown
+          }
+          const createMSPersonRes = await FaceController.createPersonInPersonGroup(constants.face.known, newMSPerson)
+          // console.log(`Created new MS person id = ${createMSPersonRes.personId}`)
+          let targetFace = 'targetFace=' + element.faceRectangle.left + ',' + element.faceRectangle.top + ',' + element.faceRectangle.width + ',' + element.faceRectangle.height
+          const visualData = await VisualDataController.createVisualData({
+            URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
+            isImage: true,
+            location: location
+          })
+          const url = await UploadController.uploadFileV3(file, visualData._id)
+          visualData.URL = url
+          visualData.save()
+          await FaceController.addFaceForPerson(constants.face.known, createMSPersonRes.personId, url, targetFace)
+          let newPerson = {
+            msPersonId: createMSPersonRes.personId,
+            name: constants.name.unknown,
+            isKnown: false,
+            datas: [visualDataId]
+          }
+          const createPersonRes = await PersonController.createPerson(newPerson, constants.adminInfo.id)
+          let newResult = {
+            faceId: element.faceId,
+            personId: createPersonRes._id,
+            name: createPersonRes.name,
+            isNew: true,
+            facerectangle: element.faceRectangle
+          }
+          response.push(newResult)
+          // let record = {
+          //   personid: createPersonRes._id,
+          //   location: location,
+          //   data: visualDataId
+          // }
+          // RecordController.createRecord(record)
+          // this.calculateScore(createPersonRes._id, location, undefined, url, newResult)
+        }
+      }
+      FaceController.trainPersonGroup(constants.face.known)
+      if (response.length !== 0) {
+        return responseStatus.Response(200, {persons: response})
+      } else return responseStatus.Response(404, {}, 'INTERNAL ERROR')
+    } else return responseStatus.Response(404, {}, 'DEO THAY MAT')
+  }
+
   async analyzeAndProcessFaces (url, location, postId, visualDataId) {
     console.log(`analyzeAndProcessFaces: url = ${url}, location = ${location}`)
     var response = []
@@ -93,7 +231,7 @@ class IdentifyController {
               postId: postId,
               data: visualDataId
             }
-            const createRecordRes = RecordController.createRecord(record)
+            RecordController.createRecord(record)
             // const normConfidence = await this.probNormalize(candidate.confidence, parseFloat(0.5), parseFloat(0.65))
             // this.calculateScore(person._id, location, normConfidence, url, newResult)
             if (candidate.confidence >= constants.face.ADDPERSONTHRESHOLD) {
@@ -128,14 +266,14 @@ class IdentifyController {
             isNew: true,
             facerectangle: element.faceRectangle
           }
-          response.push(element)
+          response.push(newResult)
           let record = {
             personid: createPersonRes._id,
             location: location,
             postId: postId,
             data: visualDataId
           }
-          const createRecordRes = RecordController.createRecord(record)
+          RecordController.createRecord(record)
           // this.calculateScore(createPersonRes._id, location, undefined, url, newResult)
         }
       }

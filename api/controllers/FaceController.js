@@ -294,7 +294,27 @@ class FaceController {
       throw responseStatus.Response(500, {}, 'Error when create person in person group')
     }
   }
-
+  async addFaceForPersonFile (personGroupId, personId, file, targetFace) {
+    const binary = Buffer.from(file)
+    var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces' + (targetFace ? '?' + targetFace : '')
+    var options = {
+      url: url,
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': config.microsoft.key1,
+        'Content-Type': 'application/octet-stream'
+      },
+      body: binary
+    }
+    try {
+      const res = await rpn(options) // persistedFaceId
+      // console.log(res)
+      return res
+    } catch (error) {
+      console.log(error)
+      throw responseStatus.Response(500, {}, 'Error when add face for person')
+    }
+  }
   async addFaceForPerson (personGroupId, personId, faceURL, targetFace) {
     var url = config.microsoft.face + '/persongroups/' + personGroupId + '/persons/' + personId + '/persistedFaces' + (targetFace ? '?' + targetFace : '')
     var options = {

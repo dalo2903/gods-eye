@@ -47,7 +47,6 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
         location: location
       })
       const url = await UploadController.uploadFileV3(file, visualData._id)
-      // console.log('urlllllllllllllllllll:', url)
       visualData.URL = url
       if (!isImage) {
         var options = {
@@ -57,8 +56,8 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
         }
 
         try {
-          const res = await rpn(options)
-          console.log(res)
+          rpn(options)
+          // console.log(res)
         } catch (error) {
           console.log(error)
         }
@@ -69,9 +68,8 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
           id: visualData._id
         })
       }
-      await visualData.save()
+      visualData.save()
       req.body.datas.push(visualData._id)
-      
     }
     console.log('analyzeFace:', analyzeData)
     const post = await PostController.createPost(req.body, userCreated)
