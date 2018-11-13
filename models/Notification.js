@@ -18,37 +18,13 @@ const NotificationSchema = new Schema({
     type: String,
     default: ''
   },
+  records: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Record'
+  }],
   location: {
     type: Schema.Types.ObjectId,
     ref: 'Location'
-  },
-  identifyResult: {
-    personId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Person'
-    },
-    confidence: {
-      type: Number,
-      default: 0
-    },
-    facerectangle: {
-      top: {
-        type: Number,
-        default: 0
-      },
-      left: {
-        type: Number,
-        default: 0
-      },
-      width: {
-        type: Number,
-        default: 0
-      },
-      height: {
-        type: Number,
-        default: 0
-      }
-    }
   },
   type: {
     type: String,

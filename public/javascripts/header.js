@@ -4,7 +4,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
   $scope.notifications = []
   let last = 0
   $scope.block = false
-  function unique(a) {
+  function unique (a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -47,7 +47,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
     await apiService.seenAllNotifications(userId)
     $scope.notifications.forEach(element => {
       element.seen = true
-    });
+    })
     $scope.$apply()
     return $('.bell-notification').css({ 'color': 'unset' })
   }

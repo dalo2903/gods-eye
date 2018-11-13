@@ -14,5 +14,7 @@ module.exports = {
   SIGN_IN_SUCCESSFULLY: 'Sign in successfully',
   WRONG_EMAIL_OR_PASSWORD: 'Wrong email or password',
   INVALID_REQUEST: 'Invalid request',
-  CREATE_LOCATION_SUCCESSFULLY: 'Create location successfully'
+  CREATE_LOCATION_SUCCESSFULLY: 'Create location successfully',
+  SUBSCRIBE_SUCCESSFULLY: 'Subcribe successfully',
+  UNSUBSCRIBE_SUCCESSFULLY: 'Unsubcribe successfully'
 }
