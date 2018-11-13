@@ -44,7 +44,7 @@ class UserController extends BaseController {
       //   center: obj.place.location,
       //   maxDistance: 10
       // })
-      let location = await LocationController.existNearbyLocation(obj.place.location, 10)
+      // let location = await LocationController.existNearbyLocation(obj.place.location, 10)
       /* }){ location: {
         $nearSphere: {
           $geometry: {
@@ -55,11 +55,11 @@ class UserController extends BaseController {
         }
       }}) */
 
-      if (!location) {
-        location = await Location.create(obj.place)
-      }
+      // if (!location) {
+      //   location = await Location.create(obj.place)
+      // }
 
-      obj.address = location._id
+      // obj.address = location._id
 
       user = await this.create(obj)
       bcrypt.hash(user.password, 10, function (err, hash) {

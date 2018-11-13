@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" ng-app="GodsEye" ng-cloak>
 
 <head>
@@ -21,12 +21,12 @@
 <body class="index-page">
     <div class="text-center">
         <div class="header containter">
-           <% include ./header.ejs %> 
-           <div class="page-header header-filter clear-filter" id="page-header-index" data-parallax="true" style="background-image: url('/lib/assets/img/bg0001.jpg');">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                  <!-- <div class="brand">
+            <% include ./header.ejs %>
+            <div class="page-header header-filter clear-filter" id="page-header-index" data-parallax="true" style="background-image: url('/images/hem-quan.jpg');">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <!-- <div class="brand">
                     <h1>Hẻm
                       <div class="pro-badge">
                         Security
@@ -34,23 +34,24 @@
                     </h1>
             
                     <!-- <h3 class="title">All Components</h3> -->
-                  </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            
+
         </div>
-        <div class="content text-center fixed-width" > <!-- container-fluid -->
+        <div class="content text-center fixed-width">
+            <!-- container-fluid -->
             <%- body %>
         </div>
-        <% include ./footer.ejs %> 
+        <% include ./footer.ejs %>
     </div>
 </body>
 <style>
-    #page-header-index{
-        height:65vh;
-        
-    }
+    #page-header-index {
+        height: 65vh;
 
+    }
 </style>
+
 </html>

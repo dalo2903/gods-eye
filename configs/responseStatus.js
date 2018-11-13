@@ -7,7 +7,7 @@ module.exports = {
   },
   POST_NOT_FOUND: 'Post not found',
   EMAIL_EXISTED: 'Email existed',
-  EMAIL_REQUIRED: 'Email existed',
+  EMAIL_REQUIRED: 'Email required',
   PASSWORD_REQUIRED: 'Password existed',
   INVALID_EMAIL: 'Invalid email',
   SIGN_UP_SUCCESSFULLY: 'Sign up successfully',
