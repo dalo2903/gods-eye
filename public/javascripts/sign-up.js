@@ -17,7 +17,8 @@ app.controller('SignUpController', ['$scope', 'apiService', function ($scope, ap
         window.location.href = '/'
       })
       .catch(function (res) {
-        alert(res.data.message)
+        // alert(res.data.message)
+        showErrorModal(res.data.message)
       })
   }
 }])

@@ -63,9 +63,10 @@ class UserController extends BaseController {
   }
 
   async createUserV2 (obj) {
+    if (!obj.name) throw responseStatus.Response(400, {}, responseStatus.NAME_REQUIRED)
     if (!obj.email) throw responseStatus.Response(400, {}, responseStatus.EMAIL_REQUIRED)
     if (!common.validateEmail(obj.email)) throw responseStatus.Response(400, {}, responseStatus.INVALID_EMAIL)
-    if (!obj.name) throw responseStatus.Response(400, {}, responseStatus.EMAIL_REQUIRED)
+    if (!obj.password) throw responseStatus.Response(400, {}, responseStatus.PASSWORD_REQUIRED)
     let user = await this.getUserByEmail(obj.email)
     if (!user) {
       // let location = await Location.findOne().near('location', {
