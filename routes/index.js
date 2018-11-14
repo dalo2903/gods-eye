@@ -47,29 +47,41 @@ router.get('/about', function (req, res, next) {
   })
 })
 
-router.get('/sign-in', (req, res) => {
-  return res.render('share/sign-in', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
-  })
+router.get('/sign-in', async (req, res) => {
+  try {
+    const token = AuthService.getTokenFromRequest(req)
+    await AuthService.verifyJWTToken(token)
+    return res.redirect('/')
+  } catch (error) {
+    return res.render('share/sign-in', {
+      image: constants.index.image,
+      description: constants.index.description,
+      title: constants.index.title,
+      type: constants.index.type,
+      url: constants.index.url,
+      user_id: req.session.user ? req.session.user._id : '',
+      user_name: req.session.user ? req.session.user.name : ''
+    })
+  }
 })
 
-router.get('/sign-up', (req, res) => {
-  return res.render('share/sign-up', {
-    image: constants.index.image,
-    description: constants.index.description,
-    title: constants.index.title,
-    type: constants.index.type,
-    url: constants.index.url,
-    user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : '',
-    GOOGLE_PLACE_KEY: process.env.GOOGLE_PLACE_KEY
-  })
+router.get('/sign-up', async (req, res) => {
+  try {
+    const token = AuthService.getTokenFromRequest(req)
+    await AuthService.verifyJWTToken(token)
+    return res.redirect('/')
+  } catch (error) {
+    return res.render('share/sign-up', {
+      image: constants.index.image,
+      description: constants.index.description,
+      title: constants.index.title,
+      type: constants.index.type,
+      url: constants.index.url,
+      user_id: req.session.user ? req.session.user._id : '',
+      user_name: req.session.user ? req.session.user.name : '',
+      GOOGLE_PLACE_KEY: process.env.GOOGLE_PLACE_KEY
+    })
+  }
 })
 
 router.get('/location/:id', function (req, res, next) {
@@ -85,8 +97,15 @@ router.get('/location/:id', function (req, res, next) {
   })
 })
 
-router.get('/post/create', (req, res) => {
-  res.render('post/create', {
+router.get('/post/create', async (req, res) => {
+  try {
+    const token = AuthService.getTokenFromRequest(req)
+    await AuthService.verifyJWTToken(token)
+  } catch (error) {
+    return res.redirect('/')
+  }
+
+  return res.render('post/create', {
     image: constants.index.image,
     description: constants.index.description,
     title: constants.index.title,
