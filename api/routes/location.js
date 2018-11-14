@@ -57,7 +57,7 @@ router.post('/', async (req, res) => { // Tao location
   }
 })
 
-router.post('/:locationId/subscribe', async (req, res) => { // Tao location
+router.get('/:locationId/subscribe', async (req, res) => { // Tao location
   try {
     const userId = (await AuthService.isLoggedIn(req)).user._id
     const locationId = req.params.locationId
@@ -70,7 +70,7 @@ router.post('/:locationId/subscribe', async (req, res) => { // Tao location
   }
 })
 
-router.post('/:locationId/unsubscribe', async (req, res) => { // Tao location
+router.get('/:locationId/unsubscribe', async (req, res) => { // Tao location
   try {
     const userId = (await AuthService.isLoggedIn(req)).user._id
     const locationId = req.params.locationId

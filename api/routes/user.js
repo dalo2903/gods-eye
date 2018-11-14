@@ -54,7 +54,7 @@ router.get('/:userId/allNotifications', async (req, res) => {
   }
 })
 
-router.post('/subscribed', async (req, res) => {
+router.get('/subscribed', async (req, res) => {
   try {
     const userId = (await AuthService.isLoggedIn(req)).user._id
     // const userId = req.params.userId
