@@ -22,6 +22,10 @@ const NotificationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Record'
   }],
+  data: {
+    type: Schema.Types.ObjectId,
+    ref: 'VisualData'
+  },
   location: {
     type: Schema.Types.ObjectId,
     ref: 'Location'
@@ -33,10 +37,6 @@ const NotificationSchema = new Schema({
   seen: {
     type: Boolean,
     default: false
-  },
-  URL: {
-    type: String,
-    default: ''
   }
 }, { usePushEach: true, timestamps: true })
 
