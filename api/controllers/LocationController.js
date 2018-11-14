@@ -37,7 +37,8 @@ class LocationController extends BaseController {
     if (!location.subscribers) {
       location.subscribers = []
     }
-    if (!location.subscribers.includes(userId)) {
+    let index = location.subscribers.indexOf(userId)
+    if (index <= -1) {
       location.subscribers.push(userId)
       location.save()
     }
