@@ -1,0 +1,22 @@
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-small ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+            </div>
+            <div class="modal-body text-center">
+                <h5 id="content"></h5>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-success btn-simple" data-dismiss="modal">GOT IT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showErrorModal(content){
+        $('#content').text(content)
+        $('#errorModal').modal('show')
+    }
+</script>
