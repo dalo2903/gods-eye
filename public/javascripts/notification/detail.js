@@ -1,8 +1,8 @@
 var app = angular.module('GodsEye')
 
 app.controller('detailController', ['$scope', 'apiService', function ($scope, apiService) {
-  const _id = $('#_id').text().trim()
-  apiService.getNotification(_id)
+  // const _id = $('#_id').text().trim()
+  apiService.getNotification()
     .then(function (res) {
       console.log(res)
       $scope.notification = res.data.notification

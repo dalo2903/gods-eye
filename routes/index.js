@@ -93,7 +93,8 @@ router.get('/post/create', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    GOOGLE_PLACE_KEY: process.env.GOOGLE_PLACE_KEY
   })
 })
 

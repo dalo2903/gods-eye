@@ -14,16 +14,19 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     getImages: function () {
       return $http.get('/images')
     },
-    createPost: function (formData) {
-      var req = {
-        method: 'POST',
-        url: '/api/post',
-        headers: {
-          'Content-Type': undefined
-        },
-        data: formData
-      }
-      return $http(req)
+    // createPost: function (formData) {
+    //   var req = {
+    //     method: 'POST',
+    //     url: '/api/post',
+    //     headers: {
+    //       'Content-Type': undefined
+    //     },
+    //     data: formData
+    //   }
+    //   return $http(req)
+    // },
+    createPost: function (json) {
+      return $http.post('/api/post', json)
     },
     getPost: function (_id) {
       return $http.get('/api/post/' + _id)
@@ -68,8 +71,8 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     getLocation: function (_id) {
       return $http.get(`/api/location/${_id}`)
     },
-    getNotification: function (_id) {
-      return $http.get(`/api/notification/${_id}`)
+    getNotification: function () {
+      return $http.get(`/api/notification/`)
     },
     addFace: function (formData) {
       var req = {

@@ -31,7 +31,8 @@ class UserController extends BaseController {
     if (!user.subscribed) {
       user.subscribed = []
     }
-    if (!user.subscribed.includes(locationId)) {
+    let index = user.subscribed.indexOf(locationId)
+    if (index <= -1) {
       user.subscribed.push(locationId)
       user.save()
     }
