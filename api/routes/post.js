@@ -6,6 +6,9 @@ const PostController = require('../controllers/PostController')
 const UploadController = require('../controllers/UploadController')
 const VisualDataController = require('../controllers/VisualDataController')
 const IdentifyController = require('../controllers/IdentifyController')
+const LocationController = require('../controllers/LocationController')
+const mongoose = require('mongoose')
+const Location = mongoose.model('Location')
 // const RecordController = require('../controllers/RecordController')
 const constants = require('../../configs/constants')
 // const common = require('../common')
@@ -28,7 +31,14 @@ var config = require('../../config')
 router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
     const userCreated = (await AuthService.isLoggedIn(req)).user._id
-    const location = req.body.location
+    // const location = req.body.location
+
+    let location = await LocationController.existNearbyLocation(req.body.place.location, 10)
+    if (!location) {
+      location = await Location.create(req.body.place)
+    }
+    req.body.location = location._id
+
     // console.log(req.body)
     var analyzeData = []
     let files = req.body.filepond
@@ -43,7 +53,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       const visualData = await VisualDataController.createVisualData({
         URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
         isImage: isImage,
-        location: location
+        location: location._id
       })
       const url = await UploadController.uploadFileV3(file, visualData._id)
       visualData.URL = url
