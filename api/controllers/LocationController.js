@@ -34,7 +34,10 @@ class LocationController extends BaseController {
 
   async setSubscriber (_id, userId) {
     let location = await this.get(_id)
-    if (!location.subscribers.include(userId)) {
+    if (!location.subscribers) {
+      location.subscribers = []
+    }
+    if (!location.subscribers.includes(userId)) {
       location.subscribers.push(userId)
       location.save()
     }
@@ -43,6 +46,9 @@ class LocationController extends BaseController {
 
   async removeSubscriber (_id, userId) {
     let location = await this.get(_id)
+    if (!location.subscribers) {
+      location.subscribers = []
+    }
     let index = location.subscribers.indexOf(userId)
     if (index > -1) {
       location.subscribers.splice(index, 1)

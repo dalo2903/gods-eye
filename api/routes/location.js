@@ -3,6 +3,8 @@ let router = express.Router()
 const AuthService = require('../services/AuthService')
 const constants = require('../../configs/constants')
 const LocationController = require('../controllers/LocationController')
+const UserController = require('../controllers/UserController')
+
 const PostController = require('../controllers/PostController')
 
 router.get('/', async (req, res) => {
@@ -59,7 +61,8 @@ router.post('/:locationId/subscribe', async (req, res) => { // Tao location
   try {
     const userId = (await AuthService.isLoggedIn(req)).user._id
     const locationId = req.params.locationId
-    const response = await LocationController.setSubscriber(locationId, userId)
+    await LocationController.setSubscriber(locationId, userId)
+    const response = await UserController.addSubcribedLocation(userId, locationId)
     return res.send(response)
   } catch (error) {
     console.log(error)
@@ -71,21 +74,22 @@ router.post('/:locationId/unsubscribe', async (req, res) => { // Tao location
   try {
     const userId = (await AuthService.isLoggedIn(req)).user._id
     const locationId = req.params.locationId
-    const response = await LocationController.removeSubscriber(locationId, userId)
+    await LocationController.removeSubscriber(locationId, userId)
+    const response = await UserController.removeSubcribedLocation(userId, locationId)
     return res.send(response)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
   }
 })
-router.post('/create'){
+router.post('/create', async (req, res) => {
   try {
- let location = await Location.findOne().near('location', {
-        center: obj.place.location,
-        maxDistance: 10
-      })
-      let location = await LocationController.existNearbyLocation(obj.place.location, 10)
-      /* }){ location: {
+    // let location = await Location.findOne().near('location', {
+    //     center: obj.place.location,
+    //     maxDistance: 10
+    //   })
+    let location = await LocationController.existNearbyLocation(req.body.place.location, 10)
+    /* }){ location: {
         $nearSphere: {
           $geometry: {
             type: obj.place.location.type,
@@ -95,15 +99,14 @@ router.post('/create'){
         }
       }}) */
 
-      if (!location) {
-        location = await Location.create(obj.place)
-      }
+    if (!location) {
+      location = await Location.create(req.body.place)
+    }
 
-      obj.address = location._id
-
+    // obj.address = location._id
   } catch (error) {
 
   }
-}
+})
 
 module.exports = router

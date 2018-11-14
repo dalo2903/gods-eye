@@ -25,19 +25,10 @@ const UserSchema = new Schema({
   phone: {
     type: Number
   },
-  // studentId: {
-  //   type: String
-  // },
   personId: {
     type: Schema.Types.ObjectId,
     ref: 'Person'
   },
-  // department: {
-  //   type: String
-  // },
-  // year: {
-  //   type: String
-  // }
   role: {
     type: Number,
     default: 0
@@ -46,7 +37,11 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Location',
     sparse: true
-  }
+  },
+  subscribed: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Location'
+  }]
 }, { usePushEach: true, timestamps: true })
 
 mongoose.model('User', UserSchema)

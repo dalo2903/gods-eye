@@ -1,8 +1,8 @@
 const BaseController = require('./BaseController')
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
-const Location = mongoose.model('Location')
-const LocationController = require('./LocationController')
+// const Location = mongoose.model('Location')
+// const LocationController = require('./LocationController')
 const responseStatus = require('../../configs/responseStatus')
 const common = require('../common')
 const bcrypt = require('bcrypt')
@@ -21,6 +21,33 @@ class UserController extends BaseController {
   }
   async getUsersByLocation (location) {
     return User.find({address: location})
+  }
+  async getUser (_id) {
+    var user = await this.get(_id)
+    return user
+  }
+  async addSubcribedLocation (_id, locationId) {
+    var user = await this.get(_id)
+    if (!user.subscribed) {
+      user.subscribed = []
+    }
+    if (!user.subscribed.includes(locationId)) {
+      user.subscribed.push(locationId)
+      user.save()
+    }
+    return responseStatus.Response(200, {}, responseStatus.SUBSCRIBE_SUCCESSFULLY)
+  }
+  async removeSubcribedLocation (_id, locationId) {
+    let user = await this.get(_id)
+    if (!user.subscribed) {
+      user.subscribed = []
+    }
+    let index = user.subscribed.indexOf(locationId)
+    if (index > -1) {
+      user.subscribed.splice(index, 1)
+      user.save()
+    }
+    return responseStatus.Response(200, {}, responseStatus.UNSUBSCRIBE_SUCCESSFULLY)
   }
   async createUser (obj) {
     const uuid = obj.uuid || ''
