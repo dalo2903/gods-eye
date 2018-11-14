@@ -71,8 +71,8 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     getLocation: function (_id) {
       return $http.get(`/api/location/${_id}`)
     },
-    getNotification: function (_id) {
-      return $http.get(`/api/notification/${_id}`)
+    getNotification: function () {
+      return $http.get(`/api/notification/`)
     },
     addFace: function (formData) {
       var req = {

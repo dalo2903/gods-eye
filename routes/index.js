@@ -279,6 +279,17 @@ router.get('/label', (req, res) => {
   })
 })
 
+router.get('/subscription', (req, res) => {
+  return res.render('subscription', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: 'Subscription',
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : ''
+  })
+})
 // Sau code nay la cua admin
 router.get('/*', async (req, res, next) => {
   try {

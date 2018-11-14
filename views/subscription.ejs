@@ -43,8 +43,8 @@
         background-color: transparent;
     }
 </style>
-<script src="/javascripts/admin.js"></script>
-<div ng-controller="AdminController">
+<script src="/javascripts/subscription.js"></script>
+<div ng-controller="SubscriptionController">
     <div class="row">
         <div id='sidebar-container' class="col-sm-3">
             <% include ./share/sidebar.ejs -%>
@@ -62,62 +62,36 @@
             </h2>
             <ul class="nav nav-pills">
                 <li class="active">
-                    <a href="#locations" data-toggle="tab">Locations</a>
+                    <a href="#subscribedLocations" data-toggle="tab">Subscribed locations</a>
                 </li>
                 <li>
-                    <a href="#visualData" data-toggle="tab">Visual data</a>
-                </li>
-                <li>
-                    <a href="#record" data-toggle="tab">Visual data</a>
+                    <a href="#allLocations" data-toggle="tab">All locations</a>
                 </li>
             </ul>
             <!-- Nav pills content -->
             <div class="tab-content clearfix" style="margin-top:50px">
-                <!-- Locations -->
-                <div class="tab-pane active" id="locations">
+                <!-- Subscribed locations -->
+                <div class="tab-pane active" id="subscribedLocations">
                     <div class="table-responsive">
-                        <table class="table table-striped w-auto">
+                        <table id="subscribedLocationsTable" class="table table-striped w-auto" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Address</th>
-                                    <th>Created At</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="location in locations | orderBy:'-createdAt'">
-                                    <td class="text-left">{{ location.address }}</td>
-                                    <td>{{ location.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Visual data -->
-                <div class="tab-pane" id="visualData">
-                    <div class="table-responsive">
-                        <table id="visualTable" class="table table-striped w-auto" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Visual data</th>
-                                    <th>Location</th>
-                                    <th>Time</th>
-                                    <th>Identified people</th>
+                                    <th>Address123</th>
+                                    <th>Name</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
                 </div>
-                <!-- Record data -->
-                <div class="tab-pane" id="record">
+                <!-- All locations -->
+                <div class="tab-pane" id="allLocations">
                     <div class="table-responsive">
-                        <table id="recordTable" class="table table-striped w-auto" style="width:100%">
+                        <table id="allLocationsTable" class="table table-striped w-auto" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Record</th>
-                                    <th>Location</th>
-                                    <th>Time</th>
-                                    <th>Identified people</th>
+                                    <th>Address</th>
+                                    <th>Name</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
