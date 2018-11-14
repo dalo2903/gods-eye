@@ -32,6 +32,31 @@ class LocationController extends BaseController {
     return _location
   }
 
+  async setSubscriber (_id, userId) {
+    let location = await this.get(_id)
+    if (!location.subscribers) {
+      location.subscribers = []
+    }
+    if (!location.subscribers.includes(userId)) {
+      location.subscribers.push(userId)
+      location.save()
+    }
+    return responseStatus.Response(200, {}, responseStatus.SUBSCRIBE_SUCCESSFULLY)
+  }
+
+  async removeSubscriber (_id, userId) {
+    let location = await this.get(_id)
+    if (!location.subscribers) {
+      location.subscribers = []
+    }
+    let index = location.subscribers.indexOf(userId)
+    if (index > -1) {
+      location.subscribers.splice(index, 1)
+      location.save()
+    }
+    return responseStatus.Response(200, {}, responseStatus.UNSUBSCRIBE_SUCCESSFULLY)
+  }
+
   async getNearbyLocations (_id, maxDistance) {
     let thisLocation = await this.get(_id)
     let locations = await Location.find().near('location', {

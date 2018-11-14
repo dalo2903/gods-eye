@@ -4,15 +4,17 @@ const VisualDataController = require('../controllers/VisualDataController')
 const AuthService = require('../services/AuthService')
 const DatasetCollector = require('../controllers/DatasetCollector')
 const UploadController = require('../controllers/UploadController')
-const PostController = require('../controllers/PostController')
+// const PostController = require('../controllers/PostController')
 const IdentifyController = require('../controllers/IdentifyController')
-const PersonController = require('../controllers/PersonController')
+// const PersonController = require('../controllers/PersonController')
 const constants = require('../../configs/constants')
-const FaceController = require('../controllers/FaceController')
+// const FaceController = require('../controllers/FaceController')
+const RecordController = require('../controllers/RecordController')
 const responseStatus = require('../../configs/responseStatus')
-var config = require('../../config')
 
-const fs = require('fs')
+// var config = require('../../config')
+
+// const fs = require('fs')
 router.get('/label', async (req, res) => {
   try {
     const skip = parseInt(req.query.skip || 0)
@@ -58,13 +60,13 @@ router.get('/', async (req, res) => {
   }
 })
 
-function unique(a) {
+function unique (a) {
   var seen = {}
   var out = []
   var len = a.length
   var j = 0
   for (var i = 0; i < len; i++) {
-    var item = a[i]._id
+    var item = a[i].faceId
     if (seen[item] !== 1) {
       seen[item] = 1
       out[j++] = a[i]
@@ -78,9 +80,6 @@ router.post('/classified', async (req, res) => {
     const info = req.body
     console.log(info)
 
-    // const file = req.body.file
-    // var analyzeData = []
-
     if (info.id !== constants.adminInfo.id) {
       throw responseStatus.Response(403, {}, responseStatus.WRONG_EMAIL_OR_PASSWORD)
     }
@@ -88,43 +87,36 @@ router.post('/classified', async (req, res) => {
     if (!visualData) {
       throw responseStatus.Response(403, {}, 'Invalid visualData')
     }
+    res.sendStatus(200)
     console.log(visualData)
     // let file = {}
     // _data = fs.readFileSync(filePath)
     // let result = await FaceController.detectFile(_data)
     // console.log(result)
-    var identifyResult = [];
+    var identifyResult = []
     for (let i in req.files) {
       console.log(i)
       let result = await IdentifyController.analyzeAndProcessFacesFile(req.files[i].data, visualData.location, visualData._id)
       console.log(result)
-      identifyResult.concat(result)
+      identifyResult = identifyResult.concat(result.persons)
     }
-    console.log(identifyResult)
-
-    // const isImage = req.files[i].type.startsWith('image')
-    // console.log(isImage)
-    // var visualData = await VisualDataController.createVisualData({
-    //   URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
-    //   isImage: true
-    // })
-    // console.log(visualData._id)
-    // const url = await UploadController.uploadFileV3(req.files[i], visualData._id)
-    // // visualData.URL = url
-    // await visualData.save()
-    // req.body.datas.push(visualData._id)
-    //   analyzeData.push({
-    //     url: url,
-    //     id: visualData._id
-    //   })
-    // }
-    // req.body.title = 'Suspicious behaviour detected'
-    // req.body.location = location
-    // for (let data of analyzeData) {
-    //   const analyzeAndProcessResponse = await IdentifyController.analyzeAndProcessFaces(data.url, location, post._id, data.id)
-    //   console.log(analyzeAndProcessResponse.persons)
-    //   await VisualDataController.updateIdentifyResult(data.id, analyzeAndProcessResponse.persons)
-
+    let uniqueResult = unique(identifyResult)
+    console.log(uniqueResult)
+    VisualDataController.updateIdentifyResult(visualData._id, uniqueResult)
+    var listRecord = []
+    for (let person in uniqueResult) {
+      let record = {
+        personId: person._id,
+        location: visualData.location,
+        data: visualData._id
+      }
+      let createRecordResult = RecordController.createRecord(record)
+      listRecord.push(createRecordResult._id)
+    }
+    if (info.result !== 'not-suspicious') {
+      let title = '[ WARNING : A suspicious activity ]'
+      IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
+    }
     return res.sendStatus(200)
   } catch (error) {
     // console.log(error)

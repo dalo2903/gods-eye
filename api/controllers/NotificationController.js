@@ -13,6 +13,7 @@ class NotificationController extends BaseController {
       to: obj.to,
       title: obj.title,
       type: obj.type,
+      record: obj.record,
       URL: obj.URL,
       identifyResult: obj.identifyResult,
       location: obj.location

@@ -10,7 +10,7 @@ var VisualDataController = require('./VisualDataController')
 var RecordController = require('./RecordController')
 var NotificationController = require('./NotificationController')
 var LocationController = require('./LocationController')
-var UserController = require('./UserController')
+// var UserController = require('./UserController')
 var UploadController = require('./UploadController')
 
 class IdentifyController {
@@ -38,7 +38,7 @@ class IdentifyController {
             var person = await PersonController.getPersonByMSPersonId(candidate.personId)
             // console.log(person)
             response.push({
-              faceId: element.faceId,
+              faceId: candidate.personId,
               personId: person._id,
               confidence: candidate.confidence,
               facerectangle: element.faceRectangle,
@@ -80,7 +80,7 @@ class IdentifyController {
             var person = await PersonController.getPersonByMSPersonId(candidate.personId)
             // console.log(person)
             response.push({
-              faceId: element.faceId,
+              faceId: candidate.personId,
               personId: person._id,
               confidence: candidate.confidence,
               facerectangle: element.faceRectangle,
@@ -101,11 +101,13 @@ class IdentifyController {
   async analyzeAndProcessFacesFile (file, location, visualDataId) {
     console.log(`analyzeAndProcessFacesFile, location = ${location}`)
     var response = []
-    const detectRes = await FaceController.detectFile(file)
+    const detectRes = JSON.parse(await FaceController.detectFile(file))
     var identifyFaceIds = []
+    console.log(detectRes)
     detectRes.forEach(element => {
       identifyFaceIds.push(element.faceId)
     })
+
     if (identifyFaceIds.length !== 0) {
       var identifyRes = await FaceController.identify(identifyFaceIds, constants.face.known)
       var detectMap = {}
@@ -122,7 +124,7 @@ class IdentifyController {
             var person = await PersonController.getPersonByMSPersonId(candidate.personId)
             // console.log(person)
             let newResult = {
-              faceId: element.faceId,
+              faceId: candidate.personId,
               personId: person._id,
               name: person.name,
               confidence: candidate.confidence,
@@ -171,7 +173,7 @@ class IdentifyController {
           }
           const createPersonRes = await PersonController.createPerson(newPerson, constants.adminInfo.id)
           let newResult = {
-            faceId: element.faceId,
+            faceId: createMSPersonRes.personId,
             personId: createPersonRes._id,
             name: createPersonRes.name,
             isNew: true,
@@ -218,7 +220,7 @@ class IdentifyController {
             var person = await PersonController.getPersonByMSPersonId(candidate.personId)
             // console.log(person)
             let newResult = {
-              faceId: element.faceId,
+              faceId: candidate.personId,
               personId: person._id,
               name: person.name,
               confidence: candidate.confidence,
@@ -260,7 +262,7 @@ class IdentifyController {
           }
           const createPersonRes = await PersonController.createPerson(newPerson, constants.adminInfo.id)
           let newResult = {
-            faceId: element.faceId,
+            faceId: createMSPersonRes.personId,
             personId: createPersonRes._id,
             name: createPersonRes.name,
             isNew: true,
@@ -296,29 +298,43 @@ class IdentifyController {
   async normalize (value, min, max) {
     return (value - ((max + min) / 2)) / (max - min)
   }
-  async notifyUsers (location, url, identifyResult) {
+  async unique (a) {
+    var seen = {}
+    var out = []
+    var len = a.length
+    var j = 0
+    for (var i = 0; i < len; i++) {
+      var item = a[i]._id
+      if (seen[item] !== 1) {
+        seen[item] = 1
+        out[j++] = a[i]
+      }
+    }
+    return out
+  }
+  async notifyUsers (location, records, visualdata, title) {
     let locations = await LocationController.getNearbyLocations(location, 100)
     let users = []
     for (let _location of locations) {
-      let userList = await UserController.getUsersByLocation(_location._id)
-      users = users.concat(userList)
+      // let userList = await UserController.getUsersByLocation(_location._id)
+      // users = users.concat(userList)
+      let location = LocationController.getLocation(_location._id)
+      users = users.concat(location.subscribers)
     }
-    let message = `WARNING: a suspicious behaviour `
+    await this.unique(users)
     for (let user of users) {
       let notification = {
         to: user._id,
-        URL: url,
-        title: message,
-        identifyResult: identifyResult,
+        data: visualdata,
+        records: records,
+        title: title,
         location: location
       }
       console.log(`send notificaiton to ${user._id}`)
       await NotificationController.createNotification(notification)
     }
-    // console.log(identifyResult)
-
-    // }
   }
+
   async calculateScore (personId, location, normConfidence, url, identifyResult) {
     const _normConfidence = parseFloat(normConfidence || 1)
     const localScore = await LocalScoreController.getLocalScoreByPersonIdAndLocation(personId, location)
@@ -345,7 +361,7 @@ class IdentifyController {
           break
       }
       // newLocalScore.score += newLocalScore.rate
-      const createLocalScoreRes = await LocalScoreController.createLocalScore(newLocalScore)
+      await LocalScoreController.createLocalScore(newLocalScore)
     } else {
       console.log(`Found local score id = ${localScore._id}`)
       let rate = localScore.rate || -4

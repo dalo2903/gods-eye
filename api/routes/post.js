@@ -6,10 +6,9 @@ const PostController = require('../controllers/PostController')
 const UploadController = require('../controllers/UploadController')
 const VisualDataController = require('../controllers/VisualDataController')
 const IdentifyController = require('../controllers/IdentifyController')
-const RecordController = require('../controllers/RecordController')
-const LocalScoreController = require('../controllers/LocalScoreController')
+// const RecordController = require('../controllers/RecordController')
 const constants = require('../../configs/constants')
-const common = require('../common')
+// const common = require('../common')
 var _ = require('lodash')
 const rpn = require('request-promise-native')
 var config = require('../../config')
@@ -85,43 +84,43 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
   }
 })
 
-router.post('/', /* m.single('file'), */ async (req, res) => {
-  try {
-    // const session = AuthService.getSessionFromRequest(req)
-    // const uuid = await AuthService.isLoggedIn(session)
-    console.log(req.body)
-    const userCreated = (await AuthService.isLoggedIn(req)).user._id
-    const location = req.body.location
-    var analyzeData = []
-    for (i = 0; i < req.files.files.length; i++) {
-      const isImage = req.files.files[i].mimetype.startsWith('image')
-      const visualData = await VisualDataController.createVisualData({
-        URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
-        isImage: isImage,
-        location: location
-      })
-      const url = await UploadController.uploadFileV2(req.files.files[i], visualData._id)
-      visualData.URL = url
-      await visualData.save()
-      req.body.datas.append(visualData._id)
-      analyzeData.push({
-        url: url,
-        id: visualData._id
-      })
-    }
-    const post = await PostController.createPost(req.body, userCreated)
-    res.send()
-    // console.log(post)
-    for (i = 0; i <= analyzeData.length; i++) {
-      const analyzeAndProcessResponse = await IdentifyController.analyzeAndProcessFaces(analyzeData[i].url, location, post._id, analyzeData[i].id)
-      console.log(analyzeAndProcessResponse.persons)
-      await VisualDataController.updateIdentifyResult(analyzeData[i].id, analyzeAndProcessResponse.persons)
-    }
-  } catch (error) {
-    console.log(error)
-    return res.status(error.status || 500).send(error)
-  }
-})
+// router.post('/', /* m.single('file'), */ async (req, res) => {
+//   try {
+//     // const session = AuthService.getSessionFromRequest(req)
+//     // const uuid = await AuthService.isLoggedIn(session)
+//     console.log(req.body)
+//     const userCreated = (await AuthService.isLoggedIn(req)).user._id
+//     const location = req.body.location
+//     var analyzeData = []
+//     for (i = 0; i < req.files.files.length; i++) {
+//       const isImage = req.files.files[i].mimetype.startsWith('image')
+//       const visualData = await VisualDataController.createVisualData({
+//         URL: 'https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg',
+//         isImage: isImage,
+//         location: location
+//       })
+//       const url = await UploadController.uploadFileV2(req.files.files[i], visualData._id)
+//       visualData.URL = url
+//       await visualData.save()
+//       req.body.datas.append(visualData._id)
+//       analyzeData.push({
+//         url: url,
+//         id: visualData._id
+//       })
+//     }
+//     const post = await PostController.createPost(req.body, userCreated)
+//     res.send()
+//     // console.log(post)
+//     for (i = 0; i <= analyzeData.length; i++) {
+//       const analyzeAndProcessResponse = await IdentifyController.analyzeAndProcessFaces(analyzeData[i].url, location, post._id, analyzeData[i].id)
+//       console.log(analyzeAndProcessResponse.persons)
+//       await VisualDataController.updateIdentifyResult(analyzeData[i].id, analyzeAndProcessResponse.persons)
+//     }
+//   } catch (error) {
+//     console.log(error)
+//     return res.status(error.status || 500).send(error)
+//   }
+// })
 
 router.get('/:id', async (req, res) => {
   try {

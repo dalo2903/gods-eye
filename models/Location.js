@@ -21,7 +21,7 @@ const LocationSchema = new Schema({
       required: true
     }
   },
-  userIds: [{
+  subscribers: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
   }]

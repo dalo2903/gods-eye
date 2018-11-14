@@ -1,7 +1,7 @@
 const BaseController = require('./BaseController')
 const mongoose = require('mongoose')
 const Record = mongoose.model('Record')
-const responseStatus = require('../../configs/responseStatus')
+// const responseStatus = require('../../configs/responseStatus')
 
 class RecordController extends BaseController {
   constructor () {
@@ -10,7 +10,7 @@ class RecordController extends BaseController {
 
   async createRecord (obj, postId) {
     let _record = {
-      postId: postId,
+      postId: postId || '',
       personId: obj.personId,
       location: obj.location,
       data: obj.data
