@@ -43,40 +43,46 @@
 
     <script src="/javascripts/post/video-labeling.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
-    <div ng-controller="VideoLabelingController">
-        <div class="row">
-            <div class="col-sm-12">
-                <div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block" infinite-scroll-distance='1' class="postsContainer">
-                    <div id="{{video._id}}" ng-repeat="video in scrollData">
-                        <div class="col-md-8">
-                            <!-- <a href="/post/{{post._id}}" style="text-decoration:none"> -->
-                            <div>
-                                <!-- <h1>{{video.URL}}</h1> -->
+    <div class="main main-raised">
+        <div class="section section-basic">
+            <div class="container">
+                <div ng-controller="VideoLabelingController">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block" infinite-scroll-distance='1' class="postsContainer">
+                                <div id="{{video._id}}" ng-repeat="video in scrollData">
+                                    <div class="col-md-8">
+                                        <!-- <a href="/post/{{post._id}}" style="text-decoration:none"> -->
+                                        <div>
+                                            <!-- <h1>{{video.URL}}</h1> -->
+                                        </div>
+                                        <!-- <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div> -->
+                                        <!-- <div class="address">{{ post.location.address }}</div> -->
+                                        <!-- <div class="data" ng-repeat="data in post.datas"> -->
+                                        <!-- <img class='post' ng-if="data.isImage" ng-src="{{data.URL}}"> -->
+                                        <video class="post" controls>
+                                            <source ng-src="{{video.URL}}" type="video/mp4">
+                                        </video>
+                                        <!-- </div> -->
+                                        <hr>
+                                        <!-- </a> -->
+                                    </div>
+
+                                    <div class="col-sm-4">
+
+                                        <ul id="navMenu" class="nav" style='font-size: 200%'>
+                                            <li id="{{location._id}}">
+                                                <a href="javascript:void(0)" class="popular-locations" ng-click="setLabel(video._id, 'suspicious', $index)">
+                                                    <i class="fas fa-exclamation-triangle" style="color: #a94442"></i>&nbsp&nbsp Suspicious
+                                                </a>
+                                                <a href="javascript:void(0)" class="popular-locations" ng-click="setLabel(video._id, 'not-suspicious', $index)">
+                                                    <i class="fas fa-check" style="color: greenyellow"></i>&nbsp&nbsp Delicious
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div> -->
-                            <!-- <div class="address">{{ post.location.address }}</div> -->
-                            <!-- <div class="data" ng-repeat="data in post.datas"> -->
-                            <!-- <img class='post' ng-if="data.isImage" ng-src="{{data.URL}}"> -->
-                            <video class="post" controls>
-                                <source ng-src="{{video.URL}}" type="video/mp4">
-                            </video>
-                            <!-- </div> -->
-                            <hr>
-                            <!-- </a> -->
-                        </div>
-
-                        <div class="col-sm-4">
-
-                            <ul id="navMenu" class="nav" style='font-size: 200%'>
-                                <li id="{{location._id}}">
-                                    <a href="javascript:void(0)" class="popular-locations" ng-click="setLabel(video._id, 'suspicious', $index)">
-                                        <i class="fas fa-exclamation-triangle" style="color: #a94442"></i>&nbsp&nbsp Suspicious
-                                    </a>
-                                    <a href="javascript:void(0)" class="popular-locations" ng-click="setLabel(video._id, 'not-suspicious', $index)">
-                                        <i class="fas fa-check" style="color: greenyellow"></i>&nbsp&nbsp Delicious
-                                    </a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                 </div>

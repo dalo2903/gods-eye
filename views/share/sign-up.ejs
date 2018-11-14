@@ -83,15 +83,15 @@
                                             <span class="input-group-addon">
                                                 <i class="material-icons">face</i>
                                             </span>
-                                            <input type="text" class="form-control" placeholder="Full Name..." name="name">
+                                            <input type="text" class="form-control" placeholder="Full Name..." name="name" required>
                                         </div>
 
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="material-icons">email</i>
                                             </span>
-                                            <input type="text" class="form-control" placeholder="Email..." autocomplete="email"
-                                                name="email">
+                                            <input type="email" class="form-control" placeholder="Email..." autocomplete="email"
+                                                name="email" required>
                                         </div>
 
                                         <div class="input-group">
@@ -99,7 +99,7 @@
                                                 <i class="material-icons">lock_outline</i>
                                             </span>
                                             <input type="password" placeholder="Password..." class="form-control"
-                                                autocomplete="new-password" name="password" />
+                                                autocomplete="new-password" name="password" required />
                                         </div>
 
                                         <!-- If you want to add a checkbox to this form, uncomment this code -->
@@ -121,41 +121,7 @@
                 </div>
             </div>
         </div>
-
-        <footer class="footer">
-            <div class="container">
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="http://www.creative-tim.com">
-                                Creative Tim
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://presentation.creative-tim.com">
-                                About Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://blog.creative-tim.com">
-                                Blog
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://www.creative-tim.com/license">
-                                Licenses
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="copyright pull-right">
-                    &copy;
-                    <%- new Date().getFullYear() %>, made with <i class="fa fa-heart heart"></i>
-                    by <a href="http://www.creative-tim.com" target="_blank">Creative Tim</a>
-                </div>
-            </div>
-        </footer>
-
+        <% include ./footer.ejs %>
     </div>
 
 

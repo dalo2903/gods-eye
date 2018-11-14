@@ -1,5 +1,5 @@
 var app = angular.module('GodsEye')
-app.controller('SubscriptionController', ['$scope', 'apiService', function ($scope, apiService) {
+app.controller('SubscriptionController', ['$scope', '$http', '$compile', function ($scope, $http, $compile) {
     let userId = $('#user_id').text().trim()
     // if ($(window).width() < 768) {
     //     $('#sidebar-container').removeClass('col-sm-3')
@@ -17,19 +17,29 @@ app.controller('SubscriptionController', ['$scope', 'apiService', function ($sco
             { "data": "name" },
             { "data": null }
         ],
-        fnCreatedRow: function (row, data, index) {
+        createdRow: function (row, data, index) {
             if (data.subscribers.includes(userId)) {
                 $('td', row).eq(2).html('<button id="unsubscribeButton" class="btn btn-warning" ng-click="unsubscribe(' + data._id + ')">Unsubscribe</button>');
+                $compile(angular.element(row).contents())($scope);
             }
             else {
-                $('td', row).eq(2).html('<button id="subscribeButton" class="btn btn-primary" ng-click="subscribe(' + data._id + ')">Subscribe</button>');
+                $('td', row).eq(2).html('<button id="subscribeButton" class="btn btn-primary" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
+                $compile(angular.element(row).contents())($scope);
+
             }
         }
     });
-    $scope.subscribe = function () {
-
+    $scope.subscribe = function (locationId) {
+        $http({
+            method: 'GET',
+            url: '/api/location/' + locationId + '/subscribe'
+        }).then(function successCallback(response) {
+            console.log("abc")
+        }, function errorCallback(response) {
+            console.log(response)
+        });
     }
-    $scope.unsubscribe = function () {
-
+    $scope.unsubscribe = function (locationId) {
+        console.log("12412")
     }
 }])
