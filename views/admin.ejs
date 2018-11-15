@@ -1,131 +1,132 @@
-<% layout('./share/layout.ejs') -%>
+<html lang="en" ng-app="GodsEye" ng-cloak>
+<% include ./share/head.ejs -%>
 
 <style>
-    .avatar {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        border-radius: 50%;
-        float: right;
-    }
-
-    .avatar-header {
-        width: 80px;
-    }
-
-    .created-at-header {
-        width: 140px;
-    }
-
-    .button-header {
-        width: 140px;
-    }
-
-    .nav-pills>li.active>a,
-    .nav-pills>li.active>a:focus,
-    .nav-pills>li.active>a:hover {
-        border-bottom: solid black 3px;
-        color: black;
-        font-weight: 650;
-        font-size: 30px;
-        background-color: transparent;
-    }
-
-    .nav-pills>li>a {
-        color: grey;
-        font-weight: 650;
-        font-size: 30px;
-        background-color: transparent;
-    }
-
-    .nav-pills>li>a:hover {
-        color: black;
-        background-color: transparent;
+    .visual-data {
+        width: 300px
     }
 </style>
+
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
 <script src="/javascripts/admin.js"></script>
-<div ng-controller="AdminController">
-    <div class="row">
-        <div id='sidebar-container' class="col-sm-3">
-            <% include ./share/sidebar.ejs -%>
-        </div>
-        <div class="col-sm-6" style="margin-top: 20px">
-            <span class="hide" id="user_id">
-                <%- user_id -%>
-            </span>
-            <div>
-                <img id='avatar' class="img-circle" ng-src="{{ user.avatar ||'https://accounts-cdn.9gag.com/media/avatar/21748854_100_1.jpg' }}"
-                    alt="Avatar">
-            </div>
-            <h2>
-                <%- user_name -%>
-            </h2>
-            <ul class="nav nav-pills">
-                <li class="active">
-                    <a href="#locations" data-toggle="tab">Locations</a>
-                </li>
-                <li>
-                    <a href="#visualData" data-toggle="tab">Visual data</a>
-                </li>
-                <li>
-                    <a href="#record" data-toggle="tab">Visual data</a>
-                </li>
-            </ul>
-            <!-- Nav pills content -->
-            <div class="tab-content clearfix" style="margin-top:50px">
-                <!-- Locations -->
-                <div class="tab-pane active" id="locations">
-                    <div class="table-responsive">
-                        <table class="table table-striped w-auto">
-                            <thead>
-                                <tr>
-                                    <th>Address</th>
-                                    <th>Created At</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="location in locations | orderBy:'-createdAt'">
-                                    <td class="text-left">{{ location.address }}</td>
-                                    <td>{{ location.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+<body class="profile-page">
+    <% include ./share/header.ejs %>
+    <div class="page-header header-filter" data-parallax="true" style="background-image: url('/lib/assets/img/examples/city.jpg');"></div>
+
+    <div class="main main-raised">
+        <div class="profile-content">
+            <div class="container">
+                <div ng-controller="AdminController">
+                    <div class="row">
+                        <div class="col-xs-6 col-xs-offset-3">
+                            <div class="profile">
+                                <div class="avatar">
+                                    <img src="/user.png" alt="Circle Image" class="img-circle img-responsive img-raised">
+                                </div>
+
+                                <span class="hide" id="user_id">
+                                    <%- user_id -%>
+                                </span>
+                                <div class="name">
+                                    <h2>
+                                        <%- user_name -%>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <!-- Visual data -->
-                <div class="tab-pane" id="visualData">
-                    <div class="table-responsive">
-                        <table id="visualTable" class="table table-striped w-auto" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Visual data</th>
-                                    <th>Location</th>
-                                    <th>Time</th>
-                                    <th>Identified people</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                        </table>
+
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="profile-tabs">
+                                <div class="nav-align-center">
+                                    <ul class="nav nav-pills nav-pills-icons" role="tablist">
+                                        <li class="active">
+                                            <a href="#locations" role="tab" data-toggle="tab">
+                                                <i class="material-icons">palette</i>
+                                                Locations
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#visual-data" role="tab" data-toggle="tab">
+                                                <i class="material-icons">people</i>
+                                                Visual datas
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#records" role="tab" data-toggle="tab">
+                                                <i class="material-icons">camera</i>
+                                                Records
+                                            </a>
+                                        </li>
+                                    </ul>
+
+
+                                </div>
+                            </div>
+                            <!-- End Profile Tabs -->
+                        </div>
                     </div>
-                </div>
-                <!-- Record data -->
-                <div class="tab-pane" id="record">
-                    <div class="table-responsive">
-                        <table id="recordTable" class="table table-striped w-auto" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Record</th>
-                                    <th>Location</th>
-                                    <th>Time</th>
-                                    <th>Identified people</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                        </table>
+                    <div class="tab-content">
+                        <div class="tab-pane active work" id="locations">
+                            <div class="table-responsive">
+                                <table class="table table-striped w-auto">
+                                    <thead>
+                                        <tr>
+                                            <th>Address</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="location in locations | orderBy:'-createdAt'">
+                                            <td class="text-left">{{ location.address }}</td>
+                                            <td>{{ location.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="visual-data">
+                            <div class="table-responsive">
+                                <table id="visualTable" class="table table-striped w-auto" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Visual data</th>
+                                            <th>Location</th>
+                                            <th>Time</th>
+                                            <th>Identified people</th>
+                                            <!-- <th>Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Notifications -->
+                        <div class="tab-pane" id="records">
+                            <div class="table-responsive">
+                                <table id="recordTable" class="table table-striped w-auto" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Record</th>
+                                            <th>Location</th>
+                                            <th>Time</th>
+                                            <th>Identified people</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-3"></div>
-</div>
+</body>
+
+</html>
