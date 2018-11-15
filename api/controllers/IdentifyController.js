@@ -318,12 +318,13 @@ class IdentifyController {
     for (let _location of locations) {
       // let userList = await UserController.getUsersByLocation(_location._id)
       // users = users.concat(userList)
-      let location = LocationController.getLocation(_location._id)
-      users = users.concat(location.subscribers)
+      // let location = LocationController.getLocation(_location._id)
+      users = users.concat(_location.subscribers)
     }
-    await this.unique(users)
-    for (let user of users) {
-      let notification = {
+    let uniqueUsers = await this.unique(users)
+    let notifications = []
+    for (let user of uniqueUsers) {
+      let obj = {
         to: user._id,
         data: visualdata,
         records: records,
@@ -331,8 +332,10 @@ class IdentifyController {
         location: location
       }
       console.log(`send notificaiton to ${user._id}`)
-      await NotificationController.createNotification(notification)
+      let notification = await NotificationController.createNotification(obj)
+      notifications.push(notification)
     }
+    return responseStatus.Response(200, {notifications: notifications})
   }
 
   async calculateScore (personId, location, normConfidence, url, identifyResult) {

@@ -6,6 +6,17 @@ const AuthService = require('../services/AuthService')
 
 const NotificationController = require('../controllers/NotificationController')
 
+router.get('/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    const response = await NotificationController.getNotification(id)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.get('/', async (req, res) => {
   try {
     const userId = (await AuthService.isLoggedIn(req)).user._id
@@ -16,7 +27,16 @@ router.get('/', async (req, res) => {
     return res.status(error.status || 500).send(error)
   }
 })
-
+router.get('/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    const response = await NotificationController.getNotification(id)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
 router.get('/setSeen/:id', async (req, res) => {
   try {
     const response = await NotificationController.updateNotificationSeen(req.params.id)

@@ -14,8 +14,7 @@ class NotificationController extends BaseController {
       title: obj.title,
       type: obj.type,
       record: obj.record,
-      URL: obj.URL,
-      identifyResult: obj.identifyResult,
+      data: obj.data,
       location: obj.location
     }
     // console.log(notification)
@@ -30,6 +29,18 @@ class NotificationController extends BaseController {
     }).populate({
       path: 'location',
       select: 'address'
+    }).populate({
+      path: 'data',
+      select: 'URL'
+    }).populate({
+      path: 'record',
+      select: 'personId',
+      model: 'Record',
+      populate: {
+        path: 'personId',
+        model: 'Person',
+        select: 'name'
+      }
     }).exec()
     // if (!notification) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     // else
