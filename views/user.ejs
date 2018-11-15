@@ -1,155 +1,157 @@
 <html lang="en" ng-app="GodsEye" ng-cloak>
 <% include ./share/head.ejs -%>
 
-    <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
-    <script src="/javascripts/user.js"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+<script src="/javascripts/user.js"></script>
 
-    <body class="profile-page">
-        <% include ./share/header.ejs %>
-            <div class="page-header header-filter" data-parallax="true" style="background-image: url('/lib/assets/img/examples/city.jpg');"></div>
+<body class="profile-page">
+    <% include ./share/header.ejs %>
+    <div class="page-header header-filter" data-parallax="true" style="background-image: url('/lib/assets/img/examples/city.jpg');"></div>
 
-            <div class="main main-raised">
-                <div class="profile-content">
-                    <div class="container">
-                        <div ng-controller="UserController">
-                            <div class="row">
-                                <div class="col-xs-6 col-xs-offset-3">
-                                    <div class="profile">
-                                        <div class="avatar">
-                                            <img src="/user.png" alt="Circle Image" class="img-circle img-responsive img-raised">
-                                        </div>
-
-                                        <span class="hide" id="user_id">
-                                            <%- user_id -%>
-                                        </span>
-                                        <div class="name">
-                                            <h2>
-                                                <%- user_name -%>
-                                            </h2>
-                                        </div>
-                                    </div>
+    <div class="main main-raised">
+        <div class="profile-content">
+            <div class="container">
+                <div ng-controller="UserController">
+                    <div class="row">
+                        <div class="col-xs-6 col-xs-offset-3">
+                            <div class="profile">
+                                <div class="avatar">
+                                    <img src="/user.png" alt="Circle Image" class="img-circle img-responsive img-raised">
                                 </div>
-                                <div class="col-xs-2 follow">
-                                    <button class="btn btn-fab btn-primary" rel="tooltip" title="Follow this user">
-                                        <i class="material-icons">add</i>
-                                    </button>
+
+                                <span class="hide" id="user_id">
+                                    <%- user_id -%>
+                                </span>
+                                <div class="name">
+                                    <h2>
+                                        <%- user_name -%>
+                                    </h2>
                                 </div>
                             </div>
-
-
-                            <div class="description text-center">
-                                <p>Nam không đẹp trai, không chỉ thế chơi ma sói rất thủ đoạn, hại bạn hại người hại luôn địch
-                                    </p>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <div class="profile-tabs">
-                                        <div class="nav-align-center">
-                                            <ul class="nav nav-pills nav-pills-icons" role="tablist">
-                                                <li class="active">
-                                                    <a href="#posts" role="tab" data-toggle="tab">
-                                                        <i class="material-icons">palette</i>
-                                                        Posts
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#people" role="tab" data-toggle="tab">
-                                                        <i class="material-icons">people</i>
-                                                        People
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#notifications" role="tab" data-toggle="tab">
-                                                        <i class="material-icons">camera</i>
-                                                        Notifications
-                                                    </a>
-                                                </li>
-                                            </ul>
-
-
-                                        </div>
-                                    </div>
-                                    <!-- End Profile Tabs -->
-                                </div>
-                            </div>
-                            <div class="tab-content">
-                                <div class="tab-pane active work" id="posts">
-                                    <div class="col-md-8 col-md-offset-1">
-                                        <div id="postsContainer" class="postsContainer">
-                                            <div id="{{post._id}}" class="post" ng-repeat="post in posts">
-                                                <a href="/post/{{post._id}}" style="text-decoration:none">
-                                                    <div>
-                                                        <h1>{{post.title}}</h1>
-                                                    </div>
-                                                    <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}
-                                                    </div>
-                                                    <div class="address">{{ post.location.address }}</div>
-                                                    <div class="data" ng-repeat="data in post.datas">
-                                                        <img class='post' ng-src="{{data.URL}}">
-                                                    </div>
-                                                </a>
-                                                <br>
-                                                <button class="btn btn-primary" ng-click="deletePost(post._id, $index)">Delete</button>
-                                                <button class="btn btn-primary" ng-click="goToEditPage(post._id)">Edit</button>
-                                                <hr>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="people">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped w-auto">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="avatar-header"></th>
-                                                        <th>Name</th>
-                                                        <th>Score</th>
-                                                        <th>Status</th>
-                                                        <th class="created-at-header">Created At</th>
-                                                        <th class="button-header"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="person in persons | orderBy:'-createdAt'">
-                                                        <td><img class="avatar" ng-src="{{ person.datas[0].URL }}"></td>
-                                                        <td>{{ person.name }}</td>
-                                                        <td>{{ person.score }}</td>
-                                                        <td>{{ person.status }}</td>
-                                                        <td>{{ person.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
-                                                        <td><a href="/person/face/add/{{person._id}}" class="btn btn-primary">Add photo</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <!-- Notifications -->
-                                    <div class="tab-pane" id="notifications">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Message</th>
-                                                    <th>Created At</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style='text-align: left' infinite-scroll="loadMoreNotification()">
-                    
-                                                <tr ng-repeat="notification in notifications">
-                                                    <td> <a href="/notification/{{notification._id}}" style="text-decoration:none">
-                                                            {{ notification.title }}
-                                                        </a>
-                                                    </td>
-                                                    <td>{{notification.createdAt}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                            </div>
-
+                        </div>
+                        <div class="col-xs-2 follow">
+                            <button class="btn btn-fab btn-primary" rel="tooltip" title="Follow this user">
+                                <i class="material-icons">add</i>
+                            </button>
                         </div>
                     </div>
+
+
+                    <div class="description text-center">
+                        <p>Nam không đẹp trai, không chỉ thế chơi ma sói rất thủ đoạn, hại bạn hại người hại luôn địch
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="profile-tabs">
+                                <div class="nav-align-center">
+                                    <ul class="nav nav-pills nav-pills-icons" role="tablist">
+                                        <li class="active">
+                                            <a href="#posts" role="tab" data-toggle="tab">
+                                                <i class="material-icons">palette</i>
+                                                Posts
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#people" role="tab" data-toggle="tab">
+                                                <i class="material-icons">people</i>
+                                                People
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#notifications" role="tab" data-toggle="tab">
+                                                <i class="material-icons">camera</i>
+                                                Notifications
+                                            </a>
+                                        </li>
+                                    </ul>
+
+
+                                </div>
+                            </div>
+                            <!-- End Profile Tabs -->
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active work" id="posts">
+                            <div class="col-md-8 col-md-offset-1">
+                                <div id="postsContainer" class="postsContainer">
+                                    <div id="{{post._id}}" class="post" ng-repeat="post in posts">
+                                        <a href="/post/{{post._id}}" style="text-decoration:none">
+                                            <div>
+                                                <h1>{{post.title}}</h1>
+                                            </div>
+                                            <div class="author">by {{post.userCreated.name}} at {{post.createdAt |
+                                                date: "HH:mm dd/MM/yyyy"}}
+                                            </div>
+                                            <div class="address">{{ post.location.address }}</div>
+                                            <div class="data" ng-repeat="data in post.datas">
+                                                <img class='post' ng-src="{{data.URL}}">
+                                            </div>
+                                        </a>
+                                        <br>
+                                        <button class="btn btn-primary" ng-click="deletePost(post._id, $index)">Delete</button>
+                                        <button class="btn btn-primary" ng-click="goToEditPage(post._id)">Edit</button>
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="people">
+                            <div class="table-responsive">
+                                <table class="table table-striped w-auto">
+                                    <thead>
+                                        <tr>
+                                            <th class="avatar-header"></th>
+                                            <th>Name</th>
+                                            <th>Score</th>
+                                            <th>Status</th>
+                                            <th class="created-at-header">Created At</th>
+                                            <th class="button-header"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="person in persons | orderBy:'-createdAt'">
+                                            <td><img class="avatar" ng-src="{{ person.datas[0].URL }}"></td>
+                                            <td>{{ person.name }}</td>
+                                            <td>{{ person.score }}</td>
+                                            <td>{{ person.status }}</td>
+                                            <td>{{ person.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
+                                            <td><a href="/person/face/add/{{person._id}}" class="btn btn-primary">Add
+                                                    photo</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Notifications -->
+                        <div class="tab-pane" id="notifications">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Message</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody style='text-align: left' infinite-scroll="loadMoreNotification()">
+
+                                    <tr ng-repeat="notification in notifications">
+                                        <td> <a href="/notification/{{notification._id}}" style="text-decoration:none">
+                                                {{ notification.title }}
+                                            </a>
+                                        </td>
+                                        <td>{{ notification.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-    </body>
+        </div>
+    </div>
+</body>
 
 </html>
