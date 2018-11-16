@@ -45,12 +45,12 @@ app.engine('ejs', engine)
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
-app.use(bodyParser.json({limit: '50mb'}))
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/ftp', express.static('../'), serveIndex('../', {'icons': true}))
+app.use('/ftp', express.static('../'), serveIndex('../', { 'icons': true }))
 
 app.use(fileUpload())
 
@@ -82,5 +82,23 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500)
   res.render('error')
 })
+
+// using SendGrid's v3 Node.js Library
+// https://github.com/sendgrid/sendgrid-nodejs
+// const sgMail = require('@sendgrid/mail')
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+// const msg = {
+//   to: 'nguyenkhanhnam.13a@gmail.com',
+//   from: 'projectGodEyes@gmail.com',
+//   subject: 'Sending with SendGrid is Fun',
+//   text: 'and easy to do anywhere, even with Node.js',
+//   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+//   templateId: 'd-4ebbf9be969b4873b26c61b18f397919',
+//   dynamic_template_data: {
+//     url: '/'
+//   }
+// }
+// sgMail.send(msg).then(() => console.log('Mail sent successfully'))
+//   .catch(error => console.error(error.toString()))
 
 module.exports = app
