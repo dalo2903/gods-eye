@@ -7,6 +7,22 @@ app.controller('SubscriptionController', ['$scope', '$http', '$compile', functio
     // else {
     //     $('#sidebar-container').addClass('col-sm-3')
     // }
+    $('#subscribedLocationsTable').DataTable({
+        "ajax": {
+            "url": "/api/user/subscribed",
+            "dataSrc": "subscribed"
+        },
+        "columns": [
+            { "data": "address" },
+            { "data": "name" },
+            { "data": null }
+        ],
+        createdRow: function (row, data, index) {
+            $('td', row).eq(2).html('<button id="unsubscribeButton' + data._id + '" class="btn btn-warning" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>' +
+                '<button id="subscribeButton' + data._id + '" class="btn btn-primary hide" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
+            $compile(angular.element(row).contents())($scope);
+        }
+    });
     $('#allLocationsTable').DataTable({
         "ajax": {
             "url": "/api/location/",
@@ -19,13 +35,11 @@ app.controller('SubscriptionController', ['$scope', '$http', '$compile', functio
         ],
         createdRow: function (row, data, index) {
             if (data.subscribers.includes(userId)) {
-                $('td', row).eq(2).html('<button id="unsubscribeButton' + data._id + '" class="btn btn-warning" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>' +
-                    '<button id="subscribeButton' + data._id + '" class="btn btn-primary hide" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
+                $('td', row).eq(2).html('<button id="unsubscribeButton' + data._id + '" class="btn btn-warning" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>');
                 $compile(angular.element(row).contents())($scope);
             }
             else {
-                $('td', row).eq(2).html('<button id="subscribeButton' + data._id + '" class="btn btn-primary" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>' +
-                    '<button id="unsubscribeButton' + data._id + '" class="btn btn-warning hide" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>');
+                $('td', row).eq(2).html('<button id="subscribeButton' + data._id + '" class="btn btn-primary" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
                 $compile(angular.element(row).contents())($scope);
             }
         }
@@ -36,8 +50,8 @@ app.controller('SubscriptionController', ['$scope', '$http', '$compile', functio
             url: '/api/location/' + locationId + '/subscribe'
         }).then(function successCallback(response) {
             alert("Subscribed")
-            $('#subscribeButton' + locationId).addClass('hide')
-            $('#unsubscribeButton' + locationId).removeClass('hide')
+            $('#allLocationsTable').DataTable().ajax.reload()
+            $('#subscribedLocationsTable').DataTable().ajax.reload()
         }, function errorCallback(response) {
             console.log(response)
         });
@@ -48,8 +62,8 @@ app.controller('SubscriptionController', ['$scope', '$http', '$compile', functio
             url: '/api/location/' + locationId + '/unsubscribe'
         }).then(function successCallback(response) {
             alert("Unsubscribed")
-            $('#subscribeButton' + locationId).removeClass('hide')
-            $('#unsubscribeButton' + locationId).addClass('hide')
+            $('#allLocationsTable').DataTable().ajax.reload()
+            $('#subscribedLocationsTable').DataTable().ajax.reload()
         }, function errorCallback(response) {
             console.log(response)
         });
