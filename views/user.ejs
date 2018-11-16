@@ -65,13 +65,13 @@
                                                 Notifications
                                             </a>
                                         </li>
-                                        <li>
+                                        <li ng-click='reloadTables()'>
                                             <a href="#subscribedLocations" role="tab" data-toggle="tab">
                                                 <i class="material-icons">subscriptions</i>
                                                 Subscribed locations
                                             </a>
                                         </li>
-                                        <li>
+                                        <li ng-click='reloadTables()'>
                                             <a href="#allLocations" role="tab" data-toggle="tab">
                                                 <i class="material-icons"> subscriptions</i>
                                                 All location
@@ -97,7 +97,8 @@
                                             </div>
                                             <div class="address">{{ post.location.address }}</div>
                                             <div class="data" ng-repeat="data in post.datas">
-                                                <img class='post' ng-src="{{data.URL}}">
+                                                <img class='
+                                            post' ng-src="{{data.URL}}">
                                             </div>
                                         </a>
                                         <br>

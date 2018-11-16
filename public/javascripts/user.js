@@ -93,11 +93,13 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
     ],
     createdRow: function (row, data, index) {
       if (data.subscribers.includes(userId)) {
-        $('td', row).eq(2).html('<button id="unsubscribeButton' + data._id + '" class="btn btn-warning" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>');
+        $('td', row).eq(2).html('<button id="unsubscribeButton' + data._id + '" class="btn btn-warning" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>' +
+          '<button id="subscribeButton' + data._id + '" class="btn btn-primary hide" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
         $compile(angular.element(row).contents())($scope);
       }
       else {
-        $('td', row).eq(2).html('<button id="subscribeButton' + data._id + '" class="btn btn-primary" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
+        $('td', row).eq(2).html('<button id="unsubscribeButton' + data._id + '" class="btn btn-warning hide" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>' +
+          '<button id="subscribeButton' + data._id + '" class="btn btn-primary" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
         $compile(angular.element(row).contents())($scope);
       }
     }
@@ -107,9 +109,8 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       method: 'GET',
       url: '/api/location/' + locationId + '/subscribe'
     }).then(function successCallback(response) {
-      alert("Subscribed")
-      $('#allLocationsTable').DataTable().ajax.reload()
-      $('#subscribedLocationsTable').DataTable().ajax.reload()
+      $('#subscribeButton' + locationId).addClass('hide')
+      $('#unsubscribeButton' + locationId).removeClass('hide')
     }, function errorCallback(response) {
       console.log(response)
     });
@@ -119,11 +120,14 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       method: 'GET',
       url: '/api/location/' + locationId + '/unsubscribe'
     }).then(function successCallback(response) {
-      alert("Unsubscribed")
-      $('#allLocationsTable').DataTable().ajax.reload()
-      $('#subscribedLocationsTable').DataTable().ajax.reload()
+      $('#subscribeButton' + locationId).removeClass('hide')
+      $('#unsubscribeButton' + locationId).addClass('hide')
     }, function errorCallback(response) {
       console.log(response)
     });
+  }
+  $scope.reloadTables = function () {
+    $('#allLocationsTable').DataTable().ajax.reload()
+    $('#subscribedLocationsTable').DataTable().ajax.reload()
   }
 }])
