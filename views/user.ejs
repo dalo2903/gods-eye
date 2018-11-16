@@ -65,9 +65,19 @@
                                                 Notifications
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="#subscribedLocations" role="tab" data-toggle="tab">
+                                                <i class="material-icons">subscriptions</i>
+                                                Subscribed locations
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#allLocations" role="tab" data-toggle="tab">
+                                                <i class="material-icons"> subscriptions</i>
+                                                All location
+                                            </a>
+                                        </li>
                                     </ul>
-
-
                                 </div>
                             </div>
                             <!-- End Profile Tabs -->
@@ -145,6 +155,34 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <!-- Subscribed locations -->
+                        <div class="tab-pane" id="subscribedLocations">
+                            <div class="table-responsive">
+                                <table id="subscribedLocationsTable" class="table table-striped w-auto" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Address</th>
+                                            <th>Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- All locations -->
+                        <div class="tab-pane" id="allLocations">
+                            <div class="table-responsive">
+                                <table id="allLocationsTable" class="table table-striped w-auto" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Address</th>
+                                            <th>Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
