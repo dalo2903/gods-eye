@@ -58,7 +58,7 @@ router.get('/subscribed', async (req, res) => {
   try {
     const userId = (await AuthService.isLoggedIn(req)).user._id
     // const userId = req.params.userId
-    const user = await UserController.getUser(userId)
+    const user = await UserController.getSubcribedLocation(userId)
     const response = {
       subscribed: user.subscribed
     }

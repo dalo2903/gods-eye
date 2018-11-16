@@ -50,6 +50,10 @@ class UserController extends BaseController {
     }
     return responseStatus.Response(200, {}, responseStatus.UNSUBSCRIBE_SUCCESSFULLY)
   }
+  async getSubcribedLocation (_id) {
+    const user = await User.findById(_id).populate('subscribed')
+    return user
+  }
   async createUser (obj) {
     const uuid = obj.uuid || ''
     let user = await this.getUserByUUID(uuid)
