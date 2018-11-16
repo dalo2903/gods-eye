@@ -10,6 +10,8 @@ module.exports = {
   EMAIL_REQUIRED: 'Email required',
   NAME_REQUIRED: 'Full name required',
   PASSWORD_REQUIRED: 'Password required',
+  TITLE_REQUIRED: 'Title required',
+  LOCATION_REQUIRED: 'Location required',
   INVALID_EMAIL: 'Invalid email',
   SIGN_UP_SUCCESSFULLY: 'Sign up successfully',
   SIGN_IN_SUCCESSFULLY: 'Sign in successfully',

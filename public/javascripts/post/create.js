@@ -44,9 +44,9 @@ app.controller('createController', ['$scope', 'apiService', function ($scope, ap
         window.location.replace('/')
       })
       .catch(function (res) {
-        alert(res.data.message)
+        // alert(res.data.message)
+        showErrorModal(res.data.message)
         $('#submit-create-post').attr('disabled', false)
-        console.log(res)
       })
   })
 
@@ -157,7 +157,7 @@ function initMap () {
     if (!place.geometry) {
       // User entered the name of a Place that was not suggested and
       // pressed the Enter key, or the Place Details request failed.
-      window.alert("No details available for input: '" + place.name + "'")
+      // window.alert("No details available for input: '" + place.name + "'")
       return
     }
 

@@ -15,6 +15,7 @@ const constants = require('../../configs/constants')
 var _ = require('lodash')
 const rpn = require('request-promise-native')
 var config = require('../../config')
+const responseStatus = require('../../configs/responseStatus')
 
 // const m = multer({
 //   storage: multer.memoryStorage(),
@@ -32,6 +33,9 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
     const userCreated = (await AuthService.isLoggedIn(req)).user._id
     // const location = req.body.location
+
+    if (!req.body.title) throw responseStatus.Response(400, {}, responseStatus.TITLE_REQUIRED)
+    if (!req.body.place || !req.body.place.location) throw responseStatus.Response(400, {}, responseStatus.LOCATION_REQUIRED)
 
     let location = await LocationController.existNearbyLocation(req.body.place.location, 10)
     if (!location) {
