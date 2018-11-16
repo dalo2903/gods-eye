@@ -22,7 +22,8 @@
   }
   </style>
 
-<nav class="navbar navbar-default navbar-transparent navbar-fixed-top navbar-color-on-scroll" color-on-scroll=" " id="sectionsNav" ng-controller="headerController">
+<nav class="navbar navbar-default navbar-transparent navbar-fixed-top navbar-color-on-scroll" color-on-scroll=" " id="sectionsNav"
+  ng-controller="headerController">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -145,8 +146,11 @@
           </div>
         </li>
         <li>
-          <a href="/api/auth/sign-out">
-            <span class="glyphicon glyphicon-log-in"></span> SIGN OUT</a>
+          <!-- data-toggle="modal" data-target="#smallAlertModal" -->
+          <!-- <a href="/api/auth/sign-out">
+            <i class="fas fa-sign-out-alt fa-lg"></i> SIGN OUT</a> -->
+          <a href="#" data-toggle="modal" data-target="#sign-out-modal">
+            <i class="fas fa-sign-out-alt fa-lg"></i> SIGN OUT</a>
         </li>
         <% } else { %>
         <li>
@@ -169,7 +173,8 @@
     </div>
   </div>
 
-  <span class="hide" id="user_id"><%- user_id %></span>
+  <span class="hide" id="user_id">
+    <%- user_id %></span>
 </nav>
 
 <script src="/javascripts/header.js"></script>
