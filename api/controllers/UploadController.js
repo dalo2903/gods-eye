@@ -1,7 +1,7 @@
-const Storage = require('@google-cloud/storage')
+const { Storage } = require('@google-cloud/storage')
 const config = require('../../config')
 const tinify = require('tinify')
-const fs = require('fs')
+// const fs = require('fs')
 const bucketName = config.google.cloudStorage.bucketName
 tinify.key = 'uMSAHd1Lvm4U8kGUHmYknkwylO2H2abJ'
 
