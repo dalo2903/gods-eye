@@ -31,8 +31,8 @@ module.exports = {
   },
   datasetDir: 'dataset',
   deep: {
-    // domain: 'http://35.221.250.98',
-    domain: 'http://127.0.0.1:5000',
+    domain: 'http://35.221.250.98',
+    // domain: 'http://127.0.0.1:5000',
     secret: 'hK0Oeiy2zft0ZZtbmaawNW5zT0Ebcybn'
   }
 }

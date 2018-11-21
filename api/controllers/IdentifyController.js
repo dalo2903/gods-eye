@@ -313,7 +313,7 @@ class IdentifyController {
     return out
   }
   async notifyUsers (location, records, visualdata, title) {
-    let locations = await LocationController.getNearbyLocations(location, 100)
+    let locations = await LocationController.getNearbyLocations(location, 1000)
     let users = []
     for (let _location of locations) {
       // let userList = await UserController.getUsersByLocation(_location._id)

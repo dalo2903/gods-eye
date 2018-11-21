@@ -3,10 +3,6 @@ const dataTables = require('mongoose-datatables')
 const Schema = mongoose.Schema
 
 const RecordSchema = new Schema({
-  postId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Post'
-  },
   data: {
     type: Schema.Types.ObjectId,
     ref: 'VisualData'

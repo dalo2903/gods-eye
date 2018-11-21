@@ -87,7 +87,6 @@ router.post('/classified', async (req, res) => {
     if (!visualData) {
       throw responseStatus.Response(403, {}, 'Invalid visualData')
     }
-    res.sendStatus(200)
     console.log(visualData)
     // let file = {}
     // _data = fs.readFileSync(filePath)
@@ -118,14 +117,15 @@ router.post('/classified', async (req, res) => {
       IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
     }
     return res.sendStatus(200)
+
   } catch (error) {
-    // console.log(error)
+    console.log(error)
     return res.status(error.status || 500).send(error)
   }
+
 })
 router.get('/test', async (req, res) => {
   try {
-
     let title = '[ WARNING : A suspicious activity ]'
     let visualData = await VisualDataController.get('5be55cb092370a73195bb8d0')
     let listRecord = []
