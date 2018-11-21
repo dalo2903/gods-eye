@@ -80,7 +80,6 @@ router.post('/classified', async (req, res) => {
   try {
     const info = req.body
     console.log(info)
-
     if (info.id !== constants.adminInfo.id) {
       throw responseStatus.Response(403, {}, responseStatus.WRONG_EMAIL_OR_PASSWORD)
     }
@@ -118,7 +117,7 @@ router.post('/classified', async (req, res) => {
       const resNotify = await IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
       const userEmails = resNotify.users.map(e => e.email)
       console.log(userEmails)
-      // EmailController.sendMail(userEmails, title, visualData.URL)
+      EmailController.sendMail(userEmails, title, visualData.URL)
     }
     return res.sendStatus(200)
   } catch (error) {
