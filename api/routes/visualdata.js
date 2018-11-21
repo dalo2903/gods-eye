@@ -11,6 +11,7 @@ const constants = require('../../configs/constants')
 // const FaceController = require('../controllers/FaceController')
 const RecordController = require('../controllers/RecordController')
 const responseStatus = require('../../configs/responseStatus')
+const EmailController = require('../controllers/EmailController')
 
 // var config = require('../../config')
 
@@ -114,7 +115,9 @@ router.post('/classified', async (req, res) => {
     }
     if (info.result !== 'not-suspicious') {
       let title = '[ WARNING : A suspicious activity ]'
-      IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
+      const resNotify = await IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
+      const userEmails = resNotify.users.map(e => e.email)
+      EmailController.sendMail(userEmails, title, visualData.URL)
     }
     return res.sendStatus(200)
 
