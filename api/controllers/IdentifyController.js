@@ -335,7 +335,7 @@ class IdentifyController {
       let notification = await NotificationController.createNotification(obj)
       notifications.push(notification)
     }
-    return responseStatus.Response(200, {notifications: notifications})
+    return responseStatus.Response(200, {notifications: notifications, users: uniqueUsers})
   }
 
   async calculateScore (personId, location, normConfidence, url, identifyResult) {
