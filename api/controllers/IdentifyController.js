@@ -331,7 +331,7 @@ class IdentifyController {
         title: title,
         location: location
       }
-      console.log(`send notificaiton to ${user._id}`)
+      console.log(`send notification to ${user._id}`)
       let notification = await NotificationController.createNotification(obj)
       notifications.push(notification)
     }

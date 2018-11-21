@@ -63,7 +63,7 @@ class LocationController extends BaseController {
     let locations = await Location.find().near('location', {
       center: thisLocation.location,
       maxDistance: maxDistance
-    })
+    }).populate({ path: 'subscribers', select: 'email', model: 'User' }).exec()
     return locations
   }
   async createLocation (obj) {
