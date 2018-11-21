@@ -117,22 +117,24 @@ router.post('/classified', async (req, res) => {
       let title = '[ WARNING : A suspicious activity ]'
       const resNotify = await IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
       const userEmails = resNotify.users.map(e => e.email)
-      EmailController.sendMail(userEmails, title, visualData.URL)
+      console.log(userEmails)
+      // EmailController.sendMail(userEmails, title, visualData.URL)
     }
     return res.sendStatus(200)
-
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
   }
-
 })
 router.get('/test', async (req, res) => {
   try {
     let title = '[ WARNING : A suspicious activity ]'
     let visualData = await VisualDataController.get('5be55cb092370a73195bb8d0')
     let listRecord = []
-    await IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
+    const resNotify = await IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
+    const userEmails = resNotify.users.map(e => e.email)
+    console.log(userEmails)
+    EmailController.sendMail(userEmails, title, visualData.URL)
     return res.sendStatus(200)
   } catch (error) {
     return res.status(error.status || 500).send(error)
