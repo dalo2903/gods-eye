@@ -18,5 +18,5 @@ function sendMail (to, subject, url) {
 }
 
 module.exports = {
-  sendMultiple: sendMail
+  sendMail: sendMail
 }
