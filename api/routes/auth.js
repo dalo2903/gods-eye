@@ -2,6 +2,8 @@ var express = require('express')
 var router = express.Router()
 var authController = require('../controllers/authController')
 const AuthService = require('../services/AuthService')
+const passport = require('passport')
+const responseStatus = require('../../configs/responseStatus')
 
 router.post('/', (req, res) => {
   try {
@@ -21,13 +23,42 @@ router.post('/', (req, res) => {
   }
 })
 
+// router.post('/sign-in', async (req, res) => {
+//   try {
+//     const response = await authController.signIn(req.body)
+//     const token = AuthService.signJWTToken(req.body.email)
+//     req.session.token = token
+//     req.session.user = response.user
+//     return res.send(response)
+//   } catch (error) {
+//     console.log(error)
+//     return res.status(error.status || 500).send(error)
+//   }
+// })
+
+router.get('/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }))
+
+router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  function (req, res) {
+    const user = req.user
+    const token = AuthService.signJWTToken(user.email)
+    req.session.token = token
+    req.session.user = user
+    return res.redirect('/')
+  })
+
 router.post('/sign-in', async (req, res) => {
   try {
-    const response = await authController.signIn(req.body)
-    const token = AuthService.signJWTToken(req.body.email)
-    req.session.token = token
-    req.session.user = response.user
-    return res.send(response)
+    passport.authenticate('local', function (err, user, info) {
+      if (err) { throw responseStatus.Response(403, {}, responseStatus.WRONG_EMAIL_OR_PASSWORD) }
+      if (!user) { throw responseStatus.Response(403, {}, responseStatus.WRONG_EMAIL_OR_PASSWORD) }
+      const token = AuthService.signJWTToken(req.body.email)
+      req.session.token = token
+      req.session.user = user
+      return res.send({ user: user })
+    })(req, res)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
