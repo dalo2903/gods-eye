@@ -71,11 +71,11 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', function ($s
       }
     ]
   })
-  //Pending posts
+  // Pending posts
   $scope.scrollData = []
   let last = 0
   $scope.block = false
-  function unique(a) {
+  function unique (a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -102,24 +102,28 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', function ($s
     $scope.$apply()
   }
   $scope.loadMorePendingPosts()
-  $scope.approve = function (postId) {
+  $scope.approve = function (postId, $index) {
     $http({
       method: 'put',
       url: 'api/post/' + postId + '/approved'
+    }).then(function () {
+      $scope.scrollData.splice($index, 1)
     })
-    $('#approve' + postId).html('Approved')
-    $('#decline' + postId).removeClass('btn-warning')
-    $('#approve' + postId).attr('disabled', 'disabled');
-    $('#decline' + postId).attr('disabled', 'disabled');
+    // $('#approve' + postId).html('Approved')
+    // $('#decline' + postId).removeClass('btn-warning')
+    // $('#approve' + postId).attr('disabled', 'disabled')
+    // $('#decline' + postId).attr('disabled', 'disabled')
   }
-  $scope.decline = function (postId) {
+  $scope.decline = function (postId, $index) {
     $http({
       method: 'delete',
       url: 'api/post/' + postId
+    }).then(function () {
+      $scope.scrollData.splice($index, 1)
     })
-    $('#decline' + postId).html('Declined')
-    $('#approve' + postId).removeClass('btn-primary')
-    $('#approve' + postId).attr('disabled', 'disabled');
-    $('#decline' + postId).attr('disabled', 'disabled');
+    // $('#decline' + postId).html('Declined')
+    // $('#approve' + postId).removeClass('btn-primary')
+    // $('#approve' + postId).attr('disabled', 'disabled')
+    // $('#decline' + postId).attr('disabled', 'disabled')
   }
 }])

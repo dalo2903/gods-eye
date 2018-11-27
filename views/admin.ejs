@@ -175,8 +175,8 @@
                                             </div>
                                             <!-- Action button -->
                                             <div>
-                                                <button id="approve{{post._id}}" class="btn btn-primary" ng-click="approve(post._id)">Approve</button>
-                                                <button id="decline{{post._id}}" class="btn btn-warning" ng-click="decline(post._id)">Decline</button>
+                                                <button id="approve{{post._id}}" class="btn btn-primary" ng-click="approve(post._id, $index)">Approve</button>
+                                                <button id="decline{{post._id}}" class="btn btn-warning" ng-click="decline(post._id, $index)">Decline</button>
                                             </div>
                                             <hr>
                                         </div>
