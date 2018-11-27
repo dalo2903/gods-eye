@@ -236,7 +236,8 @@ router.get('/user/:id', function (req, res, next) {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    user_avatar: req.session.user ? req.session.user.avatar : ''
   })
 })
 router.get('/user/:id/posts', function (req, res, next) {
@@ -331,7 +332,8 @@ router.get('/admin', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    user_avatar: req.session.user ? req.session.user.avatar : ''
   })
 })
 
