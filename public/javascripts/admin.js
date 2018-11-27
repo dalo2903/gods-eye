@@ -92,7 +92,7 @@ app.controller('AdminController', ['$scope', 'apiService', function ($scope, api
   $scope.loadMore = async function () {
     $scope.block = true
     last = $scope.scrollData.length - 1
-    const newPosts = (await apiService.getPosts(last + 1, 5)).data.posts
+    const newPosts = (await apiService.getPendingPosts(last + 1, 5)).data.posts
     // for (var i = last + 1; i < last + 3; i++) {
     //   $scope.scrollData.push(posts[i])
     // }
@@ -100,5 +100,17 @@ app.controller('AdminController', ['$scope', 'apiService', function ($scope, api
     $scope.scrollData = unique($scope.scrollData)
     $scope.block = false
     $scope.$apply()
+  }
+  $scope.approve = function (postId) {
+    $('#approve' + postId).html('Approved')
+    $('#decline' + postId).removeClass('btn-warning')
+    $('#approve' + postId).attr('disabled', 'disabled');
+    $('#decline' + postId).attr('disabled', 'disabled');
+  }
+  $scope.decline = function (postId) {
+    $('#decline' + postId).html('Declined')
+    $('#approve' + postId).removeClass('btn-primary')
+    $('#approve' + postId).attr('disabled', 'disabled');
+    $('#decline' + postId).attr('disabled', 'disabled');
   }
 }])

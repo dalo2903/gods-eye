@@ -16,7 +16,7 @@
 					<div class="col-sm-6">
 						<div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block" infinite-scroll-distance='1'
 						 class="posts-container">
-							<div id="{{post._id}}" ng-repeat="post in scrollData">
+							<div id="{{post._id}}" ng-repeat="post in scrollData" class="onePostContainer">
 								<div ng-click="postDetail(post._id)" style="cursor:pointer">
 									<div>
 										<h1 class="post-title">{{post.title}}</h1>
