@@ -1,6 +1,6 @@
 var app = angular.module('GodsEye')
 
-app.controller('AdminController', ['$scope', 'apiService', function ($scope, apiService) {
+app.controller('AdminController', ['$scope', 'apiService', '$http', function ($scope, apiService, $http) {
   // Location
   apiService.getLocations()
     .then(function (res) {
@@ -89,7 +89,7 @@ app.controller('AdminController', ['$scope', 'apiService', function ($scope, api
     }
     return out
   }
-  $scope.loadMore = async function () {
+  $scope.loadMorePendingPosts = async function () {
     $scope.block = true
     last = $scope.scrollData.length - 1
     const newPosts = (await apiService.getPendingPosts(last + 1, 5)).data.posts
@@ -101,13 +101,22 @@ app.controller('AdminController', ['$scope', 'apiService', function ($scope, api
     $scope.block = false
     $scope.$apply()
   }
+  $scope.loadMorePendingPosts()
   $scope.approve = function (postId) {
+    $http({
+      method: 'put',
+      url: 'api/post/' + postId + '/approved'
+    })
     $('#approve' + postId).html('Approved')
     $('#decline' + postId).removeClass('btn-warning')
     $('#approve' + postId).attr('disabled', 'disabled');
     $('#decline' + postId).attr('disabled', 'disabled');
   }
   $scope.decline = function (postId) {
+    $http({
+      method: 'delete',
+      url: 'api/post/' + postId
+    })
     $('#decline' + postId).html('Declined')
     $('#approve' + postId).removeClass('btn-primary')
     $('#approve' + postId).attr('disabled', 'disabled');
