@@ -60,6 +60,8 @@ const PROVIDERS = {
   FACEBOOK: 'facebook'
 }
 
+const AVATAR_DEFAULT = 'https://storage.googleapis.com/demo-home-guard/profile-images/default_avatar.png'
+
 module.exports = {
   index: index,
   face: face,
@@ -70,5 +72,6 @@ module.exports = {
   RELATIONSHIP_TYPE_ARRAY: RELATIONSHIP_TYPE_ARRAY,
   RESOURCES: RESOURCES,
   ACTIONS: ACTIONS,
-  PROVIDERS: PROVIDERS
+  PROVIDERS: PROVIDERS,
+  AVATAR_DEFAULT: AVATAR_DEFAULT
 }
