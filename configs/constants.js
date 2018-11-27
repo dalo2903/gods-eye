@@ -54,6 +54,12 @@ const ACTIONS = {
   DELETE: 3
 }
 
+const PROVIDERS = {
+  LOCAL: 'local',
+  GOOGLE: 'google',
+  FACEBOOK: 'facebook'
+}
+
 module.exports = {
   index: index,
   face: face,
@@ -63,5 +69,6 @@ module.exports = {
   score: score,
   RELATIONSHIP_TYPE_ARRAY: RELATIONSHIP_TYPE_ARRAY,
   RESOURCES: RESOURCES,
-  ACTIONS: ACTIONS
+  ACTIONS: ACTIONS,
+  PROVIDERS: PROVIDERS
 }

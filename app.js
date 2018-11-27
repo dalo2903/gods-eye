@@ -37,6 +37,13 @@ app.use(session({
   saveUninitialized: false
 }))
 
+const passport = require('passport')
+
+require('./api/services/passport')
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')

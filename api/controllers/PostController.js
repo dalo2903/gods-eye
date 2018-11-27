@@ -35,7 +35,8 @@ class PostController extends BaseController {
           path: 'identifyResult.persons.personId',
           model: 'Person',
           select: 'name'
-        } }).exec()
+        }
+      }).exec()
     if (!post) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { post: post })
   }
@@ -47,7 +48,16 @@ class PostController extends BaseController {
   }
 
   async getPostsPopulateAuthor (skip, limit) {
-    const posts = await Post.find().sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).exec()
+    const posts = await Post.find({
+      status: 1
+    }).sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).exec()
+    return responseStatus.Response(200, { posts: posts })
+  }
+
+  async getPendingPosts (skip, limit) {
+    const posts = await Post.find({
+      status: 0
+    }).sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).exec()
     return responseStatus.Response(200, { posts: posts })
   }
 

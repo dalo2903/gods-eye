@@ -105,6 +105,14 @@ class UserController extends BaseController {
     }
   }
 
+  async findOrCreateSocialUser (obj) {
+    let user = await this.getUserByEmail(obj.email)
+    if (!user) {
+      user = await this.create(obj)
+    }
+    return user
+  }
+
   async signIn (obj) {
     if (!obj.email) throw responseStatus.Response(400, {}, responseStatus.EMAIL_REQUIRED)
     if (!common.validateEmail(obj.email)) throw responseStatus.Response(400, {}, responseStatus.INVALID_EMAIL)

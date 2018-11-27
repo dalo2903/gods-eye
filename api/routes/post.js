@@ -136,6 +136,18 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
 //   }
 // })
 
+router.get('/pending', async (req, res) => {
+  try {
+    const skip = parseInt(req.query.skip || 0)
+    const limit = parseInt(req.query.limit || 10)
+    const response = await PostController.getPendingPosts(skip, limit)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.get('/:id', async (req, res) => {
   try {
     const id = req.params.id
