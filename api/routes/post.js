@@ -191,4 +191,15 @@ router.delete('/:id', async (req, res) => { // Xoa post
   }
 })
 
+router.put('/:id/approved', async (req, res) => {
+  try {
+    const id = req.params.id
+    await PostController.setApproved(id)
+    return res.send()
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 module.exports = router

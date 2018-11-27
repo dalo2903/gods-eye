@@ -70,6 +70,11 @@ class PostController extends BaseController {
     const posts = await Post.find({ location: location }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name' }).sort('-createdAt')
     return responseStatus.Response(200, { posts: posts })
   }
+
+  async setApproved (_id) {
+    const post = await this.get(_id)
+    await post.set({ status: 1 }).save()
+  }
 }
 
 module.exports = new PostController()
