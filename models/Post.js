@@ -25,6 +25,10 @@ const PostSchema = new Schema({
   location: {
     type: Schema.Types.ObjectId,
     ref: 'Location'
+  },
+  status: {
+    type: Number,
+    default: 0 // 0: Pending, 1: Approved
   }
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
 
