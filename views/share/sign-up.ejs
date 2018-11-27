@@ -1,145 +1,136 @@
 <!doctype html>
+<html lang="en" ng-app="GodsEye">
 
 <% include ./head.ejs -%>
-<% include ./header.ejs -%>
-<html ng-app="GodsEye">
+<script src="/javascripts/sign-up.js"></script>
 
 <head>
     <title>Sign Up</title>
-
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-
-    <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" /> -->
-
-    <!-- CSS Files -->
-    <link href="/lib/assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/lib/assets/css/material-kit.css?v=1.2.1" rel="stylesheet" />
 </head>
 
 <body class="signup-page">
+    <% include ./header.ejs -%>
     <div class="page-header header-filter" filter-color="purple" style="background-image: url('/lib/assets/img/bg7.jpg'); background-size: cover; background-position: top center;">
-        <div class="container" ng-controller="SignUpController">
-            <div class="row">
-                <div class="col-md-10 col-md-offset-1">
+        <div ng-controller='SignUpController'>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
 
-                    <div class="card card-signup">
-                        <h2 class="card-title text-center">Register</h2>
-                        <div class="row">
-                            <div class="col-md-5 col-md-offset-1">
-                                <div class="info info-horizontal">
-                                    <div class="icon icon-rose">
-                                        <i class="material-icons">timeline</i>
-                                    </div>
-                                    <div class="description">
-                                        <h4 class="info-title">Marketing</h4>
-                                        <p class="description">
-                                            We've created the marketing campaign of the website. It was a very
-                                            interesting collaboration.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="info info-horizontal">
-                                    <div class="icon icon-primary">
-                                        <i class="material-icons">code</i>
-                                    </div>
-                                    <div class="description">
-                                        <h4 class="info-title">Fully Coded in HTML5</h4>
-                                        <p class="description">
-                                            We've developed the website with HTML5 and CSS3. The client has access to
-                                            the code using GitHub.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="info info-horizontal">
-                                    <div class="icon icon-info">
-                                        <i class="material-icons">group</i>
-                                    </div>
-                                    <div class="description">
-                                        <h4 class="info-title">Built Audience</h4>
-                                        <p class="description">
-                                            There is also a Fully Customizable CMS Admin Dashboard for this product.
-                                        </p>
+                        <div class="card card-signup">
+                            <h2 class="card-title text-center">Register</h2>
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-1">
+                                    <div class="info info-horizontal">
+                                        <div class="icon icon-rose">
+                                            <i class="material-icons">timeline</i>
+                                        </div>
+                                        <div class="description">
+                                            <h4 class="info-title">Marketing</h4>
+                                            <p class="description">
+                                                We've created the marketing campaign of the website. It was a very
+                                                interesting collaboration.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="social text-center">
-                                    <button onclick="location.href='/api/auth/google';" class="btn btn-just-icon btn-round btn-google">
-                                        <i class="fab fa-google-plus-g"></i>
-                                    </button>
-                                    <button class="btn btn-just-icon btn-round btn-facebook">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </button>
-                                    <h4> or be classical </h4>
+                           
+
+                                    <div class="info info-horizontal">
+                                        <div class="icon icon-primary">
+                                            <i class="material-icons">code</i>
+                                        </div>
+                                        <div class="description">
+                                            <h4 class="info-title">Fully Coded in HTML5</h4>
+                                            <p class="description">
+                                                We've developed the website with HTML5 and CSS3. The client has access
+                                                to
+                                                the code using GitHub.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="info info-horizontal">
+                                        <div class="icon icon-info">
+                                            <i class="material-icons">group</i>
+                                        </div>
+                                        <div class="description">
+                                            <h4 class="info-title">Built Audience</h4>
+                                            <p class="description">
+                                                There is also a Fully Customizable CMS Admin Dashboard for this
+                                                product.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <form class="form" id="signupForm">
-                                    <div class="card-content">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">face</i>
-                                            </span>
-                                            <input type="text" class="form-control" placeholder="Full Name..." name="name" required>
-                                        </div>
-
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">email</i>
-                                            </span>
-                                            <input type="email" class="form-control" placeholder="Email..." autocomplete="email"
-                                                name="email" required>
-                                        </div>
-
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">lock_outline</i>
-                                            </span>
-                                            <input type="password" placeholder="Password..." class="form-control"
-                                                autocomplete="new-password" name="password" required />
-                                        </div>
-
-                                        <!-- If you want to add a checkbox to this form, uncomment this code -->
-
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="optionsCheckboxes" checked>
-                                                I agree to the <a href="#something">terms and conditions</a>.
-                                            </label>
-                                        </div>
+                                <div class="col-md-5">
+                                    <div class="social text-center">
+                                            <button onclick="location.href='/api/auth/google';" class="btn btn-just-icon btn-round btn-google">
+                                            <i class="fab fa-google-plus-g"></i>
+                                        </button>
+                                        <button class="btn btn-just-icon btn-round btn-facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </button>
+                                        <h4> or be classical </h4>
                                     </div>
-                                    <div class="footer text-center" ng-click="signUp()">
-                                        <a class="btn btn-primary btn-round">Get Started</a>
-                                    </div>
-                                </form>
+
+                                    <form class="form" id="signupForm">
+                                        <div class="card-content">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">face</i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Full Name..." name="name"
+                                                    required>
+                                            </div>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">email</i>
+                                                </span>
+                                                <input type="email" class="form-control" placeholder="Email..."
+                                                    autocomplete="email" name="email" required>
+                                            </div>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">lock_outline</i>
+                                                </span>
+                                                <input type="password" placeholder="Password..." class="form-control"
+                                                    autocomplete="new-password" name="password" required />
+                                            </div>
+
+                                            <!-- If you want to add a checkbox to this form, uncomment this code -->
+
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="optionsCheckboxes" checked>
+                                                    I agree to the <a href="#something">terms and conditions</a>.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="footer text-center" ng-click="signUp()">
+                                            <a class="btn btn-primary btn-round">Get Started</a>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
+
+
         </div>
-        <% include ./footer.ejs %>
+        <% include ./footer.ejs -%>
     </div>
 
-
 </body>
-<!--   Core JS Files   -->
-<script src="/lib/assets/js/jquery.min.js" type="text/javascript"></script>
-<script src="/lib/assets/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="/lib/assets/js/material.min.js"></script>
-
-<!--	Plugin for Tags, full documentation here: http://xoxco.com/projects/code/tagsinput/   -->
-<script src="/lib/assets/js/bootstrap-tagsinput.js"></script>
-
-<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput   -->
-<script src="/lib/assets/js/jasny-bootstrap.min.js"></script>
-
-<!--    Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc    -->
-<script src="/lib/assets/js/material-kit.js?v=1.2.1" type="text/javascript"></script>
-
-<script src="/javascripts/sign-up.js"></script>
+<style>
+    .footer {
+        margin-top: 0px;
+    }
+</style>
 
 </html>
