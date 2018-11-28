@@ -201,8 +201,16 @@ function uploadFileV3 (_file, fileName) {
   })
 }
 
+async function deleteFile (filename) {
+  await storage
+    .bucket(bucketName)
+    .file(filename)
+    .delete()
+}
+
 module.exports = {
   uploadFile: uploadFile,
   uploadFileV2: uploadFileV2,
-  uploadFileV3: uploadFileV3
+  uploadFileV3: uploadFileV3,
+  deleteFile: deleteFile
 }
