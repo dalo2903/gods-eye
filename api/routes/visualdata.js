@@ -29,6 +29,22 @@ router.get('/label', async (req, res) => {
   }
 })
 
+router.get('/labeled', async (req, res) => {
+  try {
+    const skip = parseInt(req.query.skip || 0)
+    const limit = parseInt(req.query.limit || 10)
+    const user = (await AuthService.isLoggedIn(req)).user
+    if (user.role !== 999) {
+      throw responseStatus.Response(403, {}, responseStatus.INVALID_REQUEST)
+    }
+    const response = await VisualDataController.getAllLabeledVideoByUsers(skip, limit)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
+  }
+})
+
 router.post('/label', async (req, res) => {
   try {
     let userId = (await AuthService.isLoggedIn(req)).user._id
