@@ -1,74 +1,81 @@
 <% layout('../share/layout.ejs') -%>
 
 
-    <style>
-        @media only screen and (max-width:767px) {
-            #sidebar-laptop {
-                display: none
-            }
-
-            #sidebar-mobile {
-                display: initial
-            }
-
-            .tabbar {
-                height: 48px;
-                background-color: #000;
-                display: -webkit-box;
-                display: -moz-box;
-                overflow-x: scroll;
-                -webkit-overflow-scrolling: touch;
-                overflow-y: hidden;
-                box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-                position: relative;
-                padding: 0 4px;
-                z-index: 0;
-            }
-
-            .tabbar a.active {
-                font-weight: 700;
-                color: #fff;
-            }
-
-            .tabbar a {
-                display: block;
-                color: hsla(0, 0%, 100%, .4);
-                text-decoration: none;
-                line-height: 24px;
-                font-weight: 700;
-                padding: 12px;
-            }
+<style>
+    @media only screen and (max-width:767px) {
+        #sidebar-laptop {
+            display: none
         }
-    </style>
 
-    <script src="/javascripts/post/video-labeling.js"></script>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
-    <div class="main main-raised">
-        <div class="section section-basic">
-            <div class="container">
-                <div ng-controller="VideoLabelingController">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block" infinite-scroll-distance='1' class="postsContainer">
-                                <div id="{{video._id}}" ng-repeat="video in scrollData">
-                                    <div class="col-md-8">
-                                        <!-- <a href="/post/{{post._id}}" style="text-decoration:none"> -->
-                                        <div>
-                                            <!-- <h1>{{video.URL}}</h1> -->
-                                        </div>
-                                        <!-- <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div> -->
-                                        <!-- <div class="address">{{ post.location.address }}</div> -->
-                                        <!-- <div class="data" ng-repeat="data in post.datas"> -->
-                                        <!-- <img class='post' ng-if="data.isImage" ng-src="{{data.URL}}"> -->
-                                        <video class="post" controls>
-                                            <source ng-src="{{video.URL}}" type="video/mp4">
-                                        </video>
-                                        <!-- </div> -->
-                                        <hr>
-                                        <!-- </a> -->
+        #sidebar-mobile {
+            display: initial
+        }
+
+        .tabbar {
+            height: 48px;
+            background-color: #000;
+            display: -webkit-box;
+            display: -moz-box;
+            overflow-x: scroll;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: hidden;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+            position: relative;
+            padding: 0 4px;
+            z-index: 0;
+        }
+
+        .tabbar a.active {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .tabbar a {
+            display: block;
+            color: hsla(0, 0%, 100%, .4);
+            text-decoration: none;
+            line-height: 24px;
+            font-weight: 700;
+            padding: 12px;
+        }
+    }
+</style>
+
+<script src="/javascripts/post/video-labeling.js"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+<div class="main main-raised">
+    <div class="section section-basic">
+        <div class="container">
+            <div ng-controller="VideoLabelingController">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div infinite-scroll='loadMore()' id="postsContainer" infinite-scroll-disabled="block"
+                            infinite-scroll-distance='1' class="postsContainer">
+                            <div id="{{video._id}}" ng-repeat="video in scrollData">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <!-- <a href="/post/{{post._id}}" style="text-decoration:none"> -->
+                                    <div>
+                                        <!-- <h1>{{video.URL}}</h1> -->
                                     </div>
+                                    <!-- <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div> -->
+                                    <!-- <div class="address">{{ post.location.address }}</div> -->
+                                    <!-- <div class="data" ng-repeat="data in post.datas"> -->
+                                    <!-- <img class='post' ng-if="data.isImage" ng-src="{{data.URL}}"> -->
+                                    <video class="post" controls>
+                                        <source ng-src="{{video.URL}}" type="video/mp4">
+                                    </video>
+                                    <!-- </div> -->
+                                    <!-- </a> -->
+                                    <!-- Label button -->
+                                    <div>
+                                        <button id="suspicious{{post._id}}" class="btn btn-primary" ng-click="setLabel(video._id, 'suspicious', $index)">Suspicious</button>
+                                        <button id="notSuspicious{{post._id}}" class="btn btn-warning" ng-click="setLabel(video._id, 'not-suspicious', $index)">Not
+                                            suspicious</button>
+                                    </div>
+                                    <hr>
+                                </div>
 
-                                    <div class="col-sm-4">
+                                <!-- <div class="col-sm-4">
 
                                         <ul id="navMenu" class="nav" style='font-size: 200%'>
                                             <li id="{{location._id}}">
@@ -80,8 +87,7 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                    </div>
-                                </div>
+                                    </div> -->
                             </div>
                         </div>
                     </div>
@@ -89,3 +95,4 @@
             </div>
         </div>
     </div>
+</div>

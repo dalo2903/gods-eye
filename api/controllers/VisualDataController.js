@@ -4,11 +4,11 @@ const VisualData = mongoose.model('VisualData')
 const responseStatus = require('../../configs/responseStatus')
 
 class VisualDataController extends BaseController {
-  constructor () {
+  constructor() {
     super(VisualData)
   }
 
-  async createVisualData (obj) {
+  async createVisualData(obj) {
     const _visualData = {
       description: obj.description,
       URL: obj.URL,
@@ -19,18 +19,18 @@ class VisualDataController extends BaseController {
     return visualData
   }
 
-  async updateIdentifyResult (_id, identifyResult) {
+  async updateIdentifyResult(_id, identifyResult) {
     let visualData = await this.get(_id)
     visualData.identifyResult['persons'] = identifyResult
     // console.log(`updateIdentifyResult : ${identifyResult}`)
     await visualData.save()
   }
-  async updateUrl (_id, URL) {
+  async updateUrl(_id, URL) {
     let visualData = await this.get(_id)
     visualData.URL = URL
     await visualData.save()
   }
-  async getAllVideoWithLabel (minLabel) {
+  async getAllVideoWithLabel(minLabel) {
     let index = `labels.${minLabel}`
     let visualDatas = await VisualData.find({
       [index]: { $exists: true },
@@ -39,7 +39,7 @@ class VisualDataController extends BaseController {
     return visualDatas
   }
 
-  async getAllVideoNotLabeledByUser (userId, skip, limit) {
+  async getAllVideoNotLabeledByUser(userId, skip, limit) {
     let visualDatas =
       await VisualData.find({
         'labels.user': { $ne: userId },
@@ -48,7 +48,7 @@ class VisualDataController extends BaseController {
     return responseStatus.Response(200, { visualDatas: visualDatas })
   }
 
-  async getAllLabeledVideoByUsers (skip, limit) {
+  async getAllLabeledVideoByUsers(skip, limit) {
     let visualDatas =
       await VisualData.find({
         isImage: false
@@ -63,7 +63,7 @@ class VisualDataController extends BaseController {
     return responseStatus.Response(200, { visualDatas: returnVisualDatas })
   }
 
-  async updateLabel (_id, userId, label) {
+  async updateLabel(_id, userId, label) {
     const visualData = await VisualData.findById(_id).where('labels.user').ne(userId)
     if (!visualData) throw responseStatus.Response(404)
     const newLabel = {
@@ -75,7 +75,7 @@ class VisualDataController extends BaseController {
     return responseStatus.Response(200)
   }
 
-  async getUsingDatatable (req, res) {
+  async getUsingDatatable(req, res) {
     VisualData.dataTables({
       limit: req.query.length,
       skip: req.query.start,

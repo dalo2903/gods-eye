@@ -74,8 +74,7 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', function ($s
   // Pending posts
   $scope.scrollData = []
   let last = 0
-  $scope.block = false
-  function unique (a) {
+  function unique(a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -90,15 +89,10 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', function ($s
     return out
   }
   $scope.loadMorePendingPosts = async function () {
-    $scope.block = true
     last = $scope.scrollData.length - 1
     const newPosts = (await apiService.getPendingPosts(last + 1, 5)).data.posts
-    // for (var i = last + 1; i < last + 3; i++) {
-    //   $scope.scrollData.push(posts[i])
-    // }
     $scope.scrollData = $scope.scrollData.concat(newPosts)
     $scope.scrollData = unique($scope.scrollData)
-    $scope.block = false
     $scope.$apply()
   }
   $scope.loadMorePendingPosts()
@@ -109,10 +103,6 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', function ($s
     }).then(function () {
       $scope.scrollData.splice($index, 1)
     })
-    // $('#approve' + postId).html('Approved')
-    // $('#decline' + postId).removeClass('btn-warning')
-    // $('#approve' + postId).attr('disabled', 'disabled')
-    // $('#decline' + postId).attr('disabled', 'disabled')
   }
   $scope.decline = function (postId, $index) {
     $http({
@@ -121,9 +111,21 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', function ($s
     }).then(function () {
       $scope.scrollData.splice($index, 1)
     })
-    // $('#decline' + postId).html('Declined')
-    // $('#approve' + postId).removeClass('btn-primary')
-    // $('#approve' + postId).attr('disabled', 'disabled')
-    // $('#decline' + postId).attr('disabled', 'disabled')
+  }
+  //Pending labeled videos
+  $scope.videos = []
+  $scope.loadMoreVideos = async function () {
+    last = $scope.videos.length - 1
+    const newvideos = (await apiService.getVisualDataForApproving(last + 1, 5)).data.visualDatas
+    $scope.videos = $scope.videos.concat(newvideos)
+    $scope.videos = unique($scope.videos)
+    $scope.$apply()
+  }
+  $scope.loadMoreVideos()
+  $scope.suspicious = function (videoId, $index) {
+
+  }
+  $scope.notSuspicious = function (videoId, $index) {
+
   }
 }])

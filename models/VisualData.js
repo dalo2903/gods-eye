@@ -11,6 +11,10 @@ const VisualDataSchema = new Schema({
     type: String,
     required: true
   },
+  adminLabel: {
+    type: String,
+    default: 'pending'  // pending, suspicious, notSuspicios
+  },
   labels: [{
     user: {
       type: Schema.Types.ObjectId,

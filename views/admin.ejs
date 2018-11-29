@@ -53,6 +53,12 @@
                                             </a>
                                         </li>
                                         <li>
+                                            <a href="#pendingLabels" role="tab" data-toggle="tab">
+                                                <i class="material-icons">video_label</i>
+                                                Pending labeled videos
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="#locations" role="tab" data-toggle="tab">
                                                 <i class="material-icons">palette</i>
                                                 Locations
@@ -184,6 +190,31 @@
                                     <div class="text-center">
                                         <button ng-click='loadMorePendingPosts()' class="btn btn-facebook">Load
                                             more posts</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Pending labeled videos -->
+                        <div class="tab-pane work" id="pendingLabels">
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <div ng-repeat='video in videos'>
+                                        <video class="post" controls>
+                                            <source ng-src="{{video.URL}}" type="video/mp4">
+                                        </video>
+                                        <!-- Label button -->
+                                        <div class='text-center'>
+                                            <button id="suspicious{{post._id}}" class="btn btn-primary" ng-click="suspicious(video._id, $index)">{{video.suspicious}}
+                                                Suspicious</button>
+                                            <button id="notSuspicious{{post._id}}" class="btn btn-warning" ng-click="notSuspicious(video._id, $index)">{{video.notSuspicious}}
+                                                Not
+                                                suspicious</button>
+                                        </div>
+                                        <hr>
+                                    </div>
+                                    <div class="text-center">
+                                        <button ng-click='loadMoreVideos()' class="btn btn-facebook">Load
+                                            more videos</button>
                                     </div>
                                 </div>
                             </div>
