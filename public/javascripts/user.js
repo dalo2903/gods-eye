@@ -95,13 +95,12 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       if (data.subscribers.includes(userId)) {
         $('td', row).eq(2).html('<button id="unsubscribeButton' + data._id + '" class="btn btn-warning" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>' +
           '<button id="subscribeButton' + data._id + '" class="btn btn-primary hide" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
-        $compile(angular.element(row).contents())($scope);
       }
       else {
         $('td', row).eq(2).html('<button id="unsubscribeButton' + data._id + '" class="btn btn-warning hide" ng-click="unsubscribe(\'' + data._id + '\')">Unsubscribe</button>' +
           '<button id="subscribeButton' + data._id + '" class="btn btn-primary" ng-click="subscribe(\'' + data._id + '\')">Subscribe</button>');
-        $compile(angular.element(row).contents())($scope);
       }
+      $compile(angular.element(row).contents())($scope);
     }
   });
   $scope.subscribe = function (locationId) {

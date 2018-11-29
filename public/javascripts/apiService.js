@@ -65,6 +65,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     getPerson: function (_id) {
       return $http.get('/api/person/' + _id)
     },
+    getAllUsers: function () {
+      return $http.get('/api/user/')
+    },
     getLocations: function () {
       return $http.get('/api/location/')
     },

@@ -32,7 +32,7 @@ const UserSchema = new Schema({
   },
   role: {
     type: Number,
-    default: 0
+    default: 0 // 999: admin , 0: normal user, -1: banned
   },
   address: {
     type: Schema.Types.ObjectId,

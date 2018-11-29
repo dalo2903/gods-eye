@@ -8,25 +8,35 @@ const common = require('../common')
 const bcrypt = require('bcrypt')
 
 class UserController extends BaseController {
-  constructor () {
+  constructor() {
     super(User)
   }
 
-  async getUserByUUID (uuid) {
+  async getUserByUUID(uuid) {
     return User.findOne({ uuid: uuid })
   }
 
-  async getUserByEmail (email) {
+  async getUserByEmail(email) {
     return User.findOne({ email: email })
   }
-  async getUsersByLocation (location) {
-    return User.find({address: location})
+  async getUsersByLocation(location) {
+    return User.find({ address: location })
   }
-  async getUser (_id) {
+  async getUser(_id) {
     var user = await this.get(_id)
     return user
   }
-  async addSubcribedLocation (_id, locationId) {
+  async banUser(_id){
+    var user= await this.get(_id)
+    user.role = -1
+    user.save()
+  }
+  async unbanUser(_id){
+    var user= await this.get(_id)
+    user.role = 0
+    user.save()
+  }
+  async addSubcribedLocation(_id, locationId) {
     var user = await this.get(_id)
     if (!user.subscribed) {
       user.subscribed = []
@@ -38,7 +48,7 @@ class UserController extends BaseController {
     }
     return responseStatus.Response(200, {}, responseStatus.SUBSCRIBE_SUCCESSFULLY)
   }
-  async removeSubcribedLocation (_id, locationId) {
+  async removeSubcribedLocation(_id, locationId) {
     let user = await this.get(_id)
     if (!user.subscribed) {
       user.subscribed = []
@@ -50,11 +60,11 @@ class UserController extends BaseController {
     }
     return responseStatus.Response(200, {}, responseStatus.UNSUBSCRIBE_SUCCESSFULLY)
   }
-  async getSubcribedLocation (_id) {
+  async getSubcribedLocation(_id) {
     const user = await User.findById(_id).populate('subscribed')
     return user
   }
-  async createUser (obj) {
+  async createUser(obj) {
     const uuid = obj.uuid || ''
     let user = await this.getUserByUUID(uuid)
     if (!user) {
@@ -65,8 +75,11 @@ class UserController extends BaseController {
       user = await user.save()
     }
   }
-
-  async createUserV2 (obj) {
+  async getAllUsers () {
+    const users = await this.getAll()
+    return responseStatus.Response(200, { users: users })
+  }
+  async createUserV2(obj) {
     if (!obj.name) throw responseStatus.Response(400, {}, responseStatus.NAME_REQUIRED)
     if (!obj.email) throw responseStatus.Response(400, {}, responseStatus.EMAIL_REQUIRED)
     if (!common.validateEmail(obj.email)) throw responseStatus.Response(400, {}, responseStatus.INVALID_EMAIL)
@@ -105,7 +118,7 @@ class UserController extends BaseController {
     }
   }
 
-  async findOrCreateSocialUser (obj) {
+  async findOrCreateSocialUser(obj) {
     let user = await this.getUserByEmail(obj.email)
     if (!user) {
       user = await this.create(obj)
@@ -113,7 +126,7 @@ class UserController extends BaseController {
     return user
   }
 
-  async signIn (obj) {
+  async signIn(obj) {
     if (!obj.email) throw responseStatus.Response(400, {}, responseStatus.EMAIL_REQUIRED)
     if (!common.validateEmail(obj.email)) throw responseStatus.Response(400, {}, responseStatus.INVALID_EMAIL)
     if (!obj.password) throw responseStatus.Response(400, {}, responseStatus.PASSWORD_REQUIRED)
