@@ -48,6 +48,21 @@ class VisualDataController extends BaseController {
     return responseStatus.Response(200, { visualDatas: visualDatas })
   }
 
+  async getAllLabeledVideoByUsers (skip, limit) {
+    let visualDatas =
+      await VisualData.find({
+        isImage: false
+      }).populate('location', 'name address').sort('-createdAt').skip(skip).limit(limit).exec()
+    const returnVisualDatas = visualDatas.map(v => {
+      const np = v.labels.map(l => l.label === 'not-suspicious').length
+      v = JSON.parse(JSON.stringify(v))
+      v.suspicious = v.labels.length - np
+      v.notSuspicious = np
+      return v
+    })
+    return responseStatus.Response(200, { visualDatas: returnVisualDatas })
+  }
+
   async updateLabel (_id, userId, label) {
     const visualData = await VisualData.findById(_id).where('labels.user').ne(userId)
     if (!visualData) throw responseStatus.Response(404)

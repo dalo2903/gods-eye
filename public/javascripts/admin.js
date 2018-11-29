@@ -1,6 +1,6 @@
 var app = angular.module('GodsEye')
 
-app.controller('AdminController', ['$scope', 'apiService', function ($scope, apiService) {
+app.controller('AdminController', ['$scope', 'apiService', '$http', function ($scope, apiService, $http) {
   // Location
   apiService.getLocations()
     .then(function (res) {
@@ -71,11 +71,11 @@ app.controller('AdminController', ['$scope', 'apiService', function ($scope, api
       }
     ]
   })
-  //Pending posts
+  // Pending posts
   $scope.scrollData = []
   let last = 0
   $scope.block = false
-  function unique(a) {
+  function unique (a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -89,7 +89,7 @@ app.controller('AdminController', ['$scope', 'apiService', function ($scope, api
     }
     return out
   }
-  $scope.loadMore = async function () {
+  $scope.loadMorePendingPosts = async function () {
     $scope.block = true
     last = $scope.scrollData.length - 1
     const newPosts = (await apiService.getPendingPosts(last + 1, 5)).data.posts
@@ -101,16 +101,29 @@ app.controller('AdminController', ['$scope', 'apiService', function ($scope, api
     $scope.block = false
     $scope.$apply()
   }
-  $scope.approve = function (postId) {
-    $('#approve' + postId).html('Approved')
-    $('#decline' + postId).removeClass('btn-warning')
-    $('#approve' + postId).attr('disabled', 'disabled');
-    $('#decline' + postId).attr('disabled', 'disabled');
+  $scope.loadMorePendingPosts()
+  $scope.approve = function (postId, $index) {
+    $http({
+      method: 'put',
+      url: 'api/post/' + postId + '/approved'
+    }).then(function () {
+      $scope.scrollData.splice($index, 1)
+    })
+    // $('#approve' + postId).html('Approved')
+    // $('#decline' + postId).removeClass('btn-warning')
+    // $('#approve' + postId).attr('disabled', 'disabled')
+    // $('#decline' + postId).attr('disabled', 'disabled')
   }
-  $scope.decline = function (postId) {
-    $('#decline' + postId).html('Declined')
-    $('#approve' + postId).removeClass('btn-primary')
-    $('#approve' + postId).attr('disabled', 'disabled');
-    $('#decline' + postId).attr('disabled', 'disabled');
+  $scope.decline = function (postId, $index) {
+    $http({
+      method: 'delete',
+      url: 'api/post/' + postId
+    }).then(function () {
+      $scope.scrollData.splice($index, 1)
+    })
+    // $('#decline' + postId).html('Declined')
+    // $('#approve' + postId).removeClass('btn-primary')
+    // $('#approve' + postId).attr('disabled', 'disabled')
+    // $('#decline' + postId).attr('disabled', 'disabled')
   }
 }])

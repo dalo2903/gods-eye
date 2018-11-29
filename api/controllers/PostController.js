@@ -1,4 +1,6 @@
 const BaseController = require('./BaseController')
+const UploadController = require('./UploadController')
+const VisualDataController = require('./VisualDataController')
 const mongoose = require('mongoose')
 const Post = mongoose.model('Post')
 const responseStatus = require('../../configs/responseStatus')
@@ -74,6 +76,15 @@ class PostController extends BaseController {
   async setApproved (_id) {
     const post = await this.get(_id)
     await post.set({ status: 1 }).save()
+  }
+
+  async deletePost (_id) {
+    const post = await Post.findByIdAndDelete(_id.toString()).populate({ path: 'datas', select: 'URL' }).exec()
+    post.datas.map(e => {
+      const fileName = e.URL.split('/').pop()
+      UploadController.deleteFile(fileName)
+      VisualDataController.delete(e._id)
+    })
   }
 }
 
