@@ -79,8 +79,39 @@ class UserController extends BaseController {
       user = await user.save()
     }
   }
+  // async getAllUsers () {
+  //   const users = await this.getAll()
+  //   return responseStatus.Response(200, { users: users })
+  // }
   async getAllUsers () {
-    const users = await this.getAll()
+    const users = await User.aggregate([
+      {
+        $lookup: {
+          from: 'posts',
+          localField: '_id',
+          foreignField: 'userCreated',
+          as: 'posts'
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          createdAt: 1,
+          role: 1,
+          reported: {
+            $sum: {
+              $map: {
+                input: '$posts',
+                in: {
+                  $size: '$$this.reported'
+                }
+              }
+            }
+          }
+        }
+      }
+    ])
     return responseStatus.Response(200, { users: users })
   }
   async createUserV2 (obj) {
@@ -148,10 +179,12 @@ class UserController extends BaseController {
   async verifyPhone (_id, phone) {
     const user = await User.findOne({ phone: phone })
     if (user && user._id.toString() !== _id.toString()) throw responseStatus.Response(409, { user: user }, responseStatus.PHONE_EXISTED)
-    await User.findByIdAndUpdate(_id.toString(), { $set: {
-      verified: true,
-      phone: phone
-    } })
+    await User.findByIdAndUpdate(_id.toString(), {
+      $set: {
+        verified: true,
+        phone: phone
+      }
+    })
   }
 }
 
