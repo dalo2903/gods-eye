@@ -123,6 +123,9 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     },
     deletePost: function (_id) {
       return $http.delete('/api/post/' + _id)
+    },
+    getUserProfile: function () {
+      return $http.get('/api/user/profile')
     }
   }
 }])

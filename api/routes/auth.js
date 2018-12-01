@@ -50,19 +50,25 @@ router.get('/google/callback',
   })
 
 router.post('/sign-in', async (req, res) => {
-  try {
-    passport.authenticate('local', function (err, user, info) {
+  // try {
+  passport.authenticate('local', function (err, user, info) {
+    try {
       if (err) { throw responseStatus.Response(403, {}, responseStatus.WRONG_EMAIL_OR_PASSWORD) }
       if (!user) { throw responseStatus.Response(403, {}, responseStatus.WRONG_EMAIL_OR_PASSWORD) }
+      if (user.role < 0) { throw responseStatus.Response(400, {}, responseStatus.BANNED_ACCOUNT) }
       const token = AuthService.signJWTToken(req.body.email)
       req.session.token = token
       req.session.user = user
       return res.send({ user: user })
-    })(req, res)
-  } catch (error) {
-    console.log(error)
-    return res.status(error.status || 500).send(error)
-  }
+    } catch (error) {
+      console.log(error)
+      return res.status(error.status || 500).send(error)
+    }
+  })(req, res)
+  // } catch (error) {
+  //   console.log(error)
+  //   return res.status(error.status || 500).send(error)
+  // }
 })
 
 router.post('/sign-up', async (req, res) => {

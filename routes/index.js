@@ -100,7 +100,14 @@ router.get('/location/:id', function (req, res, next) {
 router.get('/post/create', async (req, res) => {
   try {
     const token = AuthService.getTokenFromRequest(req)
-    await AuthService.verifyJWTToken(token)
+    const resolve = await AuthService.verifyJWTToken(token)
+    const obj = {
+      role: resolve.user.role,
+      resource: constants.RESOURCES.POST,
+      action: constants.ACTIONS.CREATE,
+      owner: true
+    }
+    await AuthService.checkPermission(obj)
   } catch (error) {
     return res.redirect('/')
   }

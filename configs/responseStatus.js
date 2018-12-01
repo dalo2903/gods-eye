@@ -7,6 +7,7 @@ module.exports = {
   },
   POST_NOT_FOUND: 'Post not found',
   EMAIL_EXISTED: 'Email existed',
+  PHONE_EXISTED: 'Phone number existed',
   EMAIL_REQUIRED: 'Email required',
   NAME_REQUIRED: 'Full name required',
   PASSWORD_REQUIRED: 'Password required',
@@ -19,5 +20,6 @@ module.exports = {
   INVALID_REQUEST: 'Invalid request',
   CREATE_LOCATION_SUCCESSFULLY: 'Create location successfully',
   SUBSCRIBE_SUCCESSFULLY: 'Subcribe successfully',
-  UNSUBSCRIBE_SUCCESSFULLY: 'Unsubcribe successfully'
+  UNSUBSCRIBE_SUCCESSFULLY: 'Unsubcribe successfully',
+  BANNED_ACCOUNT: 'Your account has been banned. Please contact the Administrator'
 }
