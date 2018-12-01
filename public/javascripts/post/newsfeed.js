@@ -46,8 +46,7 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window'
       console.log(response)
     });
   }
-  $scope.isReported = function (reported) {
-    $('#reportButton' + postId).removeClass('btn-danger')
+  $scope.isReported = function (reported, postId) {
     return reported.includes($scope.userId)
   }
 }

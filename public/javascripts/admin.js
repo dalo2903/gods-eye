@@ -83,6 +83,7 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
         data: 'email',
       },
       { data: 'createdAt' },
+      { data: 'reported' },
       {
         data: 'role',
         defaultContent: ''
@@ -90,14 +91,14 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     ],
     fnCreatedRow: function (row, data, index) {
       if (data.role == 0) {
-        $('td', row).eq(3).html('<button id="banButton' + data._id + '"class="btn btn-danger" ng-click="banUser(\'' + data._id + '\')">Ban user</button>' +
+        $('td', row).eq(4).html('<button id="banButton' + data._id + '"class="btn btn-danger" ng-click="banUser(\'' + data._id + '\')">Ban user</button>' +
           '<button id="unbanButton' + data._id + '"class="btn btn-primary hide" ng-click="unbanUser(\'' + data._id + '\')">Unban user</button>')
       }
       else if (data.role == -1) {
-        $('td', row).eq(3).html('<button id="banButton' + data._id + '"class="btn btn-danger hide" ng-click="banUser(\'' + data._id + '\')">Ban user</button>' +
+        $('td', row).eq(4).html('<button id="banButton' + data._id + '"class="btn btn-danger hide" ng-click="banUser(\'' + data._id + '\')">Ban user</button>' +
           '<button id="unbanButton' + data._id + '"class="btn btn-primary" ng-click="unbanUser(\'' + data._id + '\')">Unban user</button>')
       } else if (data.role == 999) {
-        $('td', row).eq(3).html('<button class="btn btn-danger" disabled ng-click="banUser(\'' + data._id + '\')">Ban user</button>')
+        $('td', row).eq(4).html('<button class="btn btn-danger" disabled ng-click="banUser(\'' + data._id + '\')">Ban user</button>')
       }
       $compile(angular.element(row).contents())($scope);
     },

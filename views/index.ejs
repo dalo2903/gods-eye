@@ -52,7 +52,8 @@
 								<!-- Buttons -->
 								<div class="text-right">
 									<button ng-disabled="checked" class="btn btn-primary" ng-click="postDetail(post._id)">Comment</button>
-									<button ng-disabled="isReported(post.reported)" id="reportButton{{post._id}}" class="btn btn-danger" ng-click="report(post._id)">Report</button>
+									<button ng-disabled="isReported(post.reported,post._id)" id="reportButton{{post._id}}" class="btn btn-danger"
+									 ng-click="report(post._id)">Report</button>
 								</div>
 								<hr>
 							</div>
