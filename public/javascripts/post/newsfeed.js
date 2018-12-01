@@ -40,14 +40,14 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window'
       url: '/api/post/' + postId + '/report'
     }).then(function successCallback(response) {
       $('#reportButton' + postId).attr("disabled", "disabled");
+      $('#reportButton' + postId).removeClass('btn-danger')
       $('#reportButton' + postId).html('Reported')
     }, function errorCallback(response) {
       console.log(response)
     });
   }
   $scope.isReported = function (reported) {
-    console.log(reported)
-    console.log($scope.userId)
+    $('#reportButton' + postId).removeClass('btn-danger')
     return reported.includes($scope.userId)
   }
 }
