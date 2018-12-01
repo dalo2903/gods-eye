@@ -20,5 +20,6 @@ module.exports = {
   INVALID_REQUEST: 'Invalid request',
   CREATE_LOCATION_SUCCESSFULLY: 'Create location successfully',
   SUBSCRIBE_SUCCESSFULLY: 'Subcribe successfully',
-  UNSUBSCRIBE_SUCCESSFULLY: 'Unsubcribe successfully'
+  UNSUBSCRIBE_SUCCESSFULLY: 'Unsubcribe successfully',
+  BANNED_ACCOUNT: 'Your account has been banned. Please contact the Administrator'
 }

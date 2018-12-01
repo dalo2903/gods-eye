@@ -32,6 +32,7 @@ app.controller('SignInController', ['$scope', 'apiService', function ($scope, ap
         window.location.href = '/'
       })
       .catch(function (res) {
+        // console.log(res)
         // alert(res.data.message)
         showErrorModal(res.data.message)
       })
