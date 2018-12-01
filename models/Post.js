@@ -29,7 +29,11 @@ const PostSchema = new Schema({
   status: {
     type: Number,
     default: 0 // 0: Pending, 1: Approved
-  }
+  },
+  reported: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+  }]
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
 
 // PostSchema.virtual('author', {

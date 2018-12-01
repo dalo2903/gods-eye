@@ -6,11 +6,11 @@ const Post = mongoose.model('Post')
 const responseStatus = require('../../configs/responseStatus')
 
 class PostController extends BaseController {
-  constructor () {
+  constructor() {
     super(Post)
   }
 
-  async createPost (obj, userCreated) {
+  async createPost(obj, userCreated) {
     // if (!obj.title) throw responseStatus.Response(400, {}, 'title')
     const _post = {
       userCreated: userCreated,
@@ -25,7 +25,7 @@ class PostController extends BaseController {
     return post
   }
 
-  async getPost (_id) {
+  async getPost(_id) {
     const post = await Post.findById(_id)
       .populate({ path: 'userCreated', select: 'name avatar' })
       .populate({ path: 'location', select: 'name address' })
@@ -43,42 +43,55 @@ class PostController extends BaseController {
     else return responseStatus.Response(200, { post: post })
   }
 
-  async getPostPopulateAuthor (_id) {
+  async getPostPopulateAuthor(_id) {
     const post = await Post.findById(_id).populate({ path: 'userCreated', select: 'name avatar' }).exec()
     if (!post) throw responseStatus.Response(404, {}, responseStatus.POST_NOT_FOUND)
     else return responseStatus.Response(200, { post: post })
   }
 
-  async getPostsPopulateAuthor (skip, limit) {
+  async getPostsPopulateAuthor(skip, limit) {
     const posts = await Post.find({
       status: 1
     }).sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).exec()
     return responseStatus.Response(200, { posts: posts })
   }
 
-  async getPendingPosts (skip, limit) {
+  async getPendingPosts(skip, limit) {
     const posts = await Post.find({
       status: 0
     }).sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).exec()
     return responseStatus.Response(200, { posts: posts })
   }
 
-  async getPostsSameUserCreated (userCreated) {
+  async getPostsSameUserCreated(userCreated) {
     const posts = await Post.find({ userCreated: userCreated }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL' })
     return responseStatus.Response(200, { posts: posts })
   }
 
-  async getPostsByLocation (location) {
+  async getPostsByLocation(location) {
     const posts = await Post.find({ location: location }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name' }).sort('-createdAt')
     return responseStatus.Response(200, { posts: posts })
   }
 
-  async setApproved (_id) {
+  async setApproved(_id) {
     const post = await this.get(_id)
     await post.set({ status: 1 }).save()
   }
+  async reportPost(_id) {
+    const post = await this.get(_id)
+    post.reported += 1
+    post.save()
+  }
 
-  async deletePost (_id) {
+  async reportPost(_id, userId) {
+    const post = await Post.findById(_id).where('reported').ne(userId)
+    if (!post) throw responseStatus.Response(404)
+    post.reported.push(userId)
+    await post.save()
+    return responseStatus.Response(200)
+  }
+
+  async deletePost(_id) {
     const post = await Post.findByIdAndDelete(_id.toString()).populate({ path: 'datas', select: 'URL' }).exec()
     post.datas.map(e => {
       const fileName = e.URL.split('/').pop()

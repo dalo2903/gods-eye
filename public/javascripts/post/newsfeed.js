@@ -2,6 +2,7 @@ var app = angular.module('GodsEye')
 
 app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window', function ($scope, apiService, $http, $window) {
   $scope.scrollData = []
+  $scope.userId = $('#user_id').text().trim()
   let last = 0
   $scope.block = false
   function unique(a) {
@@ -32,6 +33,22 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window'
   }
   $scope.postDetail = function (id) {
     $window.location.href = '/post/' + id;
+  }
+  $scope.report = function (postId) {
+    $http({
+      method: 'put',
+      url: '/api/post/' + postId + '/report'
+    }).then(function successCallback(response) {
+      $('#reportButton' + postId).attr("disabled", "disabled");
+      $('#reportButton' + postId).html('Reported')
+    }, function errorCallback(response) {
+      console.log(response)
+    });
+  }
+  $scope.isReported = function (reported) {
+    console.log(reported)
+    console.log($scope.userId)
+    return reported.includes($scope.userId)
   }
 }
 ])
