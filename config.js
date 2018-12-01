@@ -20,7 +20,7 @@ module.exports = {
     storageBucket: 'centering-dock-194606.appspot.com',
     messagingSenderId: '813488161964'
   },
-  address: 'https://god-eye-cc14.herokuapp.com/',
+  address: 'https://god-eye-cc14.herokuapp.com',
   cookieOptions: { // Bo secure: true vi khong co HTTPS
     maxAge: 60 * 60 * 24 * 5 * 1000, // Set session expiration to 5 days.
     httpOnly: true

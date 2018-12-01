@@ -31,7 +31,8 @@ router.get('/', function (req, res, next) {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -43,7 +44,8 @@ router.get('/about', function (req, res, next) {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -60,7 +62,8 @@ router.get('/sign-in', async (req, res) => {
       type: constants.index.type,
       url: constants.index.url,
       user_id: req.session.user ? req.session.user._id : '',
-      user_name: req.session.user ? req.session.user.name : ''
+      user_name: req.session.user ? req.session.user.name : '',
+      app_id: process.env.ACCOUNT_KIT_APP_ID
     })
   }
 })
@@ -79,7 +82,8 @@ router.get('/sign-up', async (req, res) => {
       url: constants.index.url,
       user_id: req.session.user ? req.session.user._id : '',
       user_name: req.session.user ? req.session.user.name : '',
-      GOOGLE_PLACE_KEY: process.env.GOOGLE_PLACE_KEY
+      GOOGLE_PLACE_KEY: process.env.GOOGLE_PLACE_KEY,
+      app_id: process.env.ACCOUNT_KIT_APP_ID
     })
   }
 })
@@ -93,7 +97,8 @@ router.get('/location/:id', function (req, res, next) {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
-    locationId: req.params.id
+    locationId: req.params.id,
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -120,7 +125,8 @@ router.get('/post/create', async (req, res) => {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
-    GOOGLE_PLACE_KEY: process.env.GOOGLE_PLACE_KEY
+    GOOGLE_PLACE_KEY: process.env.GOOGLE_PLACE_KEY,
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -133,7 +139,8 @@ router.get('/post/:id', (req, res) => {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
-    _id: req.params.id
+    _id: req.params.id,
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -157,7 +164,8 @@ router.get('/post/edit/:id', (req, res) => {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
-    _id: req.params.id
+    _id: req.params.id,
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -169,7 +177,8 @@ router.get('/person/create', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -182,7 +191,8 @@ router.get('/person/face/add/:id', (req, res) => {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
-    _id: req.params.id
+    _id: req.params.id,
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -195,7 +205,8 @@ router.get('/notification/:id', (req, res) => {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
-    _id: req.params.id
+    _id: req.params.id,
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -207,7 +218,8 @@ router.get('/my-profile', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -219,7 +231,8 @@ router.get('/upload', function (req, res, next) {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -231,7 +244,8 @@ router.get('/identify', function (req, res, next) {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -244,7 +258,8 @@ router.get('/user/:id', function (req, res, next) {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
-    user_avatar: req.session.user ? req.session.user.avatar : ''
+    user_avatar: req.session.user ? req.session.user.avatar : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 router.get('/user/:id/posts', function (req, res, next) {
@@ -255,7 +270,8 @@ router.get('/user/:id/posts', function (req, res, next) {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 router.get('/user/:id/persons', function (req, res, next) {
@@ -266,7 +282,8 @@ router.get('/user/:id/persons', function (req, res, next) {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -278,7 +295,8 @@ router.get('/gallery', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -290,7 +308,8 @@ router.get('/person', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -302,7 +321,8 @@ router.get('/label', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
@@ -314,7 +334,8 @@ router.get('/subscription', (req, res) => {
     type: constants.index.type,
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
-    user_name: req.session.user ? req.session.user.name : ''
+    user_name: req.session.user ? req.session.user.name : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 // Sau code nay la cua admin
@@ -340,7 +361,8 @@ router.get('/admin', (req, res) => {
     url: constants.index.url,
     user_id: req.session.user ? req.session.user._id : '',
     user_name: req.session.user ? req.session.user.name : '',
-    user_avatar: req.session.user ? req.session.user.avatar : ''
+    user_avatar: req.session.user ? req.session.user.avatar : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
   })
 })
 
