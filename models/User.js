@@ -46,6 +46,10 @@ const UserSchema = new Schema({
   provider: {
     type: String,
     default: constants.PROVIDERS.LOCAL
+  },
+  verified: {
+    type: Boolean,
+    default: false
   }
 }, { usePushEach: true, timestamps: true })
 

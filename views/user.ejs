@@ -2,6 +2,10 @@
 <% include ./share/head.ejs -%>
 
 <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+
+<!-- HTTPS required. HTTP will give a 403 forbidden response -->
+<script src="https://sdk.accountkit.com/en_US/sdk.js"></script>
+
 <script src="/javascripts/user.js"></script>
 
 <title>
@@ -27,9 +31,9 @@
                                     <%- user_id -%>
                                 </span>
                                 <div class="name">
-                                    <h2>
+                                    <h3 class="title">
                                         <%- user_name -%>
-                                    </h2>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
@@ -40,10 +44,26 @@
                         </div>
                     </div>
 
-
                     <div class="description text-center">
-                        <p>Nam không đẹp trai, không chỉ thế chơi ma sói rất thủ đoạn, hại bạn hại người hại luôn địch
-                        </p>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">email</i>
+                            </span>
+                            <input type="email" class="form-control" ng-model="user.email" placeholder="Email"
+                                autocomplete="email" name="email" disabled>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="material-icons">phone</i>
+                            </span>
+                            <div style="display: flex">
+                                <input class="form-control" value="+84" id="country_code" disabled />
+                                <input class="form-control" ng-model="user.phone" type="number" placeholder="Phone number"
+                                    id="phone_number" ng-disabled="user.verified" />
+                                <i style="margin-top: 30px; margin-left: 10px; color: #9c27b0;" class="material-icons" ng-show="user.verified">verified_user</i>
+                                <a style="margin: 20px" ng-click="verifyPhone()" class="btn btn-primary" ng-hide="user.verified">Verify</a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
