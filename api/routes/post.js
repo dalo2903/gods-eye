@@ -136,11 +136,11 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
 //   }
 // })
 
-router.get('/pending', async (req, res) => {
+router.get('/reported', async (req, res) => {
   try {
     const skip = parseInt(req.query.skip || 0)
     const limit = parseInt(req.query.limit || 10)
-    const response = await PostController.getPendingPosts(skip, limit)
+    const response = await PostController.getReportedPosts(skip, limit)
     return res.send(response)
   } catch (error) {
     console.log(error)

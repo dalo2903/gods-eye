@@ -35,16 +35,19 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window'
     $window.location.href = '/post/' + id;
   }
   $scope.report = function (postId) {
-    $http({
-      method: 'put',
-      url: '/api/post/' + postId + '/report'
-    }).then(function successCallback(response) {
-      $('#reportButton' + postId).attr("disabled", "disabled");
-      $('#reportButton' + postId).removeClass('btn-danger')
-      $('#reportButton' + postId).html('Reported')
-    }, function errorCallback(response) {
-      console.log(response)
-    });
+    var check = confirm("Report post for rules violation?");
+    if (check == true) {
+      $http({
+        method: 'put',
+        url: '/api/post/' + postId + '/report'
+      }).then(function successCallback(response) {
+        $('#reportButton' + postId).attr("disabled", "disabled");
+        $('#reportButton' + postId).removeClass('btn-danger')
+        $('#reportButton' + postId).html('Reported')
+      }, function errorCallback(response) {
+        console.log(response)
+      });
+    }
   }
   $scope.isReported = function (reported, postId) {
     if (reported.includes($scope.userId)) {

@@ -44,15 +44,7 @@
                             <div class="profile-tabs">
                                 <div class="nav-align-center">
                                     <ul class="nav nav-pills nav-pills-icons" role="tablist">
-                                        <!-- <li class="active">
-                                            <a href="#pendingPosts" role="tab" data-toggle="tab">
-                                                <i class="material-icons">
-                                                    assignment_turned_in
-                                                </i>
-                                                Pending posts
-                                            </a>
-                                        </li>
-                                        <li>
+                                        <!-- <li>
                                             <a href="#pendingLabels" role="tab" data-toggle="tab">
                                                 <i class="material-icons">video_label</i>
                                                 Pending labeled videos
@@ -60,29 +52,39 @@
                                         </li> -->
                                         <li class="active">
                                             <a href="#locations" role="tab" data-toggle="tab">
-                                                <i class="material-icons">palette</i>
+                                                <i class="material-icons">
+                                                    location_on
+                                                </i>
                                                 Locations
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#visual-data" role="tab" data-toggle="tab">
-                                                <i class="material-icons">people</i>
+                                                <i class="material-icons">camera</i>
                                                 Visual datas
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#records" role="tab" data-toggle="tab">
-                                                <i class="material-icons">camera</i>
-                                                Records
+                                                <i class="material-icons">
+                                                    receipt
+                                                </i> Records
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#users" role="tab" data-toggle="tab">
-                                                <i class="material-icons">camera</i>
+                                                <i class="material-icons">people</i>
                                                 All users
                                             </a>
                                         </li>
-
+                                        <li>
+                                            <a href="#reportedPosts" role="tab" data-toggle="tab">
+                                                <i class="material-icons">
+                                                    highlight_off
+                                                </i>
+                                                Reported posts
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -158,8 +160,8 @@
                                 </table>
                             </div>
                         </div>
-                        <!-- Pending Posts -->
-                        <!-- <div class="tab-pane active" id="pendingPosts">
+                        <!-- Reported Posts -->
+                        <div class="tab-pane work" id="reportedPosts">
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3">
                                     <div class="posts-container">
@@ -173,24 +175,24 @@
                                                     "HH:mm
                                                     dd/MM/yyyy"}}</div>
                                                 <div class="address">{{ post.location.name || post.location.address }}</div>
-                                            </div> -->
-                        <!-- Carousel -->
-                        <!-- <div id="carousel{{post._id}}" class="carousel slide" data-ride="carousel">
+                                            </div>
+                                            <!-- Carousel -->
+                                            <div id="carousel{{post._id}}" class="carousel slide" data-ride="carousel">
                                                 <ol class="carousel-indicators">
                                                     <li data-target="#carousel{{post._id}}" data-slide-to="{{$index}}"
                                                         ng-class='{active:$first}' ng-repeat="data in post.datas"></li>
-                                                </ol> -->
-                        <!-- Wrapper for slides -->
-                        <!-- <div class="carousel-inner">
+                                                </ol>
+                                                <!-- Wrapper for slides -->
+                                                <div class="carousel-inner">
                                                     <div class="item" ng-repeat="data in post.datas" ng-class='{active:$first}'>
                                                         <img class="post" ng-src="{{data.URL}}" ng-if="data.isImage">
                                                         <video class='post' ng-if="!data.isImage" controls>
                                                             <source ng-src="{{data.URL}}" type="video/mp4">
                                                         </video>
                                                     </div>
-                                                </div> -->
-                        <!-- Left and right controls -->
-                        <!-- <a class="left carousel-control" href="#carousel{{post._id}}"
+                                                </div>
+                                                <!-- Left and right controls -->
+                                                <a class="left carousel-control" href="#carousel{{post._id}}"
                                                     data-slide="prev">
                                                     <span class="glyphicon glyphicon-chevron-left"></span>
                                                     <span class="sr-only">Previous</span>
@@ -200,22 +202,26 @@
                                                     <span class="glyphicon glyphicon-chevron-right"></span>
                                                     <span class="sr-only">Next</span>
                                                 </a>
-                                            </div> -->
-                        <!-- Action button -->
-                        <!-- <div>
-                                                <button id="approve{{post._id}}" class="btn btn-primary" ng-click="approve(post._id, $index)">Approve</button>
-                                                <button id="decline{{post._id}}" class="btn btn-warning" ng-click="decline(post._id, $index)">Decline</button>
+                                            </div>
+                                            <!-- Action button -->
+                                            <div class="text-right">
+                                                <!-- <button id="approve{{post._id}}" class="btn btn-primary" ng-click="approve(post._id, $index)">Approve</button> -->
+                                                <button class="btn btn-warning" disabled>Reported
+                                                    {{post.reported.length}} times
+                                                </button>
+                                                <button id="delete{{post._id}}" class="btn btn-danger" ng-click="delete(post._id, $index)">Delete
+                                                    post</button>
                                             </div>
                                             <hr>
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <button ng-click='loadMorePendingPosts()' class="btn btn-facebook">Load
+                                        <button ng-click='loadMoreReportedPosts()' class="btn btn-facebook">Load
                                             more posts</button>
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                         <!-- Pending labeled videos -->
                         <!-- <div class="tab-pane work" id="pendingLabels">
                             <div class="row">

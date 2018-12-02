@@ -134,31 +134,31 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     });
   }
 
-  // // Pending posts
-  // $scope.scrollData = []
-  // let last = 0
-  // function unique(a) {
-  //   var seen = {}
-  //   var out = []
-  //   var len = a.length
-  //   var j = 0
-  //   for (var i = 0; i < len; i++) {
-  //     var item = a[i]._id
-  //     if (seen[item] !== 1) {
-  //       seen[item] = 1
-  //       out[j++] = a[i]
-  //     }
-  //   }
-  //   return out
-  // }
-  // $scope.loadMorePendingPosts = async function () {
-  //   last = $scope.scrollData.length - 1
-  //   const newPosts = (await apiService.getPendingPosts(last + 1, 5)).data.posts
-  //   $scope.scrollData = $scope.scrollData.concat(newPosts)
-  //   $scope.scrollData = unique($scope.scrollData)
-  //   $scope.$apply()
-  // }
-  // $scope.loadMorePendingPosts()
+  // Reported posts
+  $scope.scrollData = []
+  let last = 0
+  function unique(a) {
+    var seen = {}
+    var out = []
+    var len = a.length
+    var j = 0
+    for (var i = 0; i < len; i++) {
+      var item = a[i]._id
+      if (seen[item] !== 1) {
+        seen[item] = 1
+        out[j++] = a[i]
+      }
+    }
+    return out
+  }
+  $scope.loadMoreReportedPosts = async function () {
+    last = $scope.scrollData.length - 1
+    const newPosts = (await apiService.getReportedPosts(last + 1, 5)).data.posts
+    $scope.scrollData = $scope.scrollData.concat(newPosts)
+    $scope.scrollData = unique($scope.scrollData)
+    $scope.$apply()
+  }
+  $scope.loadMoreReportedPosts()
   // $scope.approve = function (postId, $index) {
   //   $http({
   //     method: 'put',
@@ -167,14 +167,18 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
   //     $scope.scrollData.splice($index, 1)
   //   })
   // }
-  // $scope.decline = function (postId, $index) {
-  //   $http({
-  //     method: 'delete',
-  //     url: 'api/post/' + postId
-  //   }).then(function () {
-  //     $scope.scrollData.splice($index, 1)
-  //   })
-  // }
+  $scope.delete = function (postId, $index) {
+    var check = confirm("Delete post?");
+    if (check == true) {
+      $http({
+        method: 'delete',
+        url: 'api/post/' + postId
+      }).then(function () {
+        $scope.scrollData.splice($index, 1)
+      })
+    }
+
+  }
   // //Pending labeled videos
   // $scope.videos = []
   // $scope.loadMoreVideos = async function () {
