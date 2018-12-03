@@ -182,7 +182,8 @@ class UserController extends BaseController {
     await User.findByIdAndUpdate(_id.toString(), {
       $set: {
         verified: true,
-        phone: phone
+        phone: phone,
+        role: 10
       }
     })
   }
