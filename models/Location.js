@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const dataTables = require('mongoose-datatables')
 const Schema = mongoose.Schema
 
 const LocationSchema = new Schema({
@@ -28,5 +29,7 @@ const LocationSchema = new Schema({
 }, { usePushEach: true, timestamps: true })
 
 LocationSchema.index({location: '2dsphere'})
+
+LocationSchema.plugin(dataTables)
 
 mongoose.model('Location', LocationSchema)

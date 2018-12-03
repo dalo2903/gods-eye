@@ -2,7 +2,7 @@ const BaseController = require('./BaseController')
 const mongoose = require('mongoose')
 const Location = mongoose.model('Location')
 const responseStatus = require('../../configs/responseStatus')
-
+const dateFormat = require('dateformat')
 class LocationController extends BaseController {
   constructor () {
     super(Location)
@@ -16,6 +16,35 @@ class LocationController extends BaseController {
   async getLocation (locationId) {
     const location = await this.get(locationId)
     return responseStatus.Response(200, { location: location })
+  }
+
+  async getUsingDatatable (req, res) {
+    Location.dataTables({
+      limit: req.query.length,
+      skip: req.query.start,
+      order: req.query.order,
+      columns: req.query.columns,
+      search: {
+        value: req.query.search.value,
+        fields: ['name', 'address']
+      },
+      formatter: function (location) {
+        console.log(location)
+        return {
+          name: location.name,
+          address: location.address,
+          createdAt: dateFormat(new Date(location.createdAt), 'HH:MM dd/mm/yyyy')
+        }
+      }
+    }).then((table) => {
+      console.log(table)
+      table.recordsFiltered = table.total
+      table.recordsTotal = table.total
+      res.json(table)
+    }).catch((err) => {
+      console.log(err)
+      res.json([])
+    })
   }
 
   async updateResident (locationId, userId) {

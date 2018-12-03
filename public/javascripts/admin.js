@@ -2,13 +2,21 @@ var app = angular.module('GodsEye')
 
 app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', function ($scope, apiService, $http, $compile) {
   // Location
-  apiService.getLocations()
-    .then(function (res) {
-      $scope.locations = res.data.locations
-    })
-    .catch(function (res) {
-      console.log(res)
-    })
+  $('#locationTable').DataTable({
+    ajax: '/api/location',
+    processing: true,
+    serverSide: true,
+    columns: [
+      { data: 'name' },
+      {
+        data: 'address',
+        defaultContent: '<i>Not available</i>'
+      },
+      { data: 'createdAt' }
+    ],
+    order: [[ 2, 'desc' ]]
+  })
+
   // Visual data
   $('#visualTable').DataTable({
     'ajax': '/api/visual-data',
@@ -37,10 +45,11 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
       }
     ]
   })
+
   // Record
   $('#recordTable').DataTable({
-    'ajax': '/api/record',
-    'columns': [
+    ajax: '/api/record',
+    columns: [
       {
         data: 'URL',
         defaultContent: '<img class="visual-data" src="https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg"></a>'
@@ -57,9 +66,9 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     ],
     fnCreatedRow: function (row, data, index) {
       if (data.isImage) {
-        $('td', row).eq(0).html('<a style="color:blue" href="' + data.URL + '"> <img class="visual-data" src="' + data.URL + '"></a>')
+        $('td', row).eq(0).html('<a style="color:blue" href="' + data.data.URL + '"> <img class="visual-data" src="' + data.data.URL + '"></a>')
       } else {
-        $('td', row).eq(0).html('<a style="color:blue" href="' + data.URL + '"> <video class="visual-data" controls><source src="' + data.URL + '" type="video/mp4" ></video></a>')
+        $('td', row).eq(0).html('<a style="color:blue" href="' + data.data.URL + '"> <video class="visual-data" controls><source src="' + data.data.URL + '" type="video/mp4" ></video></a>')
       }
     },
     columnDefs: [
@@ -71,16 +80,17 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
       }
     ]
   })
-  //All users
+
+  // All users
   $('#usersTable').DataTable({
-    'ajax': {
+    ajax: {
       url: '/api/user/',
       dataSrc: 'users'
     },
-    'columns': [
+    columns: [
       { data: 'name' },
       {
-        data: 'email',
+        data: 'email'
       },
       { data: 'createdAt' },
       { data: 'reported' },
@@ -90,17 +100,16 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
       }
     ],
     fnCreatedRow: function (row, data, index) {
-      if (data.role == 0) {
+      if (data.role === 0 || data.role === 10) {
         $('td', row).eq(4).html('<button id="banButton' + data._id + '"class="btn btn-danger" ng-click="banUser(\'' + data._id + '\')">Ban user</button>' +
           '<button id="unbanButton' + data._id + '"class="btn btn-primary hide" ng-click="unbanUser(\'' + data._id + '\')">Unban user</button>')
-      }
-      else if (data.role == -1) {
+      } else if (data.role === -1) {
         $('td', row).eq(4).html('<button id="banButton' + data._id + '"class="btn btn-danger hide" ng-click="banUser(\'' + data._id + '\')">Ban user</button>' +
           '<button id="unbanButton' + data._id + '"class="btn btn-primary" ng-click="unbanUser(\'' + data._id + '\')">Unban user</button>')
-      } else if (data.role == 999) {
+      } else if (data.role === 999) {
         $('td', row).eq(4).html('<button class="btn btn-danger" disabled ng-click="banUser(\'' + data._id + '\')">Ban user</button>')
       }
-      $compile(angular.element(row).contents())($scope);
+      $compile(angular.element(row).contents())($scope)
     },
     columnDefs: [
       {
@@ -111,33 +120,35 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
       }
     ]
   })
+
   $scope.banUser = function (userId) {
     $http({
       method: 'GET',
       url: '/api/user/' + userId + '/ban'
-    }).then(function successCallback(response) {
+    }).then(function successCallback (response) {
       $('#banButton' + userId).addClass('hide')
       $('#unbanButton' + userId).removeClass('hide')
-    }, function errorCallback(response) {
+    }, function errorCallback (response) {
       console.log(response)
-    });
+    })
   }
+
   $scope.unbanUser = function (userId) {
     $http({
       method: 'GET',
       url: '/api/user/' + userId + '/unban'
-    }).then(function successCallback(response) {
+    }).then(function successCallback (response) {
       $('#banButton' + userId).removeClass('hide')
       $('#unbanButton' + userId).addClass('hide')
-    }, function errorCallback(response) {
+    }, function errorCallback (response) {
       console.log(response)
-    });
+    })
   }
 
   // Reported posts
   $scope.scrollData = []
   let last = 0
-  function unique(a) {
+  function unique (a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -167,9 +178,10 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
   //     $scope.scrollData.splice($index, 1)
   //   })
   // }
+
   $scope.delete = function (postId, $index) {
-    var check = confirm("Delete post?");
-    if (check == true) {
+    var check = confirm('Delete post?')
+    if (check === true) {
       $http({
         method: 'delete',
         url: 'api/post/' + postId
@@ -177,8 +189,8 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
         $scope.scrollData.splice($index, 1)
       })
     }
-
   }
+
   // //Pending labeled videos
   // $scope.videos = []
   // $scope.loadMoreVideos = async function () {

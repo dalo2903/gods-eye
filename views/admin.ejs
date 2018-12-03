@@ -93,21 +93,39 @@
                     </div>
                     <div class="tab-content">
                         <!-- Location -->
-                        <div class="tab-pane work active" id="locations">
+                        <!-- <div class="tab-pane work active" id="locations">
                             <div class="table-responsive">
                                 <table class="table table-striped w-auto">
                                     <thead>
                                         <tr>
+                                            <th>Name</th>
                                             <th>Address</th>
                                             <th>Created At</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="location in locations | orderBy:'-createdAt'">
+                                            <td class="text-left">{{ location.name }}</td>
                                             <td class="text-left">{{ location.address }}</td>
                                             <td>{{ location.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
                                         </tr>
                                     </tbody>
+                                </table>
+                            </div>
+                        </div> -->
+                        <div class="tab-pane work active" id="locations">
+                            <div class="table-responsive">
+                                <table id="locationTable" class="table table-striped w-auto" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Address</th>
+                                            <th>Created At</th>
+                                            <!-- <th>Identified people</th> -->
+                                            <!-- <th>Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>

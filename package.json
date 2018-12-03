@@ -15,6 +15,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
+    "dateformat": "^3.0.3",
     "debug": "~2.6.9",
     "dotenv": "^6.0.0",
     "download": "^7.1.0",

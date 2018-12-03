@@ -9,8 +9,7 @@ const PostController = require('../controllers/PostController')
 
 router.get('/', async (req, res) => {
   try {
-    const response = await LocationController.getLocations()
-    return res.send(response)
+    return LocationController.getUsingDatatable(req, res)
   } catch (error) {
     console.log(error)
     return res.status(error.status || 500).send(error)
@@ -82,6 +81,7 @@ router.get('/:locationId/unsubscribe', async (req, res) => { // Tao location
     return res.status(error.status || 500).send(error)
   }
 })
+
 router.post('/create', async (req, res) => {
   try {
     // let location = await Location.findOne().near('location', {
@@ -106,6 +106,26 @@ router.post('/create', async (req, res) => {
     // obj.address = location._id
   } catch (error) {
 
+  }
+})
+
+router.delete('/:id', async (req, res) => { // Xoa location
+  try {
+    const user = (await AuthService.isLoggedIn(req)).user
+    const id = req.params.id
+    const post = await PostController.get(id)
+    const obj = {
+      role: user.role,
+      resource: constants.RESOURCES.LOCATION,
+      action: constants.ACTIONS.DELETE,
+      owner: post.userCreated.toString() === user._id.toString()
+    }
+    await AuthService.checkPermission(obj)
+    const response = await PostController.deletePost(id)
+    return res.send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(error.status || 500).send(error)
   }
 })
 
