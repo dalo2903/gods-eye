@@ -1,10 +1,17 @@
 var app = angular.module('GodsEye')
 app.controller('headerController', ['$scope', 'apiService', function ($scope, apiService) {
+  apiService.getUserProfile()
+    .then(function (res) {
+      $scope.user = res.data.user
+    })
+    .catch(function (res) {
+      console.log(res)
+    })
   const userId = $('#user_id').text().trim()
   $scope.notifications = []
   let last = 0
   $scope.block = false
-  function unique (a) {
+  function unique(a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -17,6 +24,22 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
       }
     }
     return out
+  }
+  $scope.alertVerifyPhone = async function () {
+    if ($scope.user && !$scope.user.verified) {
+      $('#verifyModal').modal('show')
+      //verifyModal('Please verify your phone number to use this feature')
+    }
+    else
+      window.location.replace('/label')
+  }
+
+  $scope.alertVerifyPhone2 = async function () {
+    if ($scope.user && !$scope.user.verified) {
+      $('#verifyModal').modal('show')
+      //verifyModal('Please verify your phone number to use this feature')
+    }
+    else window.location.replace('/post/create')
   }
 
   $scope.loadMoreNotification = async function (firstTime) {

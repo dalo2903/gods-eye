@@ -313,7 +313,20 @@ router.get('/person', (req, res) => {
   })
 })
 
-router.get('/label', (req, res) => {
+router.get('/label', async (req, res) => {
+  try {
+    const token = AuthService.getTokenFromRequest(req)
+    const resolve = await AuthService.verifyJWTToken(token)
+    const obj = {
+      role: resolve.user.role,
+      resource: constants.RESOURCES.POST,
+      action: constants.ACTIONS.LABEL,
+      owner: true
+    }
+    await AuthService.checkPermission(obj)
+  } catch (error) {
+    return res.redirect('/')
+  }
   return res.render('post/video-labeling', {
     image: constants.index.image,
     description: constants.index.description,

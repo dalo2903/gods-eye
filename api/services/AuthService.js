@@ -52,10 +52,10 @@ async function verifyJWTToken (token) {
 async function checkPermission (obj) {
   const role = await Role.findOne({ type: obj.role })
   if (role && role[obj.resource]) {
-    if (obj.owner && parseInt(role[obj.resource].owner.padStart(4, '0')[obj.action]) === 1) {
+    if (obj.owner && parseInt(role[obj.resource].owner.padStart(5, '0')[obj.action]) === 1) {
       return
     }
-    if (!obj.owner && parseInt(role[obj.resource].others.padStart(4, '0')[obj.action]) === 1) {
+    if (!obj.owner && parseInt(role[obj.resource].others.padStart(5, '0')[obj.action]) === 1) {
       return
     }
   }

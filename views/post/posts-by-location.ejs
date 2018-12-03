@@ -1,32 +1,39 @@
 <% layout('../share/layout.ejs') -%>
-    <script src="/javascripts/post/post-by-location.js"></script>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
-    <div id="locationId" class="hide">
-        <%- locationId %>
-    </div>
-    <div ng-controller="PostByLocationController">
-        <div class="row">
-            <div id='sidebar-container' class="col-sm-3">
-                <% include ../share/sidebar.ejs -%>
+<script src="/javascripts/post/post-by-location.js"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/post.css">
+<div class="main main-raised">
+    <div class="section section-basic">
+        <div class="container">
+            <div id="locationId" class="hide">
+                <%- locationId %>
             </div>
-            <div class="col-sm-6">
-                <h2>Posts at location: {{location.address}}</h2>
-                <div infinite-scroll='loadMore()' id="postsContainer" class="postsContainer">
-                    <div id="{{post._id}}" ng-repeat="post in posts">
-                        <a href="/post/{{post._id}}" style="text-decoration:none">
-                            <div>
-                                <h1>{{post.title}}</h1>
-                            </div>
-                            <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm dd/MM/yyyy"}}</div>
-                            <div class="address">{{ post.location.address }}</div>
-                            <div class="data" ng-repeat="data in post.datas">
-                                <img class='post' ng-src="{{data.URL}}">
-                            </div>
-                            <hr>
-                        </a>
+            <div ng-controller="PostByLocationController">
+                <div class="row">
+                    <div id='sidebar-container' class="col-sm-3">
+                        <% include ../share/sidebar.ejs -%>
                     </div>
+                    <div class="col-sm-6">
+                        <h2>Posts at location: {{location.address}}</h2>
+                        <div infinite-scroll='loadMore()' id="postsContainer" class="postsContainer">
+                            <div id="{{post._id}}" ng-repeat="post in posts">
+                                <a href="/post/{{post._id}}" style="text-decoration:none">
+                                    <div>
+                                        <h1>{{post.title}}</h1>
+                                    </div>
+                                    <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm
+                                        dd/MM/yyyy"}}</div>
+                                    <div class="address">{{ post.location.address }}</div>
+                                    <div class="data" ng-repeat="data in post.datas">
+                                        <img class='post' ng-src="{{data.URL}}">
+                                    </div>
+                                    <hr>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3"></div>
                 </div>
             </div>
-            <div class="col-sm-3"></div>
         </div>
     </div>
+</div>

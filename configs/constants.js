@@ -51,7 +51,8 @@ const ACTIONS = {
   CREATE: 0,
   READ: 1,
   UPDATE: 2,
-  DELETE: 3
+  DELETE: 3,
+  LABEL: 4
 }
 
 const PROVIDERS = {

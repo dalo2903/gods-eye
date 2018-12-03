@@ -1,6 +1,13 @@
 var app = angular.module('GodsEye')
 
 app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window', function ($scope, apiService, $http, $window) {
+  apiService.getUserProfile()
+    .then(function (res) {
+      $scope.user = res.data.user
+    })
+    .catch(function (res) {
+      console.log(res)
+    })
   $scope.scrollData = []
   $scope.userId = $('#user_id').text().trim()
   let last = 0
@@ -19,6 +26,7 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window'
     }
     return out
   }
+
   $scope.loadMore = async function () {
     $scope.block = true
     last = $scope.scrollData.length - 1
@@ -56,6 +64,9 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window'
       $('#reportButton' + postId).html('Reported')
       return true
     }
+  }
+  $scope.UserLogged = function (){
+
   }
 }
 ])
