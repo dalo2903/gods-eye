@@ -3,7 +3,7 @@ var app = angular.module('GodsEye')
 app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', function ($scope, apiService, $http, $compile) {
   // Location
   $('#locationTable').DataTable({
-    ajax: '/api/location',
+    ajax: '/api/location/datatable',
     processing: true,
     serverSide: true,
     columns: [
