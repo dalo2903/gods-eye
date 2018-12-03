@@ -121,7 +121,7 @@ router.delete('/:id', async (req, res) => { // Xoa location
       owner: post.userCreated.toString() === user._id.toString()
     }
     await AuthService.checkPermission(obj)
-    const response = await PostController.deletePost(id)
+    const response = await LocationController.delete(id)
     return res.send(response)
   } catch (error) {
     console.log(error)

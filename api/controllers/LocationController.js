@@ -29,7 +29,6 @@ class LocationController extends BaseController {
         fields: ['name', 'address']
       },
       formatter: function (location) {
-        console.log(location)
         return {
           name: location.name,
           address: location.address,
@@ -37,7 +36,7 @@ class LocationController extends BaseController {
         }
       }
     }).then((table) => {
-      console.log(table)
+      // console.log(table)
       table.recordsFiltered = table.total
       table.recordsTotal = table.total
       res.json(table)
