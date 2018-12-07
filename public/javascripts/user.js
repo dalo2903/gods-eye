@@ -31,7 +31,7 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
   let last = 0
   $scope.block = false
 
-  function unique (a) {
+  function unique(a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -64,14 +64,16 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
     window.location.replace('/post/edit/' + id)
   }
 
-  $scope.deletePost = function (_id, $index) {
-    apiService.deletePost(_id)
-      .then(function (res) {
-        $scope.posts.splice($index, 1)
+  $scope.delete = function (postId, $index) {
+    var check = confirm('Delete post?')
+    if (check === true) {
+      $http({
+        method: 'delete',
+        url: 'api/post/' + postId
+      }).then(function () {
+        $scope.scrollData.splice($index, 1)
       })
-      .catch(function (res) {
-        alert(res.data.message)
-      })
+    }
   }
   // Subscription
   $('#subscribedLocationsTable').DataTable({
@@ -117,10 +119,10 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
     $http({
       method: 'GET',
       url: '/api/location/' + locationId + '/subscribe'
-    }).then(function successCallback (response) {
+    }).then(function successCallback(response) {
       $('#subscribeButton' + locationId).addClass('hide')
       $('#unsubscribeButton' + locationId).removeClass('hide')
-    }, function errorCallback (response) {
+    }, function errorCallback(response) {
       console.log(response)
     })
   }
@@ -128,10 +130,10 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
     $http({
       method: 'GET',
       url: '/api/location/' + locationId + '/unsubscribe'
-    }).then(function successCallback (response) {
+    }).then(function successCallback(response) {
       $('#subscribeButton' + locationId).removeClass('hide')
       $('#unsubscribeButton' + locationId).addClass('hide')
-    }, function errorCallback (response) {
+    }, function errorCallback(response) {
       console.log(response)
     })
   }
@@ -156,7 +158,7 @@ AccountKit_OnInteractive = function () {
   })
 }
 
-function loginCallback (response) {
+function loginCallback(response) {
   if (response.status === 'PARTIALLY_AUTHENTICATED') {
     var code = response.code
     var csrf = response.state
@@ -188,7 +190,7 @@ function loginCallback (response) {
 }
 
 // phone form submission handler
-function smsLogin () {
+function smsLogin() {
   var countryCode = document.getElementById('country_code').value
   var phoneNumber = document.getElementById('phone_number').value
   AccountKit.login(
