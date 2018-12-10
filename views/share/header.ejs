@@ -130,7 +130,7 @@
                 <li class="noti-line" ng-repeat="notification in notifications" ng-click='notiDetail(notification._id)'
                   ng-class="notification.seen ? '' : 'noti-line-not-seen'">
                   <i class="fas fa-exclamation-triangle"></i>
-                  {{notification.title}} <br>
+                  {{notification.title}} at {{notification.location.address}} <br>
                   {{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}
                 </li>
               </ul>

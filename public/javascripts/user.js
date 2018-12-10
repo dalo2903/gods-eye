@@ -59,7 +59,7 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       console.log('load more notification')
     }
   }
-
+  $scope.loadMoreNotification()
   $scope.goToEditPage = function (id) {
     window.location.replace('/post/edit/' + id)
   }

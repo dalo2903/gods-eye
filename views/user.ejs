@@ -60,7 +60,8 @@
                                 <input class="form-control" value="+84" id="country_code" disabled />
                                 <input class="form-control" ng-model="user.phone" type="number" placeholder="Phone number"
                                     id="phone_number" ng-disabled="user.verified" />
-                                <i style="margin-top: 30px; margin-left: 10px; color: #9c27b0;" class="material-icons" ng-show="user.verified">verified_user</i>
+                                <i style="margin-top: 30px; margin-left: 10px; color: #9c27b0;" class="material-icons"
+                                    ng-show="user.verified">verified_user</i>
                                 <a style="margin: 20px" ng-click="verifyPhone()" class="btn btn-primary" ng-hide="user.verified">Verify</a>
                             </div>
                         </div>
@@ -169,17 +170,21 @@
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
-                                <tbody style='text-align: left' infinite-scroll="loadMoreNotification()">
+                                <tbody style='text-align: left'>
 
                                     <tr ng-repeat="notification in notifications">
                                         <td> <a href="/notification/{{notification._id}}" style="text-decoration:none">
-                                                {{ notification.title }}
+                                                {{ notification.title }} at {{notification.location.address}}
                                             </a>
                                         </td>
                                         <td>{{ notification.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="text-center">
+                                <button ng-click='loadMoreNotification()' class="btn btn-facebook">Load
+                                    more notifications</button>
+                            </div>
                         </div>
                         <!-- Subscribed locations -->
                         <div class="tab-pane" id="subscribedLocations">
