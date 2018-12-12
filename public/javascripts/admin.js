@@ -127,10 +127,10 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     $http({
       method: 'GET',
       url: '/api/user/' + userId + '/ban'
-    }).then(function successCallback(response) {
+    }).then(function successCallback (response) {
       $('#banButton' + userId).addClass('hide')
       $('#unbanButton' + userId).removeClass('hide')
-    }, function errorCallback(response) {
+    }, function errorCallback (response) {
       console.log(response)
     })
   }
@@ -139,10 +139,10 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     $http({
       method: 'GET',
       url: '/api/user/' + userId + '/unban'
-    }).then(function successCallback(response) {
+    }).then(function successCallback (response) {
       $('#banButton' + userId).removeClass('hide')
       $('#unbanButton' + userId).addClass('hide')
-    }, function errorCallback(response) {
+    }, function errorCallback (response) {
       console.log(response)
     })
   }
@@ -150,7 +150,7 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
   // Reported posts
   $scope.scrollData = []
   let last = 0
-  function unique(a) {
+  function unique (a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -172,14 +172,6 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     $scope.$apply()
   }
   $scope.loadMoreReportedPosts()
-  // $scope.approve = function (postId, $index) {
-  //   $http({
-  //     method: 'put',
-  //     url: 'api/post/' + postId + '/approved'
-  //   }).then(function () {
-  //     $scope.scrollData.splice($index, 1)
-  //   })
-  // }
 
   $scope.delete = function (postId, $index) {
     var check = confirm('Delete post?')
@@ -192,21 +184,4 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
       })
     }
   }
-
-  // //Pending labeled videos
-  // $scope.videos = []
-  // $scope.loadMoreVideos = async function () {
-  //   last = $scope.videos.length - 1
-  //   const newvideos = (await apiService.getVisualDataForApproving(last + 1, 5)).data.visualDatas
-  //   $scope.videos = $scope.videos.concat(newvideos)
-  //   $scope.videos = unique($scope.videos)
-  //   $scope.$apply()
-  // }
-  // $scope.loadMoreVideos()
-  // $scope.suspicious = function (videoId, $index) {
-
-  // }
-  // $scope.notSuspicious = function (videoId, $index) {
-
-  // }
 }])

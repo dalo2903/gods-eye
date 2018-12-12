@@ -26,12 +26,13 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
     .catch(function (res) {
       console.log(res)
     })
+
   // Get noti
   $scope.notifications = []
   let last = 0
   $scope.block = false
 
-  function unique(a) {
+  function unique (a) {
     var seen = {}
     var out = []
     var len = a.length
@@ -53,10 +54,8 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       const newNotifications = (await apiService.getAllUserNotifications(userId, last + 1, 5)).data.notifications
       $scope.notifications = $scope.notifications.concat(newNotifications)
       $scope.notifications = unique($scope.notifications)
-      // console.log($scope.notifications.length)
       $scope.block = false
       $scope.$apply()
-      console.log('load more notification')
     }
   }
   $scope.loadMoreNotification()
@@ -75,6 +74,7 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       })
     }
   }
+
   // Subscription
   $('#subscribedLocationsTable').DataTable({
     'ajax': {
@@ -92,6 +92,8 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       $compile(angular.element(row).contents())($scope)
     }
   })
+
+  // all locations
   $('#allLocationsTable').DataTable({
     'ajax': {
       'url': '/api/location/',
@@ -115,28 +117,31 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       $compile(angular.element(row).contents())($scope)
     }
   })
+
   $scope.subscribe = function (locationId) {
     $http({
       method: 'GET',
       url: '/api/location/' + locationId + '/subscribe'
-    }).then(function successCallback(response) {
+    }).then(function successCallback (response) {
       $('#subscribeButton' + locationId).addClass('hide')
       $('#unsubscribeButton' + locationId).removeClass('hide')
-    }, function errorCallback(response) {
+    }, function errorCallback (response) {
       console.log(response)
     })
   }
+
   $scope.unsubscribe = function (locationId) {
     $http({
       method: 'GET',
       url: '/api/location/' + locationId + '/unsubscribe'
-    }).then(function successCallback(response) {
+    }).then(function successCallback (response) {
       $('#subscribeButton' + locationId).removeClass('hide')
       $('#unsubscribeButton' + locationId).addClass('hide')
-    }, function errorCallback(response) {
+    }, function errorCallback (response) {
       console.log(response)
     })
   }
+
   $scope.reloadTables = function () {
     $('#allLocationsTable').DataTable().ajax.reload()
     $('#subscribedLocationsTable').DataTable().ajax.reload()
@@ -151,14 +156,14 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
 
 AccountKit_OnInteractive = function () {
   AccountKit.init({
-    appId: '895880713951104',
+    appId: '895880713951104', // TODO: replace APP ID
     version: 'v1.1',
     fbAppEventsEnabled: true,
     state: $('#user_id').text().trim()
   })
 }
 
-function loginCallback(response) {
+function loginCallback (response) {
   if (response.status === 'PARTIALLY_AUTHENTICATED') {
     var code = response.code
     var csrf = response.state
@@ -190,7 +195,7 @@ function loginCallback(response) {
 }
 
 // phone form submission handler
-function smsLogin() {
+function smsLogin () {
   var countryCode = document.getElementById('country_code').value
   var phoneNumber = document.getElementById('phone_number').value
   AccountKit.login(

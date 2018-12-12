@@ -14,17 +14,6 @@ angular.module('GodsEye').factory('apiService', ['$http', function ($http) {
     getImages: function () {
       return $http.get('/images')
     },
-    // createPost: function (formData) {
-    //   var req = {
-    //     method: 'POST',
-    //     url: '/api/post',
-    //     headers: {
-    //       'Content-Type': undefined
-    //     },
-    //     data: formData
-    //   }
-    //   return $http(req)
-    // },
     createPost: function (json) {
       return $http.post('/api/post', json)
     },
