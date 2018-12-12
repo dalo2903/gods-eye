@@ -60,7 +60,8 @@
                                 <input class="form-control" value="+84" id="country_code" disabled />
                                 <input class="form-control" ng-model="user.phone" type="number" placeholder="Phone number"
                                     id="phone_number" ng-disabled="user.verified" />
-                                <i style="margin-top: 30px; margin-left: 10px; color: #9c27b0;" class="material-icons" ng-show="user.verified">verified_user</i>
+                                <i style="margin-top: 30px; margin-left: 10px; color: #9c27b0;" class="material-icons"
+                                    ng-show="user.verified">verified_user</i>
                                 <a style="margin: 20px" ng-click="verifyPhone()" class="btn btn-primary" ng-hide="user.verified">Verify</a>
                             </div>
                         </div>
@@ -74,15 +75,15 @@
                                         <li class="active">
                                             <a href="#posts" role="tab" data-toggle="tab">
                                                 <i class="material-icons">palette</i>
-                                                Posts
+                                                My posts
                                             </a>
                                         </li>
-                                        <li>
+                                        <!-- <li>
                                             <a href="#people" role="tab" data-toggle="tab">
                                                 <i class="material-icons">people</i>
                                                 People
                                             </a>
-                                        </li>
+                                        </li> -->
                                         <li>
                                             <a href="#notifications" role="tab" data-toggle="tab">
                                                 <i class="material-icons">camera</i>
@@ -109,7 +110,7 @@
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane active work" id="posts">
-                            <div class="col-md-8 col-md-offset-1">
+                            <div class="col-md-6 col-md-offset-3">
                                 <div id="postsContainer" class="postsContainer">
                                     <div id="{{post._id}}" class="post" ng-repeat="post in posts">
                                         <a href="/post/{{post._id}}" style="text-decoration:none">
@@ -126,14 +127,14 @@
                                             </div>
                                         </a>
                                         <br>
-                                        <button class="btn btn-primary" ng-click="deletePost(post._id, $index)">Delete</button>
-                                        <button class="btn btn-primary" ng-click="goToEditPage(post._id)">Edit</button>
+                                        <button class="btn btn-danger" ng-click="delete(post._id, $index)">Delete</button>
+                                        <!-- <button class="btn btn-primary" ng-click="goToEditPage(post._id)">Edit</button> -->
                                         <hr>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" id="people">
+                        <!-- <div class="tab-pane" id="people">
                             <div class="table-responsive">
                                 <table class="table table-striped w-auto">
                                     <thead>
@@ -159,7 +160,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- Notifications -->
                         <div class="tab-pane" id="notifications">
                             <table class="table table-striped">
@@ -169,17 +170,21 @@
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
-                                <tbody style='text-align: left' infinite-scroll="loadMoreNotification()">
+                                <tbody style='text-align: left'>
 
                                     <tr ng-repeat="notification in notifications">
                                         <td> <a href="/notification/{{notification._id}}" style="text-decoration:none">
-                                                {{ notification.title }}
+                                                {{ notification.title }} at {{notification.location.address}}
                                             </a>
                                         </td>
                                         <td>{{ notification.createdAt | date: "HH:mm dd/MM/yyyy" }}</td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="text-center">
+                                <button ng-click='loadMoreNotification()' class="btn btn-facebook">Load
+                                    more notifications</button>
+                            </div>
                         </div>
                         <!-- Subscribed locations -->
                         <div class="tab-pane" id="subscribedLocations">

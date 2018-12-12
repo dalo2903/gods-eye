@@ -59,7 +59,7 @@ class PostController extends BaseController {
   async getReportedPosts (skip, limit) {
     const posts = await Post.find({
       $where: 'this.reported.length > 0'
-    }).sort('-createdAt').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).exec()
+    }).sort('-reported.length').skip(skip).limit(limit).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).exec()
     return responseStatus.Response(200, { posts: posts })
   }
 

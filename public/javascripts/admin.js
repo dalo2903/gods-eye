@@ -14,7 +14,7 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
       },
       { data: 'createdAt' }
     ],
-    order: [[ 2, 'desc' ]]
+    order: [[2, 'desc']]
   })
 
   // Visual data
@@ -67,6 +67,8 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     fnCreatedRow: function (row, data, index) {
       if (data.isImage) {
         $('td', row).eq(0).html('<a style="color:blue" href="' + data.data.URL + '"> <img class="visual-data" src="' + data.data.URL + '"></a>')
+      } else if (data.URL == null) {
+        $('td', row).eq(0).html('<img class="visual-data" src="https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg"></a>')
       } else {
         $('td', row).eq(0).html('<a style="color:blue" href="' + data.data.URL + '"> <video class="visual-data" controls><source src="' + data.data.URL + '" type="video/mp4" ></video></a>')
       }
@@ -125,10 +127,10 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     $http({
       method: 'GET',
       url: '/api/user/' + userId + '/ban'
-    }).then(function successCallback (response) {
+    }).then(function successCallback(response) {
       $('#banButton' + userId).addClass('hide')
       $('#unbanButton' + userId).removeClass('hide')
-    }, function errorCallback (response) {
+    }, function errorCallback(response) {
       console.log(response)
     })
   }
@@ -137,10 +139,10 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
     $http({
       method: 'GET',
       url: '/api/user/' + userId + '/unban'
-    }).then(function successCallback (response) {
+    }).then(function successCallback(response) {
       $('#banButton' + userId).removeClass('hide')
       $('#unbanButton' + userId).addClass('hide')
-    }, function errorCallback (response) {
+    }, function errorCallback(response) {
       console.log(response)
     })
   }
@@ -148,7 +150,7 @@ app.controller('AdminController', ['$scope', 'apiService', '$http', '$compile', 
   // Reported posts
   $scope.scrollData = []
   let last = 0
-  function unique (a) {
+  function unique(a) {
     var seen = {}
     var out = []
     var len = a.length

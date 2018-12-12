@@ -16,7 +16,8 @@
                             <div>
                                 <h1>{{notification.title}}</h1>
                             </div>
-                            <div class="author">by {{notification.userCreated.name}} at {{notification.createdAt |
+                            <!-- by {{notification.userCreated.name}}  -->
+                            <div class="author">at {{notification.createdAt |
                                 date: "HH:mm dd/MM/yyyy"}}</div>
                             <div class="address">{{ notification.location.name || notification.location.address }}</div>
                             <video ng-if="foo" width="500" controls>

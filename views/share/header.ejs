@@ -44,7 +44,7 @@
         <li class="hide">
           <a href="/person">PERSON LIST</a>
         </li>
-        <li>
+        <li style="cursor:pointer">
           <a id="labelvideos" ng-click="alertVerifyPhone()">
             <i class="material-icons">
               video_label
@@ -52,7 +52,7 @@
             LABEL VIDEOS
           </a>
         </li>
-        <li>
+        <li class="hide">
           <a href="/person/create">
             <i class="material-icons">
               person_add
@@ -70,7 +70,7 @@
         <li class="hide">
           <a href="/newsfeed">NEWS FEED</a>
         </li>
-        <li>
+        <li style="cursor:pointer">
           <a id="createvideos" ng-click="alertVerifyPhone2()">
             <i class="material-icons">
               add_a_photo
@@ -130,7 +130,7 @@
                 <li class="noti-line" ng-repeat="notification in notifications" ng-click='notiDetail(notification._id)'
                   ng-class="notification.seen ? '' : 'noti-line-not-seen'">
                   <i class="fas fa-exclamation-triangle"></i>
-                  {{notification.title}} <br>
+                  {{notification.title}} at {{notification.location.address}} <br>
                   {{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}
                 </li>
               </ul>
