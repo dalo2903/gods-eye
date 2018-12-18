@@ -66,7 +66,7 @@
                                     <div class="item" ng-repeat="data in post.datas" ng-class='{active:$first}'>
                                         <!-- <img ng-src="{{data.URL}}"> -->
                                         <img ng-src="{{data.URL}}" ng-if="data.isImage">
-                                        <video ng-if="!data.isImage" controls>
+                                        <video style="width: 100%"ng-if="!data.isImage" controls>
                                             <source ng-src="{{data.URL}}" type="video/mp4">
                                         </video>
                                     </div>
