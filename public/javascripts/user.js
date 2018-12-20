@@ -70,7 +70,7 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
         method: 'delete',
         url: 'api/post/' + postId
       }).then(function () {
-        $scope.scrollData.splice($index, 1)
+        $scope.posts.splice($index, 1)
       })
     }
   }
