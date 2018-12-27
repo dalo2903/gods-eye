@@ -121,9 +121,12 @@
                                                 date: "HH:mm dd/MM/yyyy"}}
                                             </div>
                                             <div class="address">{{ post.location.address }}</div>
-                                            <div class="data" ng-repeat="data in post.datas">
-                                                <img class='
-                                            post' ng-src="{{data.URL}}">
+                                            <div class="item" ng-repeat="data in post.datas" ng-class='{active:$first}'>
+                                                <!-- <img ng-src="{{data.URL}}"> -->
+                                                <img ng-src="{{data.URL}}" ng-if="data.isImage">
+                                                <video style="width: 100%"ng-if="!data.isImage" controls>
+                                                    <source ng-src="{{data.URL}}" type="video/mp4">
+                                                </video>
                                             </div>
                                         </a>
                                         <br>
