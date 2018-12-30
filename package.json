@@ -24,6 +24,7 @@
     "express": "^4.16.4",
     "express-fileupload": "^0.4.0",
     "express-session": "^1.15.6",
+    "express-sslify": "^1.2.0",
     "firebase": "^4.13.1",
     "firebase-admin": "^6.1.0",
     "fs": "0.0.1-security",

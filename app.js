@@ -7,6 +7,7 @@ var bodyParser = require('body-parser')
 var engine = require('ejs-locals')
 var fileUpload = require('express-fileupload')
 var session = require('express-session')
+var enforce = require('express-sslify')
 
 require('dotenv').config()
 
@@ -28,6 +29,9 @@ var routeRecordAPI = require('./api/routes/record')
 var index = require('./routes/index')
 
 var app = express()
+if (process.env.NODE_ENV === 'production') {
+  app.use(enforce.HTTPS({ trustProtoHeader: true }))
+}
 app.use(cookieParser())
 
 app.use(session({
