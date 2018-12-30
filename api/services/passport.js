@@ -1,6 +1,7 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+const FacebookStrategy = require('passport-facebook').Strategy
 const UserController = require('../controllers/UserController')
 const responseStatus = require('../../configs/responseStatus')
 const bcrypt = require('bcrypt')
@@ -38,6 +39,22 @@ async function (accessToken, refreshToken, profile, done) {
     email: profile.emails[0].value,
     avatar: profile.photos[0].value.split('?sz=')[0],
     provider: constants.PROVIDERS.GOOGLE
+  }
+  const user = await UserController.findOrCreateSocialUser(obj)
+  return done(null, user)
+}))
+
+passport.use(new FacebookStrategy({
+  clientID: process.env.ACCOUNT_KIT_APP_ID,
+  clientSecret: process.env.ACCOUNT_KIT_APP_SECRET,
+  callbackURL: process.env.FACEBOOK_OAUTH_CALLBACK_URL
+},
+async function (accessToken, refreshToken, profile, done) {
+  const obj = {
+    name: profile.displayName,
+    email: profile.emails[0].value,
+    avatar: profile.photos[0].value,
+    provider: constants.PROVIDERS.FACEBOOK
   }
   const user = await UserController.findOrCreateSocialUser(obj)
   return done(null, user)

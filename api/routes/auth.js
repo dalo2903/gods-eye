@@ -49,6 +49,19 @@ router.get('/google/callback',
     return res.redirect('/')
   })
 
+router.get('/facebook',
+  passport.authenticate('facebook', { scope: ['email'] }))
+
+router.get('/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/' }),
+  function (req, res) {
+    const user = req.user
+    const token = AuthService.signJWTToken(user.email)
+    req.session.token = token
+    req.session.user = user
+    return res.redirect('/')
+  })
+
 router.post('/sign-in', async (req, res) => {
   // try {
   passport.authenticate('local', function (err, user, info) {
