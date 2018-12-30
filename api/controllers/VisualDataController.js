@@ -98,7 +98,6 @@ class VisualDataController extends BaseController {
           }
         ]
     }).then((table) => {
-      console.log(table)
       res.json(table)
     }).catch((err) => {
       console.log(err)

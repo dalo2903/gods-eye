@@ -36,7 +36,6 @@ class LocationController extends BaseController {
         }
       }
     }).then((table) => {
-      // console.log(table)
       table.recordsFiltered = table.total
       table.recordsTotal = table.total
       res.json(table)
@@ -94,6 +93,7 @@ class LocationController extends BaseController {
     }).populate({ path: 'subscribers', select: 'email', model: 'User' }).exec()
     return locations
   }
+
   async createLocation (obj) {
     const location = {
       address: obj.address

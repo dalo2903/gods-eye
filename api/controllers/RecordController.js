@@ -41,7 +41,6 @@ class RecordController extends BaseController {
           }
         ]
     }).then((table) => {
-      console.log(table)
       res.json(table)
     }).catch((err) => {
       console.log(err)
