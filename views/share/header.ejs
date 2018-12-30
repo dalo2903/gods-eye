@@ -84,10 +84,17 @@
           </a>
         </li>
         <li>
+          <% if (user.role === 999) { %>
+          <a href="/admin" style="padding-right: 0">
+            <span class="glyphicon glyphicon-user"></span>
+            <%- user_name %>
+          </a>
+          <% } else { %>
           <a href="/user/<%- user_id %>" style="padding-right: 0">
             <span class="glyphicon glyphicon-user"></span>
             <%- user_name %>
           </a>
+          <% } %>
         </li>
         <style>
           .noti-container {
