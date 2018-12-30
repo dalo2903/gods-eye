@@ -46,8 +46,9 @@ async function (accessToken, refreshToken, profile, done) {
 
 passport.use(new FacebookStrategy({
   clientID: process.env.ACCOUNT_KIT_APP_ID,
-  clientSecret: process.env.ACCOUNT_KIT_APP_SECRET,
-  callbackURL: process.env.FACEBOOK_OAUTH_CALLBACK_URL
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  callbackURL: process.env.FACEBOOK_OAUTH_CALLBACK_URL,
+  profileFields: ['displayName', 'email', 'picture.type(large)']
 },
 async function (accessToken, refreshToken, profile, done) {
   const obj = {
