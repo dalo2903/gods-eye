@@ -85,30 +85,63 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window'
     }
   }
 
+  $scope.report = function () {
+    if (!$('#report-modal #reason').val().trim()) {
+      return showErrorModal('Please specify the reason')
+    }
+    $.ajax({
+      url: '/api/post/' + postId + '/report',
+      type: 'put',
+      contentType: 'application/json',
+      success: function () {
+        showErrorModal('Thank you for reporting')
+        $('#reportButton' + postId).html('Reported')
+        $('#reportButton' + postId).removeClass('btn-danger')
+        const scrollDataId = $scope.scrollData.map(function (e) {
+          return e._id
+        })
+        $scope.scrollData[scrollDataId.indexOf(postId)].reported = $scope.scrollData[scrollDataId.indexOf(postId)].reported.filter(e => e.toString() !== $scope.userId.toString())
+        $scope.scrollData[scrollDataId.indexOf(postId)].reportedWithReason = $scope.scrollData[scrollDataId.indexOf(postId)].reportedWithReason.filter(e => e.userId.toString() !== $scope.userId.toString())
+        $scope.scrollData[scrollDataId.indexOf(postId)].reported.push($scope.userId)
+        $scope.scrollData[scrollDataId.indexOf(postId)].reportedWithReason.push({
+          userId: $scope.userId,
+          reason: $('#report-modal #reason').val().trim()
+        })
+      },
+      data: JSON.stringify({
+        reason: $('#report-modal #reason').val().trim()
+      }),
+      error: function (data) {
+        console.log(data)
+        showErrorModal('Report failed. Please try again later.')
+      }
+    })
+  }
+
   $scope.UserLogged = function () {
 
   }
 }])
 
-function report () {
-  if (!$('#report-modal #reason').val().trim()) {
-    return showErrorModal('Please specify the reason')
-  }
-  $.ajax({
-    url: '/api/post/' + postId + '/report',
-    type: 'put',
-    contentType: 'application/json',
-    success: function () {
-      showErrorModal('Thank you for reporting')
-      $('#reportButton' + postId).html('Reported')
-      $('#reportButton' + postId).removeClass('btn-danger')
-    },
-    data: JSON.stringify({
-      reason: $('#report-modal #reason').val().trim()
-    }),
-    error: function (data) {
-      console.log(data)
-      showErrorModal('Report failed. Please try again later.')
-    }
-  })
-}
+// function report () {
+//   if (!$('#report-modal #reason').val().trim()) {
+//     return showErrorModal('Please specify the reason')
+//   }
+//   $.ajax({
+//     url: '/api/post/' + postId + '/report',
+//     type: 'put',
+//     contentType: 'application/json',
+//     success: function () {
+//       showErrorModal('Thank you for reporting')
+//       $('#reportButton' + postId).html('Reported')
+//       $('#reportButton' + postId).removeClass('btn-danger')
+//     },
+//     data: JSON.stringify({
+//       reason: $('#report-modal #reason').val().trim()
+//     }),
+//     error: function (data) {
+//       console.log(data)
+//       showErrorModal('Report failed. Please try again later.')
+//     }
+//   })
+// }
