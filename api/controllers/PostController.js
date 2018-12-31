@@ -64,7 +64,7 @@ class PostController extends BaseController {
   }
 
   async getPostsSameUserCreated (userCreated) {
-    const posts = await Post.find({ userCreated: userCreated }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL' })
+    const posts = await Post.find({ userCreated: userCreated }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas', select: 'URL isImage' })
     return responseStatus.Response(200, { posts: posts })
   }
 
