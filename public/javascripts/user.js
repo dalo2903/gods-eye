@@ -68,7 +68,7 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
     if (check === true) {
       $http({
         method: 'delete',
-        url: 'api/post/' + postId
+        url: '/api/post/' + postId
       }).then(function () {
         $scope.posts.splice($index, 1)
       })
