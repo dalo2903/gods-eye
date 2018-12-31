@@ -33,6 +33,15 @@ const PostSchema = new Schema({
   reported: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
+  }],
+  reportedWithReason: [{
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    reason: {
+      type: String
+    }
   }]
 }, { usePushEach: true, timestamps: true, toJSON: { virtuals: true } })
 

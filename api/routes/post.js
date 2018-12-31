@@ -206,7 +206,7 @@ router.put('/:postId/report', async (req, res) => {
   try {
     const postId = req.params.postId
     const user = (await AuthService.isLoggedIn(req)).user
-    await PostController.reportPost(postId, user._id)
+    await PostController.reportPost(postId, user._id, req.body.reason)
     return res.send()
   } catch (error) {
     console.log(error)

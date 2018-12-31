@@ -84,10 +84,28 @@ class PostController extends BaseController {
   //   post.save()
   // }
 
-  async reportPost (_id, userId) {
-    const post = await Post.findById(_id).where('reported').ne(userId)
+  // async reportPost (_id, userId, reason) {
+  //   const post = await Post.findById(_id).where('reported').ne(userId)
+  //   if (!post) throw responseStatus.Response(404)
+  //   post.reported.push(userId)
+  //   post.reportedWithReason.push({
+  //     reason: reason,
+  //     userId: userId
+  //   })
+  //   await post.save()
+  //   return responseStatus.Response(200)
+  // }
+
+  async reportPost (_id, userId, reason) {
+    const post = await Post.findById(_id)
     if (!post) throw responseStatus.Response(404)
+    post.reported = post.reported.filter(e => e.toString() !== userId.toString())
+    post.reportedWithReason = post.reportedWithReason.filter(e => e.userId.toString() !== userId.toString())
     post.reported.push(userId)
+    post.reportedWithReason.push({
+      reason: reason,
+      userId: userId
+    })
     await post.save()
     return responseStatus.Response(200)
   }
