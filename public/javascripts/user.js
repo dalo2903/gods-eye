@@ -175,7 +175,7 @@ function loginCallback (response) {
       dataType: 'json',
       contentType: 'application/json',
       success: function () {
-        showErrorModal('Phone number verified')
+        window.location.reload()
       },
       data: JSON.stringify({
         code: code,
