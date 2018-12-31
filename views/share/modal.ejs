@@ -32,20 +32,45 @@
 </div>
 
 <div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-small ">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
-                </div>
-                <div class="modal-body text-center">
-                    <h5 id="content">Please verify your phone number to use this feature</h5>
-                </div>
-                <div class="modal-footer text-center">
-                    <a type="button" class="btn btn-success btn-simple" href="/user/<%- user_id %>">GOT IT</a>
-                </div>
+    <div class="modal-dialog modal-small ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+            </div>
+            <div class="modal-body text-center">
+                <h5 id="content">Please verify your phone number to use this feature</h5>
+            </div>
+            <div class="modal-footer text-center">
+                <a type="button" class="btn btn-success btn-simple" href="/user/<%- user_id %>">GOT IT</a>
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="report-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="material-icons">clear</i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group label-floating">
+                    <!-- <label class="form-control-label" for="exampleInputTextarea"> You can write your
+                        text here...</label> -->
+                    <textarea class="form-control" rows="5" id="reason" placeholder="Reason"></textarea>
+                </div>
+                <em>By reporting abusive behavior, you help us to build a better community.</em>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="report()" data-dismiss="modal">Report</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     function showErrorModal(content) {
