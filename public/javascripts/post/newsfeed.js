@@ -7,7 +7,7 @@ app.controller('NewsFeedController', ['$scope', 'apiService', '$http', '$window'
       $scope.user = res.data.user
     })
     .catch(function (res) {
-      console.log(res)
+      // console.log(res)
     })
 
   $scope.scrollData = []

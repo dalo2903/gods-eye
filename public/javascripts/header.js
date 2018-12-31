@@ -5,7 +5,7 @@ app.controller('headerController', ['$scope', 'apiService', function ($scope, ap
       $scope.user = res.data.user
     })
     .catch(function (res) {
-      console.log(res)
+      // console.log(res)
     })
 
   const userId = $('#user_id').text().trim()

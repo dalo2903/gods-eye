@@ -8,7 +8,7 @@ app.controller('UserController', ['$scope', 'apiService', '$compile', '$http', f
       $scope.user = res.data.user
     })
     .catch(function (res) {
-      console.log(res)
+      // console.log(res)
     })
 
   apiService.getPersons()
