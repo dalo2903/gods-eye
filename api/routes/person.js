@@ -44,6 +44,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
   try {
     // const session = AuthService.getSessionFromRequest(req)
     // const uuid = await AuthService.isLoggedIn(session)
+    const isNewPerson = req.body.isNewPerson || false
     const userCreated = (await AuthService.isLoggedIn(req)).user._id
     const url = await UploadController.uploadFile(req)
     const visualData = await VisualDataController.createVisualData({
@@ -51,7 +52,7 @@ router.post('/', /* m.single('file'), */ async (req, res) => {
       isImage: true
     })
     const isExisted = await IdentifyController.detectAndIdentifyFaces(url)
-    if (isExisted.persons.length === 0) {
+    if (isExisted.persons.length === 0 || isNewPerson) {
       var person = req.body
       person.datas = [visualData._id]
       person.isKnown = true
