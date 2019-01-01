@@ -45,16 +45,17 @@ app.controller('personController', ['$scope', 'apiService', function ($scope, ap
 
     apiService.createPerson(formData)
       .then(function (res) {
-        console.log(res)
         if (res.status === 201) {
           $('#existed-modal').modal({ backdrop: true })
           $('#submit-create-person').attr('disabled', false)
           $scope.persons = res.data
+        } else {
+          window.location.href = '/admin'
         }
       })
       .catch(function (res) {
         $('#submit-create-person').attr('disabled', false)
-        alert(res.data.message)
+        alert(res.data.message || 'Something went wrong. Please try again later.')
         console.log(res)
       })
   }
@@ -64,13 +65,28 @@ app.controller('personController', ['$scope', 'apiService', function ($scope, ap
     formData.append('_id', $scope.modalData.personId)
     formData.append('file', files[0])
     apiService.addDataForPerson(formData)
-      .then(function (res) {
-        console.log(res)
-        alert(res.data.message)
-        window.location.href = '/'
+      .then(function () {
+        window.location.href = '/admin'
       }).catch(function (res) {
-        alert(res.data.message)
+        alert(res.data.message || 'Something went wrong. Please try again later.')
         console.log(res)
+      })
+  }
+
+  $scope.forceCreatePerson = function () {
+    let formData = new FormData()
+    formData.append('name', $scope.person.name)
+    formData.append('file', files[0])
+    formData.append('isNewPerson', true)
+    $('#submit-create-person').attr('disabled', true)
+
+    apiService.createPerson(formData)
+      .then(function () {
+        window.location.href = '/admin'
+      })
+      .catch(function (res) {
+        $('#submit-create-person').attr('disabled', false)
+        alert(res.data.message || 'Something went wrong. Please try again later.')
       })
   }
 }])

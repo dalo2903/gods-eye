@@ -37,6 +37,34 @@ router.get('/', function (req, res, next) {
   })
 })
 
+router.get('/terms', function (req, res, next) {
+  return res.render('terms', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: 'Terms and Conditions.',
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+    user: req.session.user ? req.session.user : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
+  })
+})
+
+router.get('/privacy-policy', function (req, res, next) {
+  return res.render('privacy', {
+    image: constants.index.image,
+    description: constants.index.description,
+    title: 'Privacy policy.',
+    type: constants.index.type,
+    url: constants.index.url,
+    user_id: req.session.user ? req.session.user._id : '',
+    user_name: req.session.user ? req.session.user.name : '',
+    user: req.session.user ? req.session.user : '',
+    app_id: process.env.ACCOUNT_KIT_APP_ID
+  })
+})
+
 router.get('/about', function (req, res, next) {
   return res.render('about', {
     image: constants.index.image,

@@ -74,7 +74,7 @@
                                     <ul class="nav nav-pills nav-pills-icons" role="tablist">
                                         <li class="active">
                                             <a href="#posts" role="tab" data-toggle="tab">
-                                                <i class="material-icons">palette</i>
+                                                <i class="material-icons">collections</i>
                                                 My posts
                                             </a>
                                         </li>
@@ -86,20 +86,20 @@
                                         </li> -->
                                         <li>
                                             <a href="#notifications" role="tab" data-toggle="tab">
-                                                <i class="material-icons">camera</i>
+                                                <i class="material-icons">notifications</i>
                                                 Notifications
                                             </a>
                                         </li>
                                         <li ng-click='reloadTables()'>
                                             <a href="#subscribedLocations" role="tab" data-toggle="tab">
-                                                <i class="material-icons">subscriptions</i>
+                                                <i class="material-icons"> add_location</i>
                                                 Subscribed locations
                                             </a>
                                         </li>
                                         <li ng-click='reloadTables()'>
                                             <a href="#allLocations" role="tab" data-toggle="tab">
-                                                <i class="material-icons"> subscriptions</i>
-                                                All location
+                                                <i class="material-icons"> location_on</i>
+                                                All locations
                                             </a>
                                         </li>
                                     </ul>
@@ -125,7 +125,7 @@
                                                 <!-- <img ng-src="{{data.URL}}"> -->
                                                 <img ng-src="{{data.URL}}" style="width: 100%" ng-if="data.isImage">
 
-                                                <video style="width: 100%"ng-if="!data.isImage" controls>
+                                                <video style="width: 100%" ng-if="!data.isImage" controls>
                                                     <source ng-src="{{data.URL}}" type="video/mp4">
                                                 </video>
                                             </div>
@@ -186,8 +186,9 @@
                                 </tbody>
                             </table>
                             <div class="text-center">
-                                <button ng-click='loadMoreNotification()' class="btn btn-facebook">Load
+                                <button ng-show="notifications.length" ng-click='loadMoreNotification()' class="btn btn-facebook">Load
                                     more notifications</button>
+                                <h5 ng-hide="notifications.length"><em>No notification yet</em></h5>
                             </div>
                         </div>
                         <!-- Subscribed locations -->
@@ -224,6 +225,8 @@
             </div>
         </div>
     </div>
+
+    <% include ./share/footer.ejs %>
 </body>
 
 </html>

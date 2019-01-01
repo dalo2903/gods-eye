@@ -86,7 +86,8 @@
         <li>
           <% if (user.role === 999) { %>
           <a href="/admin" style="padding-right: 0; display: inline-block"">
-            <span class="glyphicon glyphicon-user"></span>
+            <span class=" glyphicon
+            glyphicon-user"></span>
             <%- user_name %>
           </a>
           <% } else { %>
@@ -122,24 +123,26 @@
           </style>
           <!-- Don't close dropdown when click -->
           <script>
-              $(document).on('click', '.dropdown-menu', function (e) {
-                  e.stopPropagation();
-              });
+            $(document).on('click', '.dropdown-menu', function (e) {
+              e.stopPropagation();
+            });
           </script>
           <a style="background-color: transparent !important; display: inline-block" class="dropdown-toggle" id="notification-dropdown-menu"
-             data-toggle="dropdown">
+            data-toggle="dropdown">
             <i style="font-size: 120%" class="fa fa-bell bell-notification"></i>
           </a>
           <div id='noti-dropdown' class="dropdown-menu" style="height:290px" aria-labelledby="notification-dropdown-menu">
             <div class='noti-container'>
               <ul style='list-style: none;padding-inline-start: 0px;'>
                 <li class="noti-line" ng-repeat="notification in notifications" ng-click='notiDetail(notification._id)'
-                    ng-class="notification.seen ? '' : 'noti-line-not-seen'">
+                  ng-class="notification.seen ? '' : 'noti-line-not-seen'">
                   <i class="fas fa-exclamation-triangle"></i>
                   {{notification.title}} at {{notification.location.address}} <br>
                   {{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}
                 </li>
               </ul>
+              <div ng-show="notifications.length === 0" class="text-center"><em style="color: black;">No notification
+                  yet</em></div>
             </div>
             <hr>
             <div ng-click='loadMoreNotification()' class="text-center" style="width: 50%; float:left;border-right: 1px solid lightgrey">
@@ -151,59 +154,59 @@
           </div>
         </li>
         <!--<style>-->
-          <!--.noti-container {-->
-            <!--overflow-y: scroll;-->
-            <!--width: 700px;-->
-            <!--height: 200px;-->
-          <!--}-->
+        <!--.noti-container {-->
+        <!--overflow-y: scroll;-->
+        <!--width: 700px;-->
+        <!--height: 200px;-->
+        <!--}-->
 
-          <!--.noti-container>ul>li>a {-->
-            <!--text-decoration: none-->
-          <!--}-->
+        <!--.noti-container>ul>li>a {-->
+        <!--text-decoration: none-->
+        <!--}-->
 
-          <!--.noti-line {-->
-            <!--padding-top: 10px;-->
-            <!--padding-bottom: 10px;-->
-            <!--padding-inline-start: 20px;-->
-            <!--cursor: pointer;-->
-            <!--color: black;-->
-            <!--border-bottom: grey 1px solid;-->
-          <!--}-->
+        <!--.noti-line {-->
+        <!--padding-top: 10px;-->
+        <!--padding-bottom: 10px;-->
+        <!--padding-inline-start: 20px;-->
+        <!--cursor: pointer;-->
+        <!--color: black;-->
+        <!--border-bottom: grey 1px solid;-->
+        <!--}-->
 
-          <!--.noti-line-not-seen {-->
-            <!--background-color: lightgrey-->
-          <!--}-->
+        <!--.noti-line-not-seen {-->
+        <!--background-color: lightgrey-->
+        <!--}-->
         <!--</style>-->
         <!--&lt;!&ndash; Don't close dropdown when click &ndash;&gt;-->
         <!--<script>-->
-          <!--$(document).on('click', '.dropdown-menu', function (e) {-->
-            <!--e.stopPropagation();-->
-          <!--});-->
+        <!--$(document).on('click', '.dropdown-menu', function (e) {-->
+        <!--e.stopPropagation();-->
+        <!--});-->
         <!--</script>-->
         <!--<li>-->
-          <!--<a style="background-color: transparent !important;" class="dropdown-toggle" id="notification-dropdown-menu"-->
-            <!--data-toggle="dropdown">-->
-            <!--<i style="font-size: 120%" class="fa fa-bell bell-notification"></i>-->
-          <!--</a>-->
-          <!--<div id='noti-dropdown' class="dropdown-menu" style="height:290px" aria-labelledby="notification-dropdown-menu">-->
-            <!--<div class='noti-container'>-->
-              <!--<ul style='list-style: none;padding-inline-start: 0px;'>-->
-                <!--<li class="noti-line" ng-repeat="notification in notifications" ng-click='notiDetail(notification._id)'-->
-                  <!--ng-class="notification.seen ? '' : 'noti-line-not-seen'">-->
-                  <!--<i class="fas fa-exclamation-triangle"></i>-->
-                  <!--{{notification.title}} at {{notification.location.address}} <br>-->
-                  <!--{{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}-->
-                <!--</li>-->
-              <!--</ul>-->
-            <!--</div>-->
-            <!--<hr>-->
-            <!--<div ng-click='loadMoreNotification()' class="text-center" style="width: 50%; float:left;border-right: 1px solid lightgrey">-->
-              <!--<p style='color:#337ab7 !important;cursor:pointer'>Load more</p>-->
-            <!--</div>-->
-            <!--<div ng-click='seenAllNotifications()' class="text-center" style="width: 50%; float:right">-->
-              <!--<p style='color:#337ab7 !important;cursor:pointer'>Mark all as "Seen"</p>-->
-            <!--</div>-->
-          <!--</div>-->
+        <!--<a style="background-color: transparent !important;" class="dropdown-toggle" id="notification-dropdown-menu"-->
+        <!--data-toggle="dropdown">-->
+        <!--<i style="font-size: 120%" class="fa fa-bell bell-notification"></i>-->
+        <!--</a>-->
+        <!--<div id='noti-dropdown' class="dropdown-menu" style="height:290px" aria-labelledby="notification-dropdown-menu">-->
+        <!--<div class='noti-container'>-->
+        <!--<ul style='list-style: none;padding-inline-start: 0px;'>-->
+        <!--<li class="noti-line" ng-repeat="notification in notifications" ng-click='notiDetail(notification._id)'-->
+        <!--ng-class="notification.seen ? '' : 'noti-line-not-seen'">-->
+        <!--<i class="fas fa-exclamation-triangle"></i>-->
+        <!--{{notification.title}} at {{notification.location.address}} <br>-->
+        <!--{{notification.createdAt | date: "HH:mm dd/MM/yyyy"}}-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--<hr>-->
+        <!--<div ng-click='loadMoreNotification()' class="text-center" style="width: 50%; float:left;border-right: 1px solid lightgrey">-->
+        <!--<p style='color:#337ab7 !important;cursor:pointer'>Load more</p>-->
+        <!--</div>-->
+        <!--<div ng-click='seenAllNotifications()' class="text-center" style="width: 50%; float:right">-->
+        <!--<p style='color:#337ab7 !important;cursor:pointer'>Mark all as "Seen"</p>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</li>-->
         <li>
           <!-- data-toggle="modal" data-target="#smallAlertModal" -->
