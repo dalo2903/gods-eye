@@ -20,7 +20,7 @@
                             <div class="author">at {{notification.createdAt |
                                 date: "HH:mm dd/MM/yyyy"}}</div>
                             <div class="address">{{ notification.location.name || notification.location.address }}</div>
-                            <video ng-if="foo" width="500" controls>
+                            <video ng-if="foo" width="100%" controls>
                                 <source src="{{ notification.data.URL }}">
                             </video>
                         </div>

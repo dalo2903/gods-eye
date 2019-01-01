@@ -128,7 +128,7 @@ router.post('/classified', async (req, res) => {
       let createRecordResult = RecordController.createRecord(record)
       listRecord.push(createRecordResult._id)
     }
-    if (info.result !== 'not-suspicious') {
+    if (info.result !== 'normal') {
       let title = '[ WARNING : A suspicious activity ]'
       const resNotify = await IdentifyController.notifyUsers(visualData.location, listRecord, visualData._id, title)
       const userEmails = resNotify.users.map(e => e.email)
