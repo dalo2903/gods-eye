@@ -49,9 +49,9 @@
                     <span id="_id" class="hide">
                         <%- _id %>
                     </span>
-                    <div id="{{post._id}}" class="post">
+                    <div id="{{post._id}}" class="post posts-container">
                         <div>
-                            <h1>{{post.title}}</h1>
+                            <h1 class="post-title">{{post.title}}</h1>
                         </div>
                         <div class="author">by {{post.userCreated.name}} at {{post.createdAt | date: "HH:mm
                             dd/MM/yyyy"}}
