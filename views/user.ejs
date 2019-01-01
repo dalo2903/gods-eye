@@ -125,7 +125,7 @@
                                                 <!-- <img ng-src="{{data.URL}}"> -->
                                                 <img ng-src="{{data.URL}}" style="width: 100%" ng-if="data.isImage">
 
-                                                <video style="width: 100%"ng-if="!data.isImage" controls>
+                                                <video style="width: 100%" ng-if="!data.isImage" controls>
                                                     <source ng-src="{{data.URL}}" type="video/mp4">
                                                 </video>
                                             </div>
@@ -186,8 +186,9 @@
                                 </tbody>
                             </table>
                             <div class="text-center">
-                                <button ng-click='loadMoreNotification()' class="btn btn-facebook">Load
+                                <button ng-show="notifications.length" ng-click='loadMoreNotification()' class="btn btn-facebook">Load
                                     more notifications</button>
+                                <h5 ng-hide="notifications.length"><em>No notification yet</em></h5>
                             </div>
                         </div>
                         <!-- Subscribed locations -->
