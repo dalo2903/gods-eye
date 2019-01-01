@@ -69,7 +69,7 @@ class PostController extends BaseController {
   }
 
   async getPostsByLocation (location) {
-    const posts = await Post.find({ location: location }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name' }).sort('-createdAt')
+    const posts = await Post.find({ location: location }).populate({ path: 'userCreated', select: 'name avatar' }).populate({ path: 'datas location', select: 'URL address name isImage' }).sort('-createdAt')
     return responseStatus.Response(200, { posts: posts })
   }
 
